@@ -1,0 +1,156 @@
+{
+  "description": "Recruiting - Katelyn's Orchestrator",
+  "name": "Recruiting Flow",
+  "id": "recruiting",
+  "data": {
+    "nodes": [
+      {
+        "id": "k0_katelyn_exec",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are K0 - KatelynExec Orchestrator. Route incoming leads to K1 (new agents) or K2 (experienced agents). Call compliance tool (Aya) as needed. Send KPIs to SOB. Generate 08:10 daily plan and heartbeat pings. Lead: {lead_data}",
+          "input_variables": ["lead_data"]
+        },
+        "position": {"x": 200, "y": 100}
+      },
+      {
+        "id": "k1_new_agent_intake",
+        "type": "PromptTemplate", 
+        "data": {
+          "template": "You are K1 - New Agent Intake & Enrichment. Handle leads with status null/student/pre-license/≤90 days. Use DBPR/MLS RAG to enrich data, verify email, normalize inputs. Decide: qualify (route to K2), park in nurture, or request human review. Agent data: {agent_data}",
+          "input_variables": ["agent_data"]
+        },
+        "position": {"x": 100, "y": 300}
+      },
+      {
+        "id": "k2_experienced_outreach",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are K2 - Experienced Agent Outreach. Process agents ≥2 years or discovered via Apify. Combine Apify scraping, Zoho Social, Salesmsg for outreach. Warm leads → calendar booking, declines → log with reasons. Agent: {experienced_agent}",
+          "input_variables": ["experienced_agent"]
+        },
+        "position": {"x": 300, "y": 300}
+      },
+      {
+        "id": "k3_post_call_handoff",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are K3 - Post-Call & Handoff. Summarize calls, update CRM stages, create onboarding tasks, verify licenses via DBPR, push audit data to PostgreSQL. Notify Eileen/broker if follow-up needed. Call data: {call_data}",
+          "input_variables": ["call_data"]
+        },
+        "position": {"x": 400, "y": 300}
+      },
+      {
+        "id": "lead_classifier",
+        "type": "ConditionalRouter",
+        "data": {
+          "conditions": [
+            {"condition": "lead_experience <= 90 days", "target": "k1_new_agent_intake"},
+            {"condition": "lead_experience >= 2 years", "target": "k2_experienced_outreach"}
+          ]
+        },
+        "position": {"x": 200, "y": 200}
+      },
+      {
+        "id": "manychat_webhook",
+        "type": "HttpRequest",
+        "data": {
+          "url": "${MANYCHAT_WEBHOOK_URL}",
+          "method": "POST",
+          "headers": {"Authorization": "Bearer ${MANYCHAT_API_KEY}"}
+        },
+        "position": {"x": 50, "y": 100}
+      },
+      {
+        "id": "zoho_crm_integration",
+        "type": "HttpRequest",
+        "data": {
+          "url": "${MCP_SERVER_URL}/zoho/crm",
+          "method": "POST",
+          "headers": {"Authorization": "Bearer ${ZOHO_ACCESS_TOKEN}"}
+        },
+        "position": {"x": 350, "y": 100}
+      },
+      {
+        "id": "salesmsg_integration",
+        "type": "HttpRequest",
+        "data": {
+          "url": "https://api.salesmsg.com/v1/messages",
+          "method": "POST",
+          "headers": {"Authorization": "Bearer ${SALESMSG_API_KEY}"}
+        },
+        "position": {"x": 500, "y": 200}
+      },
+      {
+        "id": "apify_scraper",
+        "type": "HttpRequest",
+        "data": {
+          "url": "https://api.apify.com/v2/acts/${APIFY_ACTOR_ID}/runs",
+          "method": "POST",
+          "headers": {"Authorization": "Bearer ${APIFY_API_TOKEN}"}
+        },
+        "position": {"x": 500, "y": 300}
+      },
+      {
+        "id": "dbpr_rag_search",
+        "type": "HttpRequest",
+        "data": {
+          "url": "${DBPR_RAG_ENDPOINT}",
+          "method": "GET",
+          "headers": {"X-API-Key": "${DBPR_API_KEY}"}
+        },
+        "position": {"x": 100, "y": 400}
+      },
+      {
+        "id": "redis_session_memory",
+        "type": "RedisMemory",
+        "data": {
+          "redis_url": "${REDIS_URL}",
+          "session_id": "recruiting_session"
+        },
+        "position": {"x": 300, "y": 400}
+      },
+      {
+        "id": "postgres_audit_log",
+        "type": "HttpRequest",
+        "data": {
+          "url": "${POSTGRES_API_ENDPOINT}/audit",
+          "method": "POST",
+          "headers": {"Content-Type": "application/json"}
+        },
+        "position": {"x": 400, "y": 400}
+      },
+      {
+        "id": "aya_compliance_tool",
+        "type": "HttpRequest",
+        "data": {
+          "url": "${AYA_COMPLIANCE_ENDPOINT}",
+          "method": "POST",
+          "headers": {"Authorization": "Bearer ${AYA_API_KEY}"}
+        },
+        "position": {"x": 500, "y": 100}
+      },
+      {
+        "id": "daily_scheduler",
+        "type": "Scheduler",
+        "data": {
+          "cron": "10 8 * * *",
+          "timezone": "America/New_York"
+        },
+        "position": {"x": 50, "y": 200}
+      }
+    ],
+    "edges": [
+      {"source": "manychat_webhook", "target": "k0_katelyn_exec"},
+      {"source": "k0_katelyn_exec", "target": "lead_classifier"},
+      {"source": "lead_classifier", "target": "k1_new_agent_intake"},
+      {"source": "lead_classifier", "target": "k2_experienced_outreach"},
+      {"source": "k1_new_agent_intake", "target": "dbpr_rag_search"},
+      {"source": "k2_experienced_outreach", "target": "salesmsg_integration"},
+      {"source": "k2_experienced_outreach", "target": "k3_post_call_handoff"},
+      {"source": "k3_post_call_handoff", "target": "postgres_audit_log"},
+      {"source": "daily_scheduler", "target": "k0_katelyn_exec"},
+      {"source": "k0_katelyn_exec", "target": "aya_compliance_tool"}
+    ]
+  }
+}

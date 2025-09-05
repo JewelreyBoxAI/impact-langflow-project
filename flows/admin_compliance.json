@@ -1,0 +1,142 @@
+{
+  "description": "Admin & Compliance - Karen's Executive Assistant",
+  "name": "Karen Executive Flow",
+  "id": "karen_exec", 
+  "data": {
+    "nodes": [
+      {
+        "id": "chat_input",
+        "type": "ChatInput",
+        "data": {
+          "input_value": "",
+          "sender": "User",
+          "sender_name": "Karen",
+          "session_id": "${SESSION_ID}"
+        },
+        "position": {"x": 100, "y": 100}
+      },
+      {
+        "id": "redis_chat_memory",
+        "type": "RedisMemory",
+        "data": {
+          "redis_url": "${REDIS_URL}",
+          "session_id": "${SESSION_ID}",
+          "memory_key": "chat_history"
+        },
+        "position": {"x": 250, "y": 100}
+      },
+      {
+        "id": "message_history",
+        "type": "MessageHistory",
+        "data": {
+          "memory": "redis_chat_memory",
+          "max_token_limit": 4000
+        },
+        "position": {"x": 400, "y": 100}
+      },
+      {
+        "id": "exec_orchestrator_prompt",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are Karen's Executive Assistant - an AI agent that orchestrates admin and compliance tasks for Impact Realty.\n\nCore Responsibilities:\n- Admin task coordination and execution\n- Compliance monitoring and reporting\n- Document management and workflow automation\n- Cross-system integrations via Zoho MCP\n\nGuidelines:\n- Summarize each turn with up to 10 bullets\n- Prefer Zoho MCP flows over raw API calls\n- Enforce quiet hours (08:00-19:00 ET)\n- Require HITL confirmation for money/compliance actions\n- Use idempotency keys to prevent duplicate operations\n- Be concise and action-oriented\n\nChat History: {chat_history}\nCurrent Request: {input}\n\nProvide a helpful response and take appropriate actions via available tools.",
+          "input_variables": ["chat_history", "input"]
+        },
+        "position": {"x": 550, "y": 100}
+      },
+      {
+        "id": "exec_orchestrator_agent",
+        "type": "Agent",
+        "data": {
+          "llm": {
+            "model": "gpt-4",
+            "temperature": 0.1,
+            "max_tokens": 2000
+          },
+          "tools": ["zoho_mcp_tools", "tavily_search"],
+          "agent_type": "openai-functions",
+          "max_iterations": 5
+        },
+        "position": {"x": 700, "y": 100}
+      },
+      {
+        "id": "zoho_mcp_tools",
+        "type": "MCPTools",
+        "data": {
+          "server_url": "${MCP_SERVER_URL}",
+          "tools": [
+            "flow.run",
+            "flow.status", 
+            "crm.search",
+            "crm.upsert",
+            "crm.notes.create",
+            "crm.tasks.create",
+            "blueprint.transition",
+            "files.attach"
+          ]
+        },
+        "position": {"x": 850, "y": 200}
+      },
+      {
+        "id": "tavily_search",
+        "type": "TavilySearch",
+        "data": {
+          "api_key": "${TAVILY_API_KEY}",
+          "max_results": 5
+        },
+        "position": {"x": 850, "y": 300}
+      },
+      {
+        "id": "chat_output",
+        "type": "ChatOutput",
+        "data": {
+          "sender": "Assistant",
+          "sender_name": "Karen's AI Assistant"
+        },
+        "position": {"x": 1000, "y": 100}
+      },
+      {
+        "id": "message_store",
+        "type": "MessageStore",
+        "data": {
+          "memory": "redis_chat_memory",
+          "store_sender": true
+        },
+        "position": {"x": 1000, "y": 200}
+      },
+      {
+        "id": "quiet_hours_gate",
+        "type": "ConditionalRouter",
+        "data": {
+          "conditions": [
+            {
+              "condition": "current_time_et >= 08:00 && current_time_et <= 19:00",
+              "target": "exec_orchestrator_agent"
+            }
+          ],
+          "default_target": "quiet_hours_message"
+        },
+        "position": {"x": 550, "y": 250}
+      },
+      {
+        "id": "quiet_hours_message",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "I'm currently in quiet hours (outside 08:00-19:00 ET). Your request has been noted and I'll process it during business hours unless it's marked as urgent.",
+          "input_variables": []
+        },
+        "position": {"x": 700, "y": 300}
+      }
+    ],
+    "edges": [
+      {"source": "chat_input", "target": "redis_chat_memory"},
+      {"source": "redis_chat_memory", "target": "message_history"},
+      {"source": "message_history", "target": "exec_orchestrator_prompt"},
+      {"source": "exec_orchestrator_prompt", "target": "quiet_hours_gate"},
+      {"source": "quiet_hours_gate", "target": "exec_orchestrator_agent"},
+      {"source": "quiet_hours_gate", "target": "quiet_hours_message"},
+      {"source": "exec_orchestrator_agent", "target": "chat_output"},
+      {"source": "exec_orchestrator_agent", "target": "message_store"},
+      {"source": "quiet_hours_message", "target": "chat_output"}
+    ]
+  }
+}
