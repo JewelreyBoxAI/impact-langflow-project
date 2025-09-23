@@ -7,6 +7,7 @@
 .env.development
 .env.staging
 .env.impact
+.env.dev
 
 # Azure and Cloud Secrets
 azure_keyvault_secrets.txt
