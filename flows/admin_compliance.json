@@ -1,142 +1,1384 @@
 {
-  "description": "Admin & Compliance - Karen's Executive Assistant",
-  "name": "Karen Executive Flow",
-  "id": "karen_exec", 
   "data": {
     "nodes": [
       {
-        "id": "chat_input",
-        "type": "ChatInput",
         "data": {
-          "input_value": "",
-          "sender": "User",
-          "sender_name": "Karen",
-          "session_id": "${SESSION_ID}"
-        },
-        "position": {"x": 100, "y": 100}
-      },
-      {
-        "id": "redis_chat_memory",
-        "type": "RedisMemory",
-        "data": {
-          "redis_url": "${REDIS_URL}",
-          "session_id": "${SESSION_ID}",
-          "memory_key": "chat_history"
-        },
-        "position": {"x": 250, "y": 100}
-      },
-      {
-        "id": "message_history",
-        "type": "MessageHistory",
-        "data": {
-          "memory": "redis_chat_memory",
-          "max_token_limit": 4000
-        },
-        "position": {"x": 400, "y": 100}
-      },
-      {
-        "id": "exec_orchestrator_prompt",
-        "type": "PromptTemplate",
-        "data": {
-          "template": "You are Karen's Executive Assistant - an AI agent that orchestrates admin and compliance tasks for Impact Realty.\n\nCore Responsibilities:\n- Admin task coordination and execution\n- Compliance monitoring and reporting\n- Document management and workflow automation\n- Cross-system integrations via Zoho MCP\n\nGuidelines:\n- Summarize each turn with up to 10 bullets\n- Prefer Zoho MCP flows over raw API calls\n- Enforce quiet hours (08:00-19:00 ET)\n- Require HITL confirmation for money/compliance actions\n- Use idempotency keys to prevent duplicate operations\n- Be concise and action-oriented\n\nChat History: {chat_history}\nCurrent Request: {input}\n\nProvide a helpful response and take appropriate actions via available tools.",
-          "input_variables": ["chat_history", "input"]
-        },
-        "position": {"x": 550, "y": 100}
-      },
-      {
-        "id": "exec_orchestrator_agent",
-        "type": "Agent",
-        "data": {
-          "llm": {
-            "model": "gpt-4",
-            "temperature": 0.1,
-            "max_tokens": 2000
+          "id": "ChatInput-9KfA2",
+          "node": {
+            "base_classes": ["Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Get chat inputs from the Playground.",
+            "display_name": "Chat Input",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "should_store_message", "sender", "sender_name", "session_id", "files", "background_color", "chat_icon", "text_color"],
+            "frozen": false,
+            "icon": "MessagesSquare",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Message",
+                "method": "message_response",
+                "name": "message",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "input_value": {
+                "_input_type": "MultilineInput",
+                "advanced": false,
+                "display_name": "Text",
+                "dynamic": false,
+                "info": "Message to be passed as input.",
+                "input_types": [],
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "input_value",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "should_store_message": {
+                "_input_type": "BoolInput",
+                "advanced": true,
+                "display_name": "Store Messages",
+                "dynamic": false,
+                "info": "Store the message in the history.",
+                "list": false,
+                "name": "should_store_message",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "bool",
+                "value": true
+              },
+              "sender": {
+                "_input_type": "DropdownInput",
+                "advanced": true,
+                "combobox": false,
+                "display_name": "Sender Type",
+                "dynamic": false,
+                "info": "Type of sender.",
+                "name": "sender",
+                "options": ["Machine", "User"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "User"
+              },
+              "sender_name": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Sender Name",
+                "dynamic": false,
+                "info": "Name of the sender.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "sender_name",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "Karen"
+              },
+              "session_id": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Session ID",
+                "dynamic": false,
+                "info": "The session ID of the chat. If empty, the current session ID parameter will be used.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "session_id",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              }
+            },
+            "tool_mode": false
           },
-          "tools": ["zoho_mcp_tools", "tavily_search"],
-          "agent_type": "openai-functions",
-          "max_iterations": 5
+          "type": "ChatInput"
         },
-        "position": {"x": 700, "y": 100}
+        "dragging": false,
+        "height": 234,
+        "id": "ChatInput-9KfA2",
+        "measured": {"height": 234, "width": 320},
+        "position": {"x": 100, "y": 200},
+        "positionAbsolute": {"x": 100, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
       },
       {
-        "id": "zoho_mcp_tools",
-        "type": "MCPTools",
         "data": {
-          "server_url": "${MCP_SERVER_URL}",
-          "tools": [
-            "flow.run",
-            "flow.status", 
-            "crm.search",
-            "crm.upsert",
-            "crm.notes.create",
-            "crm.tasks.create",
-            "blueprint.transition",
-            "files.attach"
-          ]
+          "id": "Redis-7Jm1P",
+          "node": {
+            "base_classes": ["Memory"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Redis-based memory storage for persistent conversation history.",
+            "display_name": "Redis Memory",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["redis_url", "session_id", "ttl", "namespace"],
+            "frozen": false,
+            "icon": "database",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Memory",
+                "method": "build_memory",
+                "name": "memory",
+                "selected": "Memory",
+                "tool_mode": true,
+                "types": ["Memory"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "redis_url": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "Redis URL",
+                "dynamic": false,
+                "info": "Redis connection URL",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "redis_url",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "REDIS_URL"
+              },
+              "session_id": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Session ID",
+                "dynamic": false,
+                "info": "Session identifier for memory isolation",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "session_id",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "ttl": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "TTL (seconds)",
+                "dynamic": false,
+                "info": "Time to live for stored messages",
+                "list": false,
+                "name": "ttl",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "int",
+                "value": 86400
+              },
+              "namespace": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Namespace",
+                "dynamic": false,
+                "info": "Memory namespace for organization",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "namespace",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "karen_admin"
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "Redis"
         },
-        "position": {"x": 850, "y": 200}
+        "dragging": false,
+        "height": 264,
+        "id": "Redis-7Jm1P",
+        "measured": {"height": 264, "width": 320},
+        "position": {"x": 100, "y": 500},
+        "positionAbsolute": {"x": 100, "y": 500},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
       },
       {
-        "id": "tavily_search",
-        "type": "TavilySearch",
         "data": {
-          "api_key": "${TAVILY_API_KEY}",
-          "max_results": 5
+          "id": "Prompt-8Xz9L",
+          "node": {
+            "base_classes": ["Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {"template": ["memory", "current_time", "user_input"]},
+            "description": "Create a prompt template with dynamic variables.",
+            "display_name": "Prompt",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["template"],
+            "frozen": false,
+            "icon": "prompts",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Prompt Message",
+                "method": "build_prompt",
+                "name": "prompt",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "template": {
+                "_input_type": "PromptInput",
+                "advanced": false,
+                "display_name": "Template",
+                "dynamic": false,
+                "info": "",
+                "list": false,
+                "name": "template",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "type": "prompt",
+                "value": "You are Karen, Impact Realty's Executive AI Assistant specializing in administrative and compliance tasks.\n\nCORE RESPONSIBILITIES:\n- Execute Zoho MCP actions (CRM, accounting, scheduling)\n- Maintain audit trails and compliance logs\n- Enforce business rules and policy constraints\n- Provide 10-bullet executive summaries\n- Handle HITL confirmations for sensitive operations\n\nOPERATIONAL CONSTRAINTS:\n- Quiet hours: 08:00-19:00 ET only\n- Idempotency: prevent duplicate actions\n- Human-in-loop: required for financial/compliance triggers\n- Current time: {current_time}\n\nCONVERSATION MEMORY:\n{memory}\n\nUSER REQUEST:\n{user_input}\n\nRespond with executive summary format (10 bullets max) and confirm any sensitive actions before execution."
+              },
+              "memory": {
+                "advanced": false,
+                "display_name": "memory",
+                "dynamic": false,
+                "field_type": "str",
+                "info": "",
+                "input_types": ["Memory", "Text"],
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "memory",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": ""
+              },
+              "current_time": {
+                "advanced": false,
+                "display_name": "current_time",
+                "dynamic": false,
+                "field_type": "str",
+                "info": "",
+                "input_types": ["Text"],
+                "list": false,
+                "load_from_db": false,
+                "multiline": false,
+                "name": "current_time",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": ""
+              },
+              "user_input": {
+                "advanced": false,
+                "display_name": "user_input",
+                "dynamic": false,
+                "field_type": "str",
+                "info": "",
+                "input_types": ["Message", "Text"],
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "user_input",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": ""
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "Prompt"
         },
-        "position": {"x": 850, "y": 300}
+        "dragging": false,
+        "height": 400,
+        "id": "Prompt-8Xz9L",
+        "measured": {"height": 400, "width": 320},
+        "position": {"x": 500, "y": 200},
+        "positionAbsolute": {"x": 500, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
       },
       {
-        "id": "chat_output",
-        "type": "ChatOutput",
         "data": {
-          "sender": "Assistant",
-          "sender_name": "Karen's AI Assistant"
+          "id": "ZohoMCP-4Nw7Q",
+          "node": {
+            "base_classes": ["Tool"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Zoho MCP integration for CRM and administrative operations.",
+            "display_name": "Zoho MCP Tool",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["zoho_client_id", "zoho_client_secret", "refresh_token", "sandbox_mode"],
+            "frozen": false,
+            "icon": "tool",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Tool",
+                "method": "build_tool",
+                "name": "component_as_tool",
+                "selected": "Tool",
+                "tool_mode": true,
+                "types": ["Tool"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "zoho_client_id": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "Zoho Client ID",
+                "dynamic": false,
+                "info": "Zoho application client ID",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "zoho_client_id",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "ZOHO_CLIENT_ID"
+              },
+              "zoho_client_secret": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "Zoho Client Secret",
+                "dynamic": false,
+                "info": "Zoho application client secret",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "zoho_client_secret",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "ZOHO_CLIENT_SECRET"
+              },
+              "refresh_token": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "Refresh Token",
+                "dynamic": false,
+                "info": "Zoho refresh token for authentication",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "refresh_token",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "ZOHO_REFRESH_TOKEN"
+              },
+              "sandbox_mode": {
+                "_input_type": "BoolInput",
+                "advanced": true,
+                "display_name": "Sandbox Mode",
+                "dynamic": false,
+                "info": "Use Zoho sandbox environment",
+                "list": false,
+                "name": "sandbox_mode",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "bool",
+                "value": false
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "ZohoMCP"
         },
-        "position": {"x": 1000, "y": 100}
+        "dragging": false,
+        "height": 284,
+        "id": "ZohoMCP-4Nw7Q",
+        "measured": {"height": 284, "width": 320},
+        "position": {"x": 500, "y": 650},
+        "positionAbsolute": {"x": 500, "y": 650},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
       },
       {
-        "id": "message_store",
-        "type": "MessageStore",
         "data": {
-          "memory": "redis_chat_memory",
-          "store_sender": true
+          "id": "TavilySearch-5Rk8M",
+          "node": {
+            "base_classes": ["Tool"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Search the web for current information using Tavily API.",
+            "display_name": "Tavily Search",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["tavily_api_key", "max_results", "search_depth"],
+            "frozen": false,
+            "icon": "search",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Tool",
+                "method": "build_tool",
+                "name": "component_as_tool",
+                "selected": "Tool",
+                "tool_mode": true,
+                "types": ["Tool"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "tavily_api_key": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "Tavily API Key",
+                "dynamic": false,
+                "info": "API key for Tavily search service",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "tavily_api_key",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "TAVILY_API_KEY"
+              },
+              "max_results": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Max Results",
+                "dynamic": false,
+                "info": "Maximum number of search results",
+                "list": false,
+                "name": "max_results",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "int",
+                "value": 5
+              },
+              "search_depth": {
+                "_input_type": "DropdownInput",
+                "advanced": true,
+                "combobox": false,
+                "display_name": "Search Depth",
+                "dynamic": false,
+                "info": "Depth of search results",
+                "name": "search_depth",
+                "options": ["basic", "advanced"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "basic"
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "TavilySearch"
         },
-        "position": {"x": 1000, "y": 200}
+        "dragging": false,
+        "height": 244,
+        "id": "TavilySearch-5Rk8M",
+        "measured": {"height": 244, "width": 320},
+        "position": {"x": 500, "y": 980},
+        "positionAbsolute": {"x": 500, "y": 980},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
       },
       {
-        "id": "quiet_hours_gate",
-        "type": "ConditionalRouter",
         "data": {
-          "conditions": [
-            {
-              "condition": "current_time_et >= 08:00 && current_time_et <= 19:00",
-              "target": "exec_orchestrator_agent"
-            }
-          ],
-          "default_target": "quiet_hours_message"
+          "id": "Agent-6Lm3K",
+          "node": {
+            "base_classes": ["Agent", "Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Agent with LLM and tools for executing admin and compliance tasks.",
+            "display_name": "Karen Admin Agent",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "llm", "tools", "system_prompt", "memory", "agent_type", "max_iterations", "handle_parsing_errors"],
+            "frozen": false,
+            "icon": "bot",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Response",
+                "method": "run_agent",
+                "name": "response",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "input_value": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Input",
+                "dynamic": false,
+                "info": "Input message for the agent",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "input_value",
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "llm": {
+                "_input_type": "HandleInput",
+                "advanced": false,
+                "display_name": "Language Model",
+                "dynamic": false,
+                "info": "Language model for the agent",
+                "input_types": ["LanguageModel"],
+                "list": false,
+                "name": "llm",
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "other",
+                "value": ""
+              },
+              "tools": {
+                "_input_type": "HandleInput",
+                "advanced": false,
+                "display_name": "Tools",
+                "dynamic": false,
+                "info": "Tools available to the agent",
+                "input_types": ["Tool"],
+                "list": true,
+                "name": "tools",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "other",
+                "value": ""
+              },
+              "system_prompt": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "System Prompt",
+                "dynamic": false,
+                "info": "System prompt for the agent",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "system_prompt",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "memory": {
+                "_input_type": "HandleInput",
+                "advanced": true,
+                "display_name": "Memory",
+                "dynamic": false,
+                "info": "Memory component for the agent",
+                "input_types": ["Memory"],
+                "list": false,
+                "name": "memory",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "other",
+                "value": ""
+              },
+              "agent_type": {
+                "_input_type": "DropdownInput",
+                "advanced": true,
+                "combobox": false,
+                "display_name": "Agent Type",
+                "dynamic": false,
+                "info": "Type of agent to use",
+                "name": "agent_type",
+                "options": ["react", "conversational", "structured_chat"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "react"
+              },
+              "max_iterations": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Max Iterations",
+                "dynamic": false,
+                "info": "Maximum iterations for agent execution",
+                "list": false,
+                "name": "max_iterations",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "int",
+                "value": 10
+              },
+              "handle_parsing_errors": {
+                "_input_type": "BoolInput",
+                "advanced": true,
+                "display_name": "Handle Parsing Errors",
+                "dynamic": false,
+                "info": "Handle parsing errors gracefully",
+                "list": false,
+                "name": "handle_parsing_errors",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "bool",
+                "value": true
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "Agent"
         },
-        "position": {"x": 550, "y": 250}
+        "dragging": false,
+        "height": 500,
+        "id": "Agent-6Lm3K",
+        "measured": {"height": 500, "width": 320},
+        "position": {"x": 900, "y": 200},
+        "positionAbsolute": {"x": 900, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
       },
       {
-        "id": "quiet_hours_message",
-        "type": "PromptTemplate",
         "data": {
-          "template": "I'm currently in quiet hours (outside 08:00-19:00 ET). Your request has been noted and I'll process it during business hours unless it's marked as urgent.",
-          "input_variables": []
+          "id": "OpenAIModel-2Xy9B",
+          "node": {
+            "base_classes": ["LanguageModel", "Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Generates text using OpenAI LLMs.",
+            "display_name": "OpenAI",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "system_message", "stream", "max_tokens", "model_kwargs", "json_mode", "model_name", "openai_api_base", "api_key", "temperature", "seed"],
+            "frozen": false,
+            "icon": "OpenAI",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Language Model",
+                "method": "build_model",
+                "name": "model_output",
+                "selected": "LanguageModel",
+                "tool_mode": true,
+                "types": ["LanguageModel"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "api_key": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "OpenAI API Key",
+                "dynamic": false,
+                "info": "The OpenAI API Key to use for the OpenAI model.",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "api_key",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "OPENAI_API_KEY"
+              },
+              "model_name": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": true,
+                "display_name": "Model Name",
+                "dynamic": false,
+                "info": "",
+                "name": "model_name",
+                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4-turbo", "gpt-4-turbo-preview", "gpt-4", "gpt-3.5-turbo", "o1"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "gpt-4.1-mini"
+              },
+              "temperature": {
+                "_input_type": "SliderInput",
+                "advanced": false,
+                "display_name": "Temperature",
+                "dynamic": false,
+                "info": "",
+                "name": "temperature",
+                "placeholder": "",
+                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "type": "slider",
+                "value": 0.1
+              },
+              "max_tokens": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Max Tokens",
+                "dynamic": false,
+                "info": "The maximum number of tokens to generate. Set to 0 for unlimited tokens.",
+                "list": false,
+                "name": "max_tokens",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "int",
+                "value": 4000
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "OpenAIModel"
         },
-        "position": {"x": 700, "y": 300}
+        "dragging": false,
+        "height": 400,
+        "id": "OpenAIModel-2Xy9B",
+        "measured": {"height": 400, "width": 320},
+        "position": {"x": 900, "y": 750},
+        "positionAbsolute": {"x": 900, "y": 750},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "description": "Display a chat message in the Playground.",
+          "display_name": "Chat Output",
+          "id": "ChatOutput-1Bv4N",
+          "node": {
+            "base_classes": ["Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Display a chat message in the Playground.",
+            "display_name": "Chat Output",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "should_store_message", "sender", "sender_name", "session_id", "data_template", "background_color", "chat_icon", "text_color"],
+            "frozen": false,
+            "icon": "MessagesSquare",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Message",
+                "method": "message_response",
+                "name": "message",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "input_value": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Text",
+                "dynamic": false,
+                "info": "Message to be passed as output.",
+                "input_types": ["Data", "DataFrame", "Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "input_value",
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "should_store_message": {
+                "_input_type": "BoolInput",
+                "advanced": true,
+                "display_name": "Store Messages",
+                "dynamic": false,
+                "info": "Store the message in the history.",
+                "list": false,
+                "name": "should_store_message",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "bool",
+                "value": true
+              },
+              "sender": {
+                "_input_type": "DropdownInput",
+                "advanced": true,
+                "combobox": false,
+                "display_name": "Sender Type",
+                "dynamic": false,
+                "info": "Type of sender.",
+                "name": "sender",
+                "options": ["Machine", "User"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "Machine"
+              },
+              "sender_name": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Sender Name",
+                "dynamic": false,
+                "info": "Name of the sender.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "sender_name",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "Karen AI"
+              },
+              "session_id": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Session ID",
+                "dynamic": false,
+                "info": "The session ID of the chat. If empty, the current session ID parameter will be used.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "session_id",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "ChatOutput"
+        },
+        "dragging": false,
+        "height": 234,
+        "id": "ChatOutput-1Bv4N",
+        "measured": {"height": 234, "width": 320},
+        "position": {"x": 1300, "y": 350},
+        "positionAbsolute": {"x": 1300, "y": 350},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "TimeProvider-9Qr2W",
+          "node": {
+            "base_classes": ["Text"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Provides current time for quiet hours enforcement and audit logging.",
+            "display_name": "Time Provider",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["timezone", "format"],
+            "frozen": false,
+            "icon": "clock",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Current Time",
+                "method": "get_time",
+                "name": "time_output",
+                "selected": "Text",
+                "tool_mode": true,
+                "types": ["Text"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "timezone": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": false,
+                "display_name": "Timezone",
+                "dynamic": false,
+                "info": "Timezone for time calculation",
+                "name": "timezone",
+                "options": ["UTC", "US/Eastern", "US/Central", "US/Mountain", "US/Pacific"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "US/Eastern"
+              },
+              "format": {
+                "_input_type": "DropdownInput",
+                "advanced": true,
+                "combobox": false,
+                "display_name": "Format",
+                "dynamic": false,
+                "info": "Time format string",
+                "name": "format",
+                "options": ["%Y-%m-%d %H:%M:%S %Z", "%H:%M:%S", "%Y-%m-%d", "ISO"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "%Y-%m-%d %H:%M:%S %Z"
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "TimeProvider"
+        },
+        "dragging": false,
+        "height": 204,
+        "id": "TimeProvider-9Qr2W",
+        "measured": {"height": 204, "width": 320},
+        "position": {"x": 100, "y": 800},
+        "positionAbsolute": {"x": 100, "y": 800},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
       }
     ],
     "edges": [
-      {"source": "chat_input", "target": "redis_chat_memory"},
-      {"source": "redis_chat_memory", "target": "message_history"},
-      {"source": "message_history", "target": "exec_orchestrator_prompt"},
-      {"source": "exec_orchestrator_prompt", "target": "quiet_hours_gate"},
-      {"source": "quiet_hours_gate", "target": "exec_orchestrator_agent"},
-      {"source": "quiet_hours_gate", "target": "quiet_hours_message"},
-      {"source": "exec_orchestrator_agent", "target": "chat_output"},
-      {"source": "exec_orchestrator_agent", "target": "message_store"},
-      {"source": "quiet_hours_message", "target": "chat_output"}
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "ChatInput",
+            "id": "ChatInput-9KfA2",
+            "name": "message",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "user_input",
+            "id": "Prompt-8Xz9L",
+            "inputTypes": ["Message", "Text"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-ChatInput-9KfA2{œdataTypeœ:œChatInputœ,œidœ:œChatInput-9KfA2œ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}-Prompt-8Xz9L{œfieldNameœ:œuser_inputœ,œidœ:œPrompt-8Xz9Lœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "ChatInput-9KfA2",
+        "sourceHandle": "{œdataTypeœ: œChatInputœ, œidœ: œChatInput-9KfA2œ, œnameœ: œmessageœ, œoutput_typesœ: [œMessageœ]}",
+        "target": "Prompt-8Xz9L",
+        "targetHandle": "{œfieldNameœ: œuser_inputœ, œidœ: œPrompt-8Xz9Lœ, œinputTypesœ: [œMessageœ, œTextœ], œtypeœ: œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "Redis",
+            "id": "Redis-7Jm1P",
+            "name": "memory",
+            "output_types": ["Memory"]
+          },
+          "targetHandle": {
+            "fieldName": "memory",
+            "id": "Prompt-8Xz9L",
+            "inputTypes": ["Memory", "Text"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-Redis-7Jm1P{œdataTypeœ:œRedisœ,œidœ:œRedis-7Jm1Pœ,œnameœ:œmemoryœ,œoutput_typesœ:[œMemoryœ]}-Prompt-8Xz9L{œfieldNameœ:œmemoryœ,œidœ:œPrompt-8Xz9Lœ,œinputTypesœ:[œMemoryœ,œTextœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "Redis-7Jm1P",
+        "sourceHandle": "{œdataTypeœ: œRedisœ, œidœ: œRedis-7Jm1Pœ, œnameœ: œmemoryœ, œoutput_typesœ: [œMemoryœ]}",
+        "target": "Prompt-8Xz9L",
+        "targetHandle": "{œfieldNameœ: œmemoryœ, œidœ: œPrompt-8Xz9Lœ, œinputTypesœ: [œMemoryœ, œTextœ], œtypeœ: œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "TimeProvider",
+            "id": "TimeProvider-9Qr2W",
+            "name": "time_output",
+            "output_types": ["Text"]
+          },
+          "targetHandle": {
+            "fieldName": "current_time",
+            "id": "Prompt-8Xz9L",
+            "inputTypes": ["Text"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-TimeProvider-9Qr2W{œdataTypeœ:œTimeProviderœ,œidœ:œTimeProvider-9Qr2Wœ,œnameœ:œtime_outputœ,œoutput_typesœ:[œTextœ]}-Prompt-8Xz9L{œfieldNameœ:œcurrent_timeœ,œidœ:œPrompt-8Xz9Lœ,œinputTypesœ:[œTextœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "TimeProvider-9Qr2W",
+        "sourceHandle": "{œdataTypeœ: œTimeProviderœ, œidœ: œTimeProvider-9Qr2Wœ, œnameœ: œtime_outputœ, œoutput_typesœ: [œTextœ]}",
+        "target": "Prompt-8Xz9L",
+        "targetHandle": "{œfieldNameœ: œcurrent_timeœ, œidœ: œPrompt-8Xz9Lœ, œinputTypesœ: [œTextœ], œtypeœ: œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "Prompt",
+            "id": "Prompt-8Xz9L",
+            "name": "prompt",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "system_prompt",
+            "id": "Agent-6Lm3K",
+            "inputTypes": ["Message"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-Prompt-8Xz9L{œdataTypeœ:œPromptœ,œidœ:œPrompt-8Xz9Lœ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}-Agent-6Lm3K{œfieldNameœ:œsystem_promptœ,œidœ:œAgent-6Lm3Kœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "Prompt-8Xz9L",
+        "sourceHandle": "{œdataTypeœ: œPromptœ, œidœ: œPrompt-8Xz9Lœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}",
+        "target": "Agent-6Lm3K",
+        "targetHandle": "{œfieldNameœ: œsystem_promptœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "ChatInput",
+            "id": "ChatInput-9KfA2",
+            "name": "message",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "Agent-6Lm3K",
+            "inputTypes": ["Message"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-ChatInput-9KfA2{œdataTypeœ:œChatInputœ,œidœ:œChatInput-9KfA2œ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}-Agent-6Lm3K{œfieldNameœ:œinput_valueœ,œidœ:œAgent-6Lm3Kœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "ChatInput-9KfA2",
+        "sourceHandle": "{œdataTypeœ: œChatInputœ, œidœ: œChatInput-9KfA2œ, œnameœ: œmessageœ, œoutput_typesœ: [œMessageœ]}",
+        "target": "Agent-6Lm3K",
+        "targetHandle": "{œfieldNameœ: œinput_valueœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "OpenAIModel",
+            "id": "OpenAIModel-2Xy9B",
+            "name": "model_output",
+            "output_types": ["LanguageModel"]
+          },
+          "targetHandle": {
+            "fieldName": "llm",
+            "id": "Agent-6Lm3K",
+            "inputTypes": ["LanguageModel"],
+            "type": "other"
+          }
+        },
+        "id": "reactflow__edge-OpenAIModel-2Xy9B{œdataTypeœ:œOpenAIModelœ,œidœ:œOpenAIModel-2Xy9Bœ,œnameœ:œmodel_outputœ,œoutput_typesœ:[œLanguageModelœ]}-Agent-6Lm3K{œfieldNameœ:œllmœ,œidœ:œAgent-6Lm3Kœ,œinputTypesœ:[œLanguageModelœ],œtypeœ:œotherœ}",
+        "selected": false,
+        "source": "OpenAIModel-2Xy9B",
+        "sourceHandle": "{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAIModel-2Xy9Bœ, œnameœ: œmodel_outputœ, œoutput_typesœ: [œLanguageModelœ]}",
+        "target": "Agent-6Lm3K",
+        "targetHandle": "{œfieldNameœ: œllmœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œLanguageModelœ], œtypeœ: œotherœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "ZohoMCP",
+            "id": "ZohoMCP-4Nw7Q",
+            "name": "component_as_tool",
+            "output_types": ["Tool"]
+          },
+          "targetHandle": {
+            "fieldName": "tools",
+            "id": "Agent-6Lm3K",
+            "inputTypes": ["Tool"],
+            "type": "other"
+          }
+        },
+        "id": "reactflow__edge-ZohoMCP-4Nw7Q{œdataTypeœ:œZohoMCPœ,œidœ:œZohoMCP-4Nw7Qœ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}-Agent-6Lm3K{œfieldNameœ:œtoolsœ,œidœ:œAgent-6Lm3Kœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}",
+        "selected": false,
+        "source": "ZohoMCP-4Nw7Q",
+        "sourceHandle": "{œdataTypeœ: œZohoMCPœ, œidœ: œZohoMCP-4Nw7Qœ, œnameœ: œcomponent_as_toolœ, œoutput_typesœ: [œToolœ]}",
+        "target": "Agent-6Lm3K",
+        "targetHandle": "{œfieldNameœ: œtoolsœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œToolœ], œtypeœ: œotherœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "TavilySearch",
+            "id": "TavilySearch-5Rk8M",
+            "name": "component_as_tool",
+            "output_types": ["Tool"]
+          },
+          "targetHandle": {
+            "fieldName": "tools",
+            "id": "Agent-6Lm3K",
+            "inputTypes": ["Tool"],
+            "type": "other"
+          }
+        },
+        "id": "reactflow__edge-TavilySearch-5Rk8M{œdataTypeœ:œTavilySearchœ,œidœ:œTavilySearch-5Rk8Mœ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}-Agent-6Lm3K{œfieldNameœ:œtoolsœ,œidœ:œAgent-6Lm3Kœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}",
+        "selected": false,
+        "source": "TavilySearch-5Rk8M",
+        "sourceHandle": "{œdataTypeœ: œTavilySearchœ, œidœ: œTavilySearch-5Rk8Mœ, œnameœ: œcomponent_as_toolœ, œoutput_typesœ: [œToolœ]}",
+        "target": "Agent-6Lm3K",
+        "targetHandle": "{œfieldNameœ: œtoolsœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œToolœ], œtypeœ: œotherœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "Redis",
+            "id": "Redis-7Jm1P",
+            "name": "memory",
+            "output_types": ["Memory"]
+          },
+          "targetHandle": {
+            "fieldName": "memory",
+            "id": "Agent-6Lm3K",
+            "inputTypes": ["Memory"],
+            "type": "other"
+          }
+        },
+        "id": "reactflow__edge-Redis-7Jm1P{œdataTypeœ:œRedisœ,œidœ:œRedis-7Jm1Pœ,œnameœ:œmemoryœ,œoutput_typesœ:[œMemoryœ]}-Agent-6Lm3K{œfieldNameœ:œmemoryœ,œidœ:œAgent-6Lm3Kœ,œinputTypesœ:[œMemoryœ],œtypeœ:œotherœ}",
+        "selected": false,
+        "source": "Redis-7Jm1P",
+        "sourceHandle": "{œdataTypeœ: œRedisœ, œidœ: œRedis-7Jm1Pœ, œnameœ: œmemoryœ, œoutput_typesœ: [œMemoryœ]}",
+        "target": "Agent-6Lm3K",
+        "targetHandle": "{œfieldNameœ: œmemoryœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œMemoryœ], œtypeœ: œotherœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "Agent",
+            "id": "Agent-6Lm3K",
+            "name": "response",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "ChatOutput-1Bv4N",
+            "inputTypes": ["Data", "DataFrame", "Message"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-Agent-6Lm3K{œdataTypeœ:œAgentœ,œidœ:œAgent-6Lm3Kœ,œnameœ:œresponseœ,œoutput_typesœ:[œMessageœ]}-ChatOutput-1Bv4N{œfieldNameœ:œinput_valueœ,œidœ:œChatOutput-1Bv4Nœ,œinputTypesœ:[œDataœ,œDataFrameœ,œMessageœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "Agent-6Lm3K",
+        "sourceHandle": "{œdataTypeœ: œAgentœ, œidœ: œAgent-6Lm3Kœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}",
+        "target": "ChatOutput-1Bv4N",
+        "targetHandle": "{œfieldNameœ: œinput_valueœ, œidœ: œChatOutput-1Bv4Nœ, œinputTypesœ: [œDataœ, œDataFrameœ, œMessageœ], œtypeœ: œstrœ}"
+      }
     ]
   }
 }
