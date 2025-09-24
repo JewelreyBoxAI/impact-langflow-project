@@ -114,3 +114,8 @@ temp/
 
 # Claude settings with potential secrets
 .claude/settings.local.json
+
+# Documentation files (except main README)
+docs/
+*.md
+!README.md
