@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 from urllib.parse import urlencode
 
-from .keyvault_client import keyvault_client
+from ..azure.keyvault_client import keyvault_client
 
 logger = logging.getLogger(__name__)
 

@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=true
+    env_file:
+      - ../.env
+    volumes:
+      - ../backend:/app
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
+
+  # Frontend Next.js
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    env_file:
+      - ../frontend/.env.local
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  # PostgreSQL database
+  postgres:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: impact_realty
+      POSTGRES_USER: impact_user
+      POSTGRES_PASSWORD: impact_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+
+  # LangFlow (if needed locally)
+  langflow:
+    image: logspace/langflow:latest
+    ports:
+      - "7860:7860"
+    environment:
+      - LANGFLOW_AUTO_LOGIN=false
+    volumes:
+      - langflow_data:/app/langflow
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  langflow_data:
