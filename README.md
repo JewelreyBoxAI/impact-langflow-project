@@ -1,6 +1,6 @@
 # Impact Realty AI Platform
 
-A comprehensive multi-agent AI platform built for Impact Realty using LangFlow orchestration, Azure infrastructure, and Streamlit chat interface. The platform automates operations across four key areas: SOB Supervision (Kevin), Office Operations (Eileen), Recruiting (Katelyn), and Admin & Compliance (Karen).
+A comprehensive multi-agent AI platform built for Impact Realty using LangFlow orchestration, Azure infrastructure, and Next.js production frontend. The platform automates operations across four key areas: SOB Supervision (Kevin), Office Operations (Eileen), Recruiting (Katelyn), and Admin & Compliance (Karen).
 
 ## 🏗️ Architecture Overview
 
@@ -8,7 +8,7 @@ A comprehensive multi-agent AI platform built for Impact Realty using LangFlow o
 ┌─────────────────────────────────────────────────────────────────┐
 │                    Impact Realty AI Platform                    │
 ├─────────────────────────────────────────────────────────────────┤
-│  Frontend: Streamlit Chat UI (ChatGPT-style interface)         │
+│  Frontend: Next.js Chat UI (Production-ready interface)        │
 ├─────────────────────────────────────────────────────────────────┤
 │  Orchestration: LangFlow (4 separate flow files)               │
 │  ├── SOB Supervisor (Kevin) - S1-S8 agents                     │
@@ -33,18 +33,23 @@ A comprehensive multi-agent AI platform built for Impact Realty using LangFlow o
 ImpactLangFlow/
 ├── flows/                              # LangFlow JSON definitions
 │   ├── sob_supervisor.json            # Kevin's S1-S8 supervisor agents
-│   ├── office_ops.json               # Eileen's A1-A12 operations agents  
+│   ├── office_ops.json               # Eileen's A1-A12 operations agents
 │   ├── recruiting.json               # Katelyn's K0-K3 recruiting agents
 │   └── admin_compliance.json         # Karen's executive assistant
+├── frontend/                          # Next.js production frontend
+│   ├── app/                          # Next.js 13+ app directory
+│   ├── components/                   # React components
+│   ├── context/                      # React context providers
+│   ├── hooks/                        # Custom React hooks
+│   ├── lib/                          # Utility libraries
+│   ├── public/                       # Static assets
+│   ├── styles/                       # Tailwind CSS styles
+│   ├── package.json                  # Frontend dependencies
+│   └── README.md                     # Frontend documentation
 ├── mcp_server/                        # FastAPI MCP integration server
 │   ├── main.py                       # FastAPI app with Zoho endpoints
 │   ├── zoho_client.py               # OAuth wrapper & API client
-│   ├── schemas.py                   # Pydantic request/response models
-│   └── README.md                    # MCP server documentation
-├── streamlit_app/                     # ChatGPT-style UI
-│   ├── app.py                       # Main Streamlit chat interface
-│   ├── lf_client.py                 # LangFlow API client
-│   └── db.py                        # PostgreSQL & Redis helpers
+│   └── schemas.py                   # Pydantic request/response models
 ├── tests/                            # Test suite
 │   └── test_basic.py                # JSON validity & endpoint tests
 ├── .env.example                      # Environment variable template
@@ -87,11 +92,12 @@ ImpactLangFlow/
    - Import each JSON file from `flows/` directory
    - Configure environment variables in LangFlow settings
 
-4. **Launch Streamlit UI**:
+4. **Launch Next.js Frontend**:
    ```bash
-   cd streamlit_app
-   streamlit run app.py
-   # UI available at http://localhost:8501
+   cd frontend
+   npm install
+   npm run dev
+   # UI available at http://localhost:3000
    ```
 
 ## 🎯 Phase Development Plan
@@ -101,7 +107,7 @@ ImpactLangFlow/
 - ✅ **Recruiting (Katelyn)**: K0-K3 agents for lead processing and outreach
 - ✅ **Infrastructure**: Azure PostgreSQL, Redis, Key Vault setup
 - ✅ **MCP Server**: FastAPI server with Zoho CRM/Flow integration
-- ✅ **Streamlit UI**: ChatGPT-style interface with thread management
+- ✅ **Next.js Frontend**: Production-ready chat interface with modern UI
 
 ### Phase 2: Office Operations (Next)
 - **Office Operations (Eileen)**: A1-A12 agents for back-office automation
@@ -185,6 +191,70 @@ Current resources in `rg-Impact-AgenticSystems`:
 - **Key Vault**: `kv-impact-credentials` (secrets management)
 - **PostgreSQL**: `impact-ai-postgres-v2` (chat & audit persistence)
 - **Redis**: `impact-ai-redis` (session memory & caching)
+
+## 🔌 MCP Server Integration
+
+The FastAPI MCP server provides Model Control Protocol tools for seamless Zoho integration with LangFlow agents.
+
+### Key Features
+- **Zoho Flow Integration**: Execute and monitor Zoho Flow workflows
+- **Zoho CRM Operations**: Search, create, update CRM records
+- **Notes & Tasks Management**: Create notes and tasks linked to CRM records
+- **Blueprint Transitions**: Execute CRM blueprint state transitions
+- **File Attachments**: Attach files to CRM records
+- **OAuth Handling**: Automatic token refresh and management
+- **Rate Limiting**: Built-in API rate limiting and retry logic
+- **Audit Logging**: Comprehensive request/response logging
+
+### API Endpoints
+
+#### Health & Status
+- `GET /health` - Health check endpoint
+
+#### Zoho Flow
+- `POST /zoho/flow/run` - Execute a Zoho Flow
+- `GET /zoho/flow/status/{execution_id}` - Get flow execution status
+
+#### Zoho CRM
+- `POST /zoho/crm/search` - Search CRM records
+- `POST /zoho/crm/upsert` - Create or update CRM record
+- `POST /zoho/crm/notes/create` - Create a note
+- `POST /zoho/crm/tasks/create` - Create a task
+- `POST /zoho/blueprint/transition` - Execute blueprint transition
+- `POST /zoho/files/attach` - Attach file to record
+
+### Usage with LangFlow
+
+Configure LangFlow HTTP Request nodes to use the MCP server:
+
+```json
+{
+  "url": "http://localhost:8000/zoho/crm/search",
+  "method": "POST",
+  "headers": {
+    "Authorization": "Bearer your-api-token",
+    "Content-Type": "application/json"
+  },
+  "json": {
+    "module": "Leads",
+    "criteria": "Email:equals:test@example.com"
+  }
+}
+```
+
+### MCP Server Configuration
+
+The MCP server requires these additional environment variables:
+
+```bash
+# MCP Server Configuration
+MCP_SERVER_PORT=8000
+MCP_SERVER_HOST=0.0.0.0
+
+# Rate Limiting (optional)
+RATE_LIMIT_REQUESTS=100
+RATE_LIMIT_WINDOW=60
+```
 
 ## 🔗 Integrations
 
