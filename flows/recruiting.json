@@ -12,7 +12,7 @@
           },
           "targetHandle": {
             "fieldName": "input_value",
-            "id": "WorkflowOrchestrator-Main",
+            "id": "Prompt-WorkflowOrchestrator",
             "inputTypes": ["Message"],
             "type": "str"
           }
@@ -21,7 +21,7 @@
         "selected": false,
         "source": "ChatInput-Recruiting",
         "sourceHandle": "message",
-        "target": "WorkflowOrchestrator-Main",
+        "target": "Prompt-WorkflowOrchestrator",
         "targetHandle": "input_value"
       },
       {
@@ -81,25 +81,25 @@
           },
           "targetHandle": {
             "fieldName": "prospect_list",
-            "id": "WorkflowOrchestrator-Main",
-            "inputTypes": ["Data"],
-            "type": "data"
+            "id": "Prompt-WorkflowOrchestrator",
+            "inputTypes": ["Data", "Message"],
+            "type": "str"
           }
         },
         "id": "edge-dedupe-to-orchestrator",
         "selected": false,
         "source": "HTTPTool-ZohoDedupe",
         "sourceHandle": "response",
-        "target": "WorkflowOrchestrator-Main",
+        "target": "Prompt-WorkflowOrchestrator",
         "targetHandle": "prospect_list"
       },
       {
         "className": "",
         "data": {
           "sourceHandle": {
-            "dataType": "WorkflowOrchestrator",
-            "id": "WorkflowOrchestrator-Main",
-            "name": "routed_message",
+            "dataType": "Prompt",
+            "id": "Prompt-WorkflowOrchestrator",
+            "name": "prompt",
             "output_types": ["Message"]
           },
           "targetHandle": {
@@ -111,8 +111,8 @@
         },
         "id": "edge-orchestrator-to-llm",
         "selected": false,
-        "source": "WorkflowOrchestrator-Main",
-        "sourceHandle": "routed_message",
+        "source": "Prompt-WorkflowOrchestrator",
+        "sourceHandle": "prompt",
         "target": "OpenAIModel-Main",
         "targetHandle": "input_value"
       },
@@ -196,7 +196,7 @@
           },
           "targetHandle": {
             "fieldName": "response",
-            "id": "ConditionalRouter-Stage",
+            "id": "Prompt-StageRouter",
             "inputTypes": ["Message"],
             "type": "str"
           }
@@ -205,16 +205,39 @@
         "selected": false,
         "source": "OpenAIModel-Main",
         "sourceHandle": "text_output",
-        "target": "ConditionalRouter-Stage",
+        "target": "Prompt-StageRouter",
         "targetHandle": "response"
       },
       {
         "className": "",
         "data": {
           "sourceHandle": {
-            "dataType": "ConditionalRouter",
-            "id": "ConditionalRouter-Stage",
-            "name": "sms_route",
+            "dataType": "Prompt",
+            "id": "Prompt-StageRouter",
+            "name": "prompt",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "OpenAI-StageRouter",
+            "inputTypes": ["Message"],
+            "type": "str"
+          }
+        },
+        "id": "edge-stage-prompt-to-llm",
+        "selected": false,
+        "source": "Prompt-StageRouter",
+        "sourceHandle": "prompt",
+        "target": "OpenAI-StageRouter",
+        "targetHandle": "input_value"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "OpenAIModel",
+            "id": "OpenAI-StageRouter",
+            "name": "text_output",
             "output_types": ["Message"]
           },
           "targetHandle": {
@@ -226,8 +249,8 @@
         },
         "id": "edge-router-to-sms",
         "selected": false,
-        "source": "ConditionalRouter-Stage",
-        "sourceHandle": "sms_route",
+        "source": "OpenAI-StageRouter",
+        "sourceHandle": "text_output",
         "target": "HTTPTool-SalesMsgSend",
         "targetHandle": "input_data"
       },
@@ -265,7 +288,7 @@
           },
           "targetHandle": {
             "fieldName": "input_data",
-            "id": "ConditionalRouter-Response",
+            "id": "Prompt-ResponseRouter",
             "inputTypes": ["Message"],
             "type": "str"
           }
@@ -274,16 +297,39 @@
         "selected": false,
         "source": "HTTPTool-SalesMsgGet",
         "sourceHandle": "response",
-        "target": "ConditionalRouter-Response",
+        "target": "Prompt-ResponseRouter",
         "targetHandle": "input_data"
       },
       {
         "className": "",
         "data": {
           "sourceHandle": {
-            "dataType": "ConditionalRouter",
-            "id": "ConditionalRouter-Response",
-            "name": "positive_route",
+            "dataType": "Prompt",
+            "id": "Prompt-ResponseRouter",
+            "name": "prompt",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "OpenAI-ResponseRouter",
+            "inputTypes": ["Message"],
+            "type": "str"
+          }
+        },
+        "id": "edge-response-prompt-to-llm",
+        "selected": false,
+        "source": "Prompt-ResponseRouter",
+        "sourceHandle": "prompt",
+        "target": "OpenAI-ResponseRouter",
+        "targetHandle": "input_value"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "OpenAIModel",
+            "id": "OpenAI-ResponseRouter",
+            "name": "text_output",
             "output_types": ["Message"]
           },
           "targetHandle": {
@@ -295,8 +341,8 @@
         },
         "id": "edge-response-positive-to-crm",
         "selected": false,
-        "source": "ConditionalRouter-Response",
-        "sourceHandle": "positive_route",
+        "source": "OpenAI-ResponseRouter",
+        "sourceHandle": "text_output",
         "target": "HTTPTool-ZohoCRMCreate",
         "targetHandle": "input_data"
       },
@@ -327,9 +373,9 @@
         "className": "",
         "data": {
           "sourceHandle": {
-            "dataType": "ConditionalRouter",
-            "id": "ConditionalRouter-Response",
-            "name": "negative_route",
+            "dataType": "OpenAIModel",
+            "id": "OpenAI-ResponseRouter",
+            "name": "text_output",
             "output_types": ["Message"]
           },
           "targetHandle": {
@@ -341,8 +387,8 @@
         },
         "id": "edge-response-negative-to-tag",
         "selected": false,
-        "source": "ConditionalRouter-Response",
-        "sourceHandle": "negative_route",
+        "source": "OpenAI-ResponseRouter",
+        "sourceHandle": "text_output",
         "target": "HTTPTool-ZohoTagNotInterested",
         "targetHandle": "input_data"
       },
@@ -350,32 +396,55 @@
         "className": "",
         "data": {
           "sourceHandle": {
-            "dataType": "ConditionalRouter",
-            "id": "ConditionalRouter-Response",
-            "name": "no_response_route",
+            "dataType": "OpenAIModel",
+            "id": "OpenAI-ResponseRouter",
+            "name": "text_output",
             "output_types": ["Message"]
           },
           "targetHandle": {
             "fieldName": "input_data",
-            "id": "ConditionalRouter-Retry",
+            "id": "Prompt-RetryRouter",
             "inputTypes": ["Message"],
             "type": "str"
           }
         },
         "id": "edge-response-no-response-to-retry",
         "selected": false,
-        "source": "ConditionalRouter-Response",
-        "sourceHandle": "no_response_route",
-        "target": "ConditionalRouter-Retry",
+        "source": "OpenAI-ResponseRouter",
+        "sourceHandle": "text_output",
+        "target": "Prompt-RetryRouter",
         "targetHandle": "input_data"
       },
       {
         "className": "",
         "data": {
           "sourceHandle": {
-            "dataType": "ConditionalRouter",
-            "id": "ConditionalRouter-Retry",
-            "name": "retry_route",
+            "dataType": "Prompt",
+            "id": "Prompt-RetryRouter",
+            "name": "prompt",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "OpenAI-RetryRouter",
+            "inputTypes": ["Message"],
+            "type": "str"
+          }
+        },
+        "id": "edge-retry-prompt-to-llm",
+        "selected": false,
+        "source": "Prompt-RetryRouter",
+        "sourceHandle": "prompt",
+        "target": "OpenAI-RetryRouter",
+        "targetHandle": "input_value"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "OpenAIModel",
+            "id": "OpenAI-RetryRouter",
+            "name": "text_output",
             "output_types": ["Message"]
           },
           "targetHandle": {
@@ -387,8 +456,8 @@
         },
         "id": "edge-retry-to-delay",
         "selected": false,
-        "source": "ConditionalRouter-Retry",
-        "sourceHandle": "retry_route",
+        "source": "OpenAI-RetryRouter",
+        "sourceHandle": "text_output",
         "target": "PythonTool-Delay",
         "targetHandle": "input_data"
       },
@@ -488,9 +557,9 @@
         "className": "",
         "data": {
           "sourceHandle": {
-            "dataType": "ConditionalRouter",
-            "id": "ConditionalRouter-Stage",
-            "name": "email_route",
+            "dataType": "OpenAIModel",
+            "id": "OpenAI-StageRouter",
+            "name": "text_output",
             "output_types": ["Message"]
           },
           "targetHandle": {
@@ -502,8 +571,8 @@
         },
         "id": "edge-router-to-email",
         "selected": false,
-        "source": "ConditionalRouter-Stage",
-        "sourceHandle": "email_route",
+        "source": "OpenAI-StageRouter",
+        "sourceHandle": "text_output",
         "target": "HTTPTool-ZohoMail",
         "targetHandle": "input_data"
       },
@@ -816,7 +885,7 @@
                 "name": "url",
                 "required": true,
                 "type": "str",
-                "value": "{ZOHO_MCP_BASE_URL}/dedupe"
+                "value": "http://localhost:8000/zoho/dedupe"
               },
               "method": {
                 "_input_type": "DropdownInput",
@@ -834,7 +903,7 @@
                 "multiline": true,
                 "name": "headers",
                 "type": "str",
-                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer {ZOHO_ACCESS_TOKEN}\"\n}"
+                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer ZOHO_ACCESS_TOKEN\"\n}"
               },
               "body": {
                 "_input_type": "MultilineInput",
@@ -860,19 +929,21 @@
       },
       {
         "data": {
-          "id": "WorkflowOrchestrator-Main",
+          "id": "Prompt-WorkflowOrchestrator",
           "node": {
             "base_classes": ["Message"],
             "beta": false,
             "conditional_paths": [],
-            "custom_fields": {},
-            "description": "Orchestrate multi-step recruiting workflow and pipeline management",
-            "display_name": "Workflow Orchestrator",
+            "custom_fields": {
+              "template": ["input_value", "prospect_list"]
+            },
+            "description": "Create a prompt template with dynamic variables.",
+            "display_name": "Prompt",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "prospect_list", "workflow_rules", "pipeline_stage"],
+            "field_order": ["template"],
             "frozen": false,
-            "icon": "Workflow",
+            "icon": "prompts",
             "legacy": false,
             "lf_version": "1.0.19.post2",
             "metadata": {},
@@ -881,9 +952,9 @@
               {
                 "allows_loop": false,
                 "cache": true,
-                "display_name": "Routed Message",
-                "method": "orchestrate_workflow",
-                "name": "routed_message",
+                "display_name": "Prompt Message",
+                "method": "build_prompt",
+                "name": "prompt",
                 "selected": "Message",
                 "tool_mode": true,
                 "types": ["Message"],
@@ -893,49 +964,61 @@
             "pinned": false,
             "template": {
               "_type": "Component",
+              "template": {
+                "_input_type": "PromptInput",
+                "advanced": false,
+                "display_name": "Template",
+                "dynamic": false,
+                "info": "",
+                "list": false,
+                "name": "template",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "type": "prompt",
+                "value": "You are the Workflow Orchestrator for Impact Realty's recruiting system.\n\nYour role is to analyze incoming messages and prospect data to determine the appropriate workflow actions and pipeline management.\n\nINPUT MESSAGE: {input_value}\n\nPROSPECT DATA: {prospect_list}\n\nWORKFLOW STAGES:\n1. initial_contact - Send SMS outreach\n2. qualification - Phone call assessment\n3. presentation - Schedule meeting\n4. follow_up - Email sequence\n5. closing - Contract review\n\nANALYZE the input and determine:\n- Current pipeline stage\n- Next action required\n- Message routing decision\n- Prospect status update\n\nRESPOND with a structured message containing:\n- Action: [sms|email|phone|meeting|crm_update]\n- Stage: [current pipeline stage]\n- Message: [processed message for next component]\n- Priority: [high|medium|low]\n\nEnsure proper workflow progression and maintain recruiting pipeline integrity."
+              },
               "input_value": {
-                "_input_type": "MessageInput",
+                "advanced": false,
                 "display_name": "Input Message",
+                "dynamic": false,
+                "field_type": "str",
                 "info": "Incoming message to route through workflow",
                 "input_types": ["Message"],
+                "list": false,
+                "multiline": true,
                 "name": "input_value",
                 "required": true,
-                "type": "str"
+                "show": true,
+                "type": "str",
+                "value": ""
               },
               "prospect_list": {
-                "_input_type": "HandleInput",
+                "advanced": false,
                 "display_name": "Prospect List",
+                "dynamic": false,
+                "field_type": "str",
                 "info": "Deduplicated prospect data for workflow processing",
-                "input_types": ["Data"],
-                "name": "prospect_list",
-                "type": "data"
-              },
-              "workflow_rules": {
-                "_input_type": "MultilineInput",
-                "advanced": true,
-                "display_name": "Workflow Rules",
-                "info": "Rules defining workflow stages and transitions",
+                "input_types": ["Data", "Message"],
+                "list": false,
                 "multiline": true,
-                "name": "workflow_rules",
+                "name": "prospect_list",
+                "required": false,
+                "show": true,
                 "type": "str",
-                "value": "{\n  \"stages\": [\"initial_contact\", \"qualification\", \"presentation\", \"follow_up\", \"closing\"],\n  \"stage_actions\": {\n    \"initial_contact\": \"sms_outreach\",\n    \"qualification\": \"phone_call\",\n    \"presentation\": \"schedule_meeting\",\n    \"follow_up\": \"email_sequence\",\n    \"closing\": \"contract_review\"\n  },\n  \"auto_advance_conditions\": {\n    \"response_received\": \"advance_stage\",\n    \"no_response_7_days\": \"follow_up_sequence\"\n  }\n}"
-              },
-              "pipeline_stage": {
-                "_input_type": "DropdownInput",
-                "display_name": "Current Pipeline Stage",
-                "options": ["initial_contact", "qualification", "presentation", "follow_up", "closing"],
-                "name": "pipeline_stage",
-                "value": "initial_contact",
-                "type": "str"
+                "value": ""
               }
             },
             "tool_mode": false
           },
-          "type": "CustomComponent"
+          "type": "Prompt"
         },
         "dragging": false,
         "height": 320,
-        "id": "WorkflowOrchestrator-Main",
+        "id": "Prompt-WorkflowOrchestrator",
         "position": {"x": 500, "y": 50},
         "selected": false,
         "type": "genericNode",
@@ -1356,19 +1439,21 @@
       },
       {
         "data": {
-          "id": "ConditionalRouter-Stage",
+          "id": "Prompt-StageRouter",
           "node": {
             "base_classes": ["Message"],
             "beta": false,
             "conditional_paths": [],
-            "custom_fields": {},
-            "description": "Route messages based on conversation stage and trigger appropriate actions",
-            "display_name": "Conditional Router",
+            "custom_fields": {
+              "template": ["response"]
+            },
+            "description": "Create a prompt template with dynamic variables.",
+            "display_name": "Prompt",
             "documentation": "",
             "edited": false,
-            "field_order": ["response", "routing_rules", "default_action"],
+            "field_order": ["template"],
             "frozen": false,
-            "icon": "GitBranch",
+            "icon": "prompts",
             "legacy": false,
             "lf_version": "1.0.19.post2",
             "metadata": {},
@@ -1377,31 +1462,9 @@
               {
                 "allows_loop": false,
                 "cache": true,
-                "display_name": "SMS Route",
-                "method": "route_to_sms",
-                "name": "sms_route",
-                "selected": "Message",
-                "tool_mode": true,
-                "types": ["Message"],
-                "value": "__UNDEFINED__"
-              },
-              {
-                "allows_loop": false,
-                "cache": true,
-                "display_name": "Email Route",
-                "method": "route_to_email",
-                "name": "email_route",
-                "selected": "Message",
-                "tool_mode": true,
-                "types": ["Message"],
-                "value": "__UNDEFINED__"
-              },
-              {
-                "allows_loop": false,
-                "cache": true,
-                "display_name": "Default Route",
-                "method": "route_default",
-                "name": "default_route",
+                "display_name": "Prompt Message",
+                "method": "build_prompt",
+                "name": "prompt",
                 "selected": "Message",
                 "tool_mode": true,
                 "types": ["Message"],
@@ -1411,43 +1474,177 @@
             "pinned": false,
             "template": {
               "_type": "Component",
+              "template": {
+                "_input_type": "PromptInput",
+                "advanced": false,
+                "display_name": "Template",
+                "dynamic": false,
+                "info": "",
+                "list": false,
+                "name": "template",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "type": "prompt",
+                "value": "You are the Stage Router for Impact Realty's recruiting system.\n\nAnalyze the agent response to determine the appropriate communication channel and next action.\n\nAGENT RESPONSE: {response}\n\nROUTING RULES:\n\nSMS Triggers:\n- \"send sms\"\n- \"text message\"\n- \"sms outreach\"\n- \"initial contact\"\n- \"quick follow up\"\n\nEmail Triggers:\n- \"send email\"\n- \"email follow up\"\n- \"email sequence\"\n- \"professional email\"\n- \"detailed information\"\n\nANALYZE the response and determine the best communication channel based on:\n1. Intent analysis\n2. Urgency level\n3. Information complexity\n4. Prospect preference\n\nRESPOND with exactly one of these routing decisions:\n\n**SMS_ROUTE**: [Use for immediate, brief communications]\n**EMAIL_ROUTE**: [Use for detailed, professional communications]\n**CHAT_OUTPUT**: [Use for conversational responses]\n\nInclude the original response content after your routing decision."
+              },
               "response": {
-                "_input_type": "MessageInput",
+                "advanced": false,
                 "display_name": "Response",
+                "dynamic": false,
+                "field_type": "str",
                 "info": "Agent response to analyze for routing",
                 "input_types": ["Message"],
+                "list": false,
+                "multiline": true,
                 "name": "response",
                 "required": true,
-                "type": "str"
-              },
-              "routing_rules": {
-                "_input_type": "MultilineInput",
-                "advanced": true,
-                "display_name": "Routing Rules",
-                "info": "JSON rules for message routing",
-                "multiline": true,
-                "name": "routing_rules",
+                "show": true,
                 "type": "str",
-                "value": "{\n  \"sms_triggers\": [\"send sms\", \"text message\", \"sms outreach\", \"initial contact\"],\n  \"email_triggers\": [\"send email\", \"email follow up\", \"email sequence\", \"professional email\"],\n  \"intent_analysis\": true,\n  \"confidence_threshold\": 0.7\n}"
-              },
-              "default_action": {
-                "_input_type": "DropdownInput",
-                "display_name": "Default Action",
-                "info": "Default routing when no specific trigger matches",
-                "name": "default_action",
-                "options": ["chat_output", "sms", "email"],
-                "type": "str",
-                "value": "chat_output"
+                "value": ""
               }
             },
             "tool_mode": false
           },
-          "type": "CustomComponent"
+          "type": "Prompt"
         },
         "dragging": false,
         "height": 340,
-        "id": "ConditionalRouter-Stage",
+        "id": "Prompt-StageRouter",
         "position": {"x": 1300, "y": 750},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "OpenAI-StageRouter",
+          "node": {
+            "base_classes": ["LanguageModel", "Message"],
+            "beta": false,
+            "category": "models",
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Generates text using OpenAI LLMs.",
+            "display_name": "OpenAI",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "system_message", "stream", "max_tokens", "model_kwargs", "json_mode", "model_name", "openai_api_base", "api_key", "temperature", "seed", "max_retries", "timeout"],
+            "frozen": false,
+            "icon": "OpenAI",
+            "key": "OpenAIModel",
+            "legacy": false,
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Message",
+                "method": "text_response",
+                "name": "text_output",
+                "required_inputs": [],
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "api_key": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "OpenAI API Key",
+                "dynamic": false,
+                "info": "The OpenAI API Key to use for the OpenAI model.",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "api_key",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "OPENAI_API_KEY"
+              },
+              "input_value": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Input",
+                "dynamic": false,
+                "info": "",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "input_value",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "model_name": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": true,
+                "display_name": "Model Name",
+                "dynamic": false,
+                "info": "",
+                "name": "model_name",
+                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4-turbo", "gpt-4-turbo-preview", "gpt-4", "gpt-3.5-turbo", "o1"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "gpt-4o-mini"
+              },
+              "temperature": {
+                "_input_type": "SliderInput",
+                "advanced": false,
+                "display_name": "Temperature",
+                "dynamic": false,
+                "info": "",
+                "name": "temperature",
+                "placeholder": "",
+                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "type": "slider",
+                "value": 0.1
+              },
+              "max_tokens": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Max Tokens",
+                "info": "The maximum number of tokens to generate. Set to 0 for unlimited tokens.",
+                "name": "max_tokens",
+                "type": "int",
+                "value": 1000
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "OpenAIModel"
+        },
+        "dragging": false,
+        "height": 400,
+        "id": "OpenAI-StageRouter",
+        "position": {"x": 1700, "y": 750},
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1521,7 +1718,7 @@
                 "multiline": true,
                 "name": "headers",
                 "type": "str",
-                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer {SALESMSG_API_KEY}\"\n}"
+                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer SALESMG_API_TOKEN\"\n}"
               },
               "body": {
                 "_input_type": "MultilineInput",
@@ -1614,7 +1811,7 @@
                 "multiline": true,
                 "name": "headers",
                 "type": "str",
-                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer {SALESMSG_API_KEY}\"\n}"
+                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer SALESMG_API_TOKEN\"\n}"
               }
             },
             "tool_mode": false
@@ -1631,19 +1828,21 @@
       },
       {
         "data": {
-          "id": "ConditionalRouter-Response",
+          "id": "Prompt-ResponseRouter",
           "node": {
             "base_classes": ["Message"],
             "beta": false,
             "conditional_paths": [],
-            "custom_fields": {},
-            "description": "Route based on prospect response sentiment and intent.",
-            "display_name": "Conditional Router",
+            "custom_fields": {
+              "template": ["input_data"]
+            },
+            "description": "Create a prompt template with dynamic variables.",
+            "display_name": "Prompt",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "routing_rules"],
+            "field_order": ["template"],
             "frozen": false,
-            "icon": "GitBranch",
+            "icon": "prompts",
             "legacy": false,
             "lf_version": "1.0.19.post2",
             "metadata": {},
@@ -1652,31 +1851,9 @@
               {
                 "allows_loop": false,
                 "cache": true,
-                "display_name": "Positive Route",
-                "method": "route_positive",
-                "name": "positive_route",
-                "selected": "Message",
-                "tool_mode": true,
-                "types": ["Message"],
-                "value": "__UNDEFINED__"
-              },
-              {
-                "allows_loop": false,
-                "cache": true,
-                "display_name": "Negative Route",
-                "method": "route_negative",
-                "name": "negative_route",
-                "selected": "Message",
-                "tool_mode": true,
-                "types": ["Message"],
-                "value": "__UNDEFINED__"
-              },
-              {
-                "allows_loop": false,
-                "cache": true,
-                "display_name": "No Response Route",
-                "method": "route_no_response",
-                "name": "no_response_route",
+                "display_name": "Prompt Message",
+                "method": "build_prompt",
+                "name": "prompt",
                 "selected": "Message",
                 "tool_mode": true,
                 "types": ["Message"],
@@ -1686,34 +1863,177 @@
             "pinned": false,
             "template": {
               "_type": "Component",
+              "template": {
+                "_input_type": "PromptInput",
+                "advanced": false,
+                "display_name": "Template",
+                "dynamic": false,
+                "info": "",
+                "list": false,
+                "name": "template",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "type": "prompt",
+                "value": "You are the Response Router for Impact Realty's recruiting system.\n\nAnalyze SMS/communication responses to determine sentiment and appropriate next action.\n\nRESPONSE DATA: {input_data}\n\nSENTIMENT ANALYSIS CRITERIA:\n\nPOSITIVE INDICATORS:\n- \"interested\"\n- \"tell me more\"\n- \"yes\"\n- \"when\"\n- \"schedule\"\n- \"sounds good\"\n- \"want to learn\"\n- \"curious\"\n\nNEGATIVE INDICATORS:\n- \"not interested\"\n- \"stop\"\n- \"no thanks\"\n- \"remove\"\n- \"unsubscribe\"\n- \"don't contact\"\n\nNO RESPONSE CRITERIA:\n- Empty or null response\n- Response timeout (24+ hours)\n- System error messages\n\nANALYZE the response data and determine:\n1. Overall sentiment (positive/negative/neutral)\n2. Intent level (high/medium/low interest)\n3. Appropriate routing decision\n\nRESPOND with exactly one of these routing decisions:\n\n**POSITIVE_ROUTE**: [Interested prospect - route to CRM and calendar scheduling]\n**NEGATIVE_ROUTE**: [Not interested - tag accordingly and cease outreach]\n**NO_RESPONSE_ROUTE**: [No response received - route to retry logic]\n\nInclude confidence score and reasoning in your response."
+              },
               "input_data": {
-                "_input_type": "MessageInput",
+                "advanced": false,
                 "display_name": "Input Data",
+                "dynamic": false,
+                "field_type": "str",
                 "info": "SMS response data to analyze",
                 "input_types": ["Message"],
+                "list": false,
+                "multiline": true,
                 "name": "input_data",
                 "required": true,
-                "type": "str"
-              },
-              "routing_rules": {
-                "_input_type": "MultilineInput",
-                "advanced": true,
-                "display_name": "Response Routing Rules",
-                "info": "Rules for analyzing and routing responses",
-                "multiline": true,
-                "name": "routing_rules",
+                "show": true,
                 "type": "str",
-                "value": "{\n  \"positive_indicators\": [\"interested\", \"tell me more\", \"yes\", \"when\", \"schedule\", \"sounds good\"],\n  \"negative_indicators\": [\"not interested\", \"stop\", \"no thanks\", \"remove\", \"unsubscribe\"],\n  \"no_response_timeout\": 86400,\n  \"sentiment_threshold\": 0.6\n}"
+                "value": ""
               }
             },
             "tool_mode": false
           },
-          "type": "CustomComponent"
+          "type": "Prompt"
         },
         "dragging": false,
         "height": 320,
-        "id": "ConditionalRouter-Response",
+        "id": "Prompt-ResponseRouter",
         "position": {"x": 900, "y": 1000},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "OpenAI-ResponseRouter",
+          "node": {
+            "base_classes": ["LanguageModel", "Message"],
+            "beta": false,
+            "category": "models",
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Generates text using OpenAI LLMs.",
+            "display_name": "OpenAI",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "system_message", "stream", "max_tokens", "model_kwargs", "json_mode", "model_name", "openai_api_base", "api_key", "temperature", "seed", "max_retries", "timeout"],
+            "frozen": false,
+            "icon": "OpenAI",
+            "key": "OpenAIModel",
+            "legacy": false,
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Message",
+                "method": "text_response",
+                "name": "text_output",
+                "required_inputs": [],
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "api_key": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "OpenAI API Key",
+                "dynamic": false,
+                "info": "The OpenAI API Key to use for the OpenAI model.",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "api_key",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "OPENAI_API_KEY"
+              },
+              "input_value": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Input",
+                "dynamic": false,
+                "info": "",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "input_value",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "model_name": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": true,
+                "display_name": "Model Name",
+                "dynamic": false,
+                "info": "",
+                "name": "model_name",
+                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4-turbo", "gpt-4-turbo-preview", "gpt-4", "gpt-3.5-turbo", "o1"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "gpt-4o-mini"
+              },
+              "temperature": {
+                "_input_type": "SliderInput",
+                "advanced": false,
+                "display_name": "Temperature",
+                "dynamic": false,
+                "info": "",
+                "name": "temperature",
+                "placeholder": "",
+                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "type": "slider",
+                "value": 0.2
+              },
+              "max_tokens": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Max Tokens",
+                "info": "The maximum number of tokens to generate. Set to 0 for unlimited tokens.",
+                "name": "max_tokens",
+                "type": "int",
+                "value": 800
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "OpenAIModel"
+        },
+        "dragging": false,
+        "height": 400,
+        "id": "OpenAI-ResponseRouter",
+        "position": {"x": 1300, "y": 1000},
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1769,7 +2089,7 @@
                 "name": "url",
                 "required": true,
                 "type": "str",
-                "value": "{ZOHO_MCP_BASE_URL}/crm/create"
+                "value": "http://localhost:8000/zoho/crm/create"
               },
               "method": {
                 "_input_type": "DropdownInput",
@@ -1787,7 +2107,7 @@
                 "multiline": true,
                 "name": "headers",
                 "type": "str",
-                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer {ZOHO_ACCESS_TOKEN}\"\n}"
+                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer ZOHO_ACCESS_TOKEN\"\n}"
               },
               "body": {
                 "_input_type": "MultilineInput",
@@ -1862,7 +2182,7 @@
                 "name": "url",
                 "required": true,
                 "type": "str",
-                "value": "{ZOHO_MCP_BASE_URL}/calendar/schedule"
+                "value": "http://localhost:8000/zoho/calendar/schedule"
               },
               "method": {
                 "_input_type": "DropdownInput",
@@ -1880,7 +2200,7 @@
                 "multiline": true,
                 "name": "headers",
                 "type": "str",
-                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer {ZOHO_ACCESS_TOKEN}\"\n}"
+                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer ZOHO_ACCESS_TOKEN\"\n}"
               },
               "body": {
                 "_input_type": "MultilineInput",
@@ -1955,7 +2275,7 @@
                 "name": "url",
                 "required": true,
                 "type": "str",
-                "value": "{ZOHO_MCP_BASE_URL}/crm/tag"
+                "value": "http://localhost:8000/zoho/crm/tag"
               },
               "method": {
                 "_input_type": "DropdownInput",
@@ -1973,7 +2293,7 @@
                 "multiline": true,
                 "name": "headers",
                 "type": "str",
-                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer {ZOHO_ACCESS_TOKEN}\"\n}"
+                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer ZOHO_ACCESS_TOKEN\"\n}"
               },
               "body": {
                 "_input_type": "MultilineInput",
@@ -1999,19 +2319,21 @@
       },
       {
         "data": {
-          "id": "ConditionalRouter-Retry",
+          "id": "Prompt-RetryRouter",
           "node": {
             "base_classes": ["Message"],
             "beta": false,
             "conditional_paths": [],
-            "custom_fields": {},
-            "description": "Conditional router for retry logic and backoff strategy.",
-            "display_name": "Conditional Router",
+            "custom_fields": {
+              "template": ["input_data"]
+            },
+            "description": "Create a prompt template with dynamic variables.",
+            "display_name": "Prompt",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "retry_rules"],
+            "field_order": ["template"],
             "frozen": false,
-            "icon": "GitBranch",
+            "icon": "prompts",
             "legacy": false,
             "lf_version": "1.0.19.post2",
             "metadata": {},
@@ -2020,20 +2342,9 @@
               {
                 "allows_loop": false,
                 "cache": true,
-                "display_name": "Retry Route",
-                "method": "route_retry",
-                "name": "retry_route",
-                "selected": "Message",
-                "tool_mode": true,
-                "types": ["Message"],
-                "value": "__UNDEFINED__"
-              },
-              {
-                "allows_loop": false,
-                "cache": true,
-                "display_name": "Give Up Route",
-                "method": "route_give_up",
-                "name": "give_up_route",
+                "display_name": "Prompt Message",
+                "method": "build_prompt",
+                "name": "prompt",
                 "selected": "Message",
                 "tool_mode": true,
                 "types": ["Message"],
@@ -2043,34 +2354,177 @@
             "pinned": false,
             "template": {
               "_type": "Component",
+              "template": {
+                "_input_type": "PromptInput",
+                "advanced": false,
+                "display_name": "Template",
+                "dynamic": false,
+                "info": "",
+                "list": false,
+                "name": "template",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "type": "prompt",
+                "value": "You are the Retry Router for Impact Realty's recruiting system.\n\nEvaluate prospect outreach history to determine if retry attempts should continue or if the prospect should be marked as unresponsive.\n\nINPUT DATA: {input_data}\n\nRETRY LOGIC RULES:\n\nMAX RETRIES: 3 attempts\nRETRY DELAYS: \n- 1st retry: 24 hours (86400 seconds)\n- 2nd retry: 48 hours (172800 seconds)  \n- 3rd retry: 7 days (604800 seconds)\n\nBACKOFF STRATEGY: Exponential\nGIVE UP THRESHOLD: 14 days total\n\nEVALUATE the input data for:\n1. Number of previous attempts\n2. Time since last contact\n3. Prospect engagement history\n4. Total outreach duration\n\nDETERMINE appropriate action based on:\n- Retry count vs max retries\n- Time elapsed vs give up threshold\n- Quality of previous interactions\n- Prospect response patterns\n\nRESPOND with exactly one of these routing decisions:\n\n**RETRY_ROUTE**: [Continue outreach with calculated delay]\n**GIVE_UP_ROUTE**: [Mark prospect as unresponsive and cease outreach]\n\nInclude retry count, delay calculation, and reasoning in your response."
+              },
               "input_data": {
-                "_input_type": "MessageInput",
+                "advanced": false,
                 "display_name": "Input Data",
+                "dynamic": false,
+                "field_type": "str",
                 "info": "Data for retry logic evaluation",
                 "input_types": ["Message"],
+                "list": false,
+                "multiline": true,
                 "name": "input_data",
                 "required": true,
-                "type": "str"
-              },
-              "retry_rules": {
-                "_input_type": "MultilineInput",
-                "advanced": true,
-                "display_name": "Retry Rules",
-                "info": "Rules for retry logic and backoff",
-                "multiline": true,
-                "name": "retry_rules",
+                "show": true,
                 "type": "str",
-                "value": "{\n  \"max_retries\": 3,\n  \"retry_delays\": [86400, 172800, 604800],\n  \"backoff_strategy\": \"exponential\",\n  \"give_up_after_days\": 14\n}"
+                "value": ""
               }
             },
             "tool_mode": false
           },
-          "type": "CustomComponent"
+          "type": "Prompt"
         },
         "dragging": false,
         "height": 300,
-        "id": "ConditionalRouter-Retry",
+        "id": "Prompt-RetryRouter",
         "position": {"x": 500, "y": 1450},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "OpenAI-RetryRouter",
+          "node": {
+            "base_classes": ["LanguageModel", "Message"],
+            "beta": false,
+            "category": "models",
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Generates text using OpenAI LLMs.",
+            "display_name": "OpenAI",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "system_message", "stream", "max_tokens", "model_kwargs", "json_mode", "model_name", "openai_api_base", "api_key", "temperature", "seed", "max_retries", "timeout"],
+            "frozen": false,
+            "icon": "OpenAI",
+            "key": "OpenAIModel",
+            "legacy": false,
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Message",
+                "method": "text_response",
+                "name": "text_output",
+                "required_inputs": [],
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "api_key": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "OpenAI API Key",
+                "dynamic": false,
+                "info": "The OpenAI API Key to use for the OpenAI model.",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "api_key",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "OPENAI_API_KEY"
+              },
+              "input_value": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Input",
+                "dynamic": false,
+                "info": "",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "input_value",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "model_name": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": true,
+                "display_name": "Model Name",
+                "dynamic": false,
+                "info": "",
+                "name": "model_name",
+                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4-turbo", "gpt-4-turbo-preview", "gpt-4", "gpt-3.5-turbo", "o1"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "gpt-4o-mini"
+              },
+              "temperature": {
+                "_input_type": "SliderInput",
+                "advanced": false,
+                "display_name": "Temperature",
+                "dynamic": false,
+                "info": "",
+                "name": "temperature",
+                "placeholder": "",
+                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "type": "slider",
+                "value": 0.1
+              },
+              "max_tokens": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Max Tokens",
+                "info": "The maximum number of tokens to generate. Set to 0 for unlimited tokens.",
+                "name": "max_tokens",
+                "type": "int",
+                "value": 600
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "OpenAIModel"
+        },
+        "dragging": false,
+        "height": 400,
+        "id": "OpenAI-RetryRouter",
+        "position": {"x": 900, "y": 1450},
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2192,7 +2646,7 @@
                 "name": "url",
                 "required": true,
                 "type": "str",
-                "value": "{ZOHO_MCP_BASE_URL}/mail/send"
+                "value": "http://localhost:8000/zoho/mail/send"
               },
               "method": {
                 "_input_type": "DropdownInput",
@@ -2210,7 +2664,7 @@
                 "multiline": true,
                 "name": "headers",
                 "type": "str",
-                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer {ZOHO_ACCESS_TOKEN}\"\n}"
+                "value": "{\n  \"Content-Type\": \"application/json\",\n  \"Authorization\": \"Bearer ZOHO_ACCESS_TOKEN\"\n}"
               },
               "body": {
                 "_input_type": "MultilineInput",
@@ -2286,7 +2740,7 @@
                 "password": true,
                 "required": true,
                 "type": "str",
-                "value": "POSTGRESQL_URL"
+                "value": "POSTGRES_URL"
               },
               "query": {
                 "_input_type": "MultilineInput",
@@ -2511,13 +2965,13 @@
     ],
     "viewport": {"x": 0, "y": 0, "zoom": 0.6}
   },
-  "description": "Production-ready Impact Realty recruiting agent with complete Perfect Recruiter Flow implementation: CSV ingestion & validation, Zoho deduplication, native HTTP tools for SalesMsg & Zoho MCP operations, conditional routing with retry/backoff logic, PostgreSQL persistence, and Grafana webhook integration.",
-  "endpoint_name": "impact-recruiting-agent-corrected",
+  "description": "Production-ready Impact Realty recruiting agent with NATIVE LANGFLOW COMPONENTS ONLY: CSV ingestion & validation, Zoho deduplication, native HTTP tools for SalesMsg & Zoho MCP operations, prompt-based routing with OpenAI decision making, retry/backoff logic, PostgreSQL persistence, and Grafana webhook integration. All CustomComponents replaced with native Prompt+OpenAI combinations.",
+  "endpoint_name": "impact-recruiting-agent-native",
   "gradient": "2",
   "icon": "Users",
-  "id": "impact-recruiting-agent-corrected",
+  "id": "impact-recruiting-agent-native",
   "is_component": false,
   "last_tested_version": "1.0.19.post2",
-  "name": "Impact Realty Perfect Recruiter Flow - Corrected",
-  "tags": ["recruiting", "impact-realty", "perfect-flow", "http-tools", "mcp", "sms", "email", "crm", "retry-logic", "grafana", "postgresql"]
+  "name": "Impact Realty Perfect Recruiter Flow - Native Components",
+  "tags": ["recruiting", "impact-realty", "perfect-flow", "http-tools", "mcp", "sms", "email", "crm", "retry-logic", "grafana", "postgresql", "native-components", "prompt-based-routing"]
 }
