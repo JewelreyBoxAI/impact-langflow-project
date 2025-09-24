@@ -8,21 +8,25 @@
             "dataType": "ChatInput",
             "id": "ChatInput-Recruiting",
             "name": "message",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_value",
             "id": "Prompt-WorkflowOrchestrator",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-input-to-orchestrator",
+        "id": "reactflow__edge-ChatInput-Recruiting{œdataTypeœ: œChatInputœ, œidœ: œChatInput-Recruitingœ, œnameœ: œmessageœ, œoutput_typesœ: [œMessageœ]}-Prompt-WorkflowOrchestrator{œfieldNameœ: œinput_valueœ, œidœ: œPrompt-WorkflowOrchestratorœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "ChatInput-Recruiting",
-        "sourceHandle": "message",
+        "sourceHandle": "{œdataTypeœ: œChatInputœ, œidœ: œChatInput-Recruitingœ, œnameœ: œmessageœ, œoutput_typesœ: [œMessageœ]}",
         "target": "Prompt-WorkflowOrchestrator",
-        "targetHandle": "input_value"
+        "targetHandle": "{œfieldNameœ: œinput_valueœ, œidœ: œPrompt-WorkflowOrchestratorœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -31,21 +35,25 @@
             "dataType": "CSVLoader",
             "id": "CSVLoader-Upload",
             "name": "data_output",
-            "output_types": ["Data"]
+            "output_types": [
+              "Data"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "PythonTool-Validation",
-            "inputTypes": ["Data"],
+            "inputTypes": [
+              "Data"
+            ],
             "type": "data"
           }
         },
-        "id": "edge-csv-to-validation",
+        "id": "reactflow__edge-CSVLoader-Upload{œdataTypeœ: œCSVLoaderœ, œidœ: œCSVLoader-Uploadœ, œnameœ: œdata_outputœ, œoutput_typesœ: [œDataœ]}-PythonTool-Validation{œfieldNameœ: œinput_dataœ, œidœ: œPythonTool-Validationœ, œinputTypesœ: [œDataœ], œtypeœ: œdataœ}",
         "selected": false,
         "source": "CSVLoader-Upload",
-        "sourceHandle": "data_output",
+        "sourceHandle": "{œdataTypeœ: œCSVLoaderœ, œidœ: œCSVLoader-Uploadœ, œnameœ: œdata_outputœ, œoutput_typesœ: [œDataœ]}",
         "target": "PythonTool-Validation",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œPythonTool-Validationœ, œinputTypesœ: [œDataœ], œtypeœ: œdataœ}"
       },
       {
         "className": "",
@@ -54,21 +62,25 @@
             "dataType": "PythonTool",
             "id": "PythonTool-Validation",
             "name": "output",
-            "output_types": ["Data"]
+            "output_types": [
+              "Data"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "HTTPTool-ZohoDedupe",
-            "inputTypes": ["Data"],
+            "inputTypes": [
+              "Data"
+            ],
             "type": "data"
           }
         },
-        "id": "edge-validation-to-dedupe",
+        "id": "reactflow__edge-PythonTool-Validation{œdataTypeœ: œPythonToolœ, œidœ: œPythonTool-Validationœ, œnameœ: œoutputœ, œoutput_typesœ: [œDataœ]}-HTTPTool-ZohoDedupe{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-ZohoDedupeœ, œinputTypesœ: [œDataœ], œtypeœ: œdataœ}",
         "selected": false,
         "source": "PythonTool-Validation",
-        "sourceHandle": "output",
+        "sourceHandle": "{œdataTypeœ: œPythonToolœ, œidœ: œPythonTool-Validationœ, œnameœ: œoutputœ, œoutput_typesœ: [œDataœ]}",
         "target": "HTTPTool-ZohoDedupe",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-ZohoDedupeœ, œinputTypesœ: [œDataœ], œtypeœ: œdataœ}"
       },
       {
         "className": "",
@@ -77,21 +89,26 @@
             "dataType": "HTTPTool",
             "id": "HTTPTool-ZohoDedupe",
             "name": "response",
-            "output_types": ["Data"]
+            "output_types": [
+              "Data"
+            ]
           },
           "targetHandle": {
             "fieldName": "prospect_list",
             "id": "Prompt-WorkflowOrchestrator",
-            "inputTypes": ["Data", "Message"],
+            "inputTypes": [
+              "Data",
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-dedupe-to-orchestrator",
+        "id": "reactflow__edge-HTTPTool-ZohoDedupe{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-ZohoDedupeœ, œnameœ: œresponseœ, œoutput_typesœ: [œDataœ]}-Prompt-WorkflowOrchestrator{œfieldNameœ: œprospect_listœ, œidœ: œPrompt-WorkflowOrchestratorœ, œinputTypesœ: [œDataœ, œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "HTTPTool-ZohoDedupe",
-        "sourceHandle": "response",
+        "sourceHandle": "{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-ZohoDedupeœ, œnameœ: œresponseœ, œoutput_typesœ: [œDataœ]}",
         "target": "Prompt-WorkflowOrchestrator",
-        "targetHandle": "prospect_list"
+        "targetHandle": "{œfieldNameœ: œprospect_listœ, œidœ: œPrompt-WorkflowOrchestratorœ, œinputTypesœ: [œDataœ, œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -100,21 +117,25 @@
             "dataType": "Prompt",
             "id": "Prompt-WorkflowOrchestrator",
             "name": "prompt",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_value",
             "id": "OpenAIModel-Main",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-orchestrator-to-llm",
+        "id": "reactflow__edge-Prompt-WorkflowOrchestrator{œdataTypeœ: œPromptœ, œidœ: œPrompt-WorkflowOrchestratorœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}-OpenAIModel-Main{œfieldNameœ: œinput_valueœ, œidœ: œOpenAIModel-Mainœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "Prompt-WorkflowOrchestrator",
-        "sourceHandle": "prompt",
+        "sourceHandle": "{œdataTypeœ: œPromptœ, œidœ: œPrompt-WorkflowOrchestratorœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}",
         "target": "OpenAIModel-Main",
-        "targetHandle": "input_value"
+        "targetHandle": "{œfieldNameœ: œinput_valueœ, œidœ: œOpenAIModel-Mainœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -123,21 +144,25 @@
             "dataType": "Prompt",
             "id": "SystemPrompt-Impact",
             "name": "prompt",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "system_message",
             "id": "OpenAIModel-Main",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-prompt-to-llm",
+        "id": "reactflow__edge-SystemPrompt-Impact{œdataTypeœ: œPromptœ, œidœ: œSystemPrompt-Impactœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}-OpenAIModel-Main{œfieldNameœ: œsystem_messageœ, œidœ: œOpenAIModel-Mainœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "SystemPrompt-Impact",
-        "sourceHandle": "prompt",
+        "sourceHandle": "{œdataTypeœ: œPromptœ, œidœ: œSystemPrompt-Impactœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}",
         "target": "OpenAIModel-Main",
-        "targetHandle": "system_message"
+        "targetHandle": "{œfieldNameœ: œsystem_messageœ, œidœ: œOpenAIModel-Mainœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -146,21 +171,26 @@
             "dataType": "Memory",
             "id": "BufferMemory-Main",
             "name": "messages_text",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "memory",
             "id": "SystemPrompt-Impact",
-            "inputTypes": ["Message", "Text"],
+            "inputTypes": [
+              "Message",
+              "Text"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-memory-to-prompt",
+        "id": "reactflow__edge-BufferMemory-Main{œdataTypeœ: œMemoryœ, œidœ: œBufferMemory-Mainœ, œnameœ: œmessages_textœ, œoutput_typesœ: [œMessageœ]}-SystemPrompt-Impact{œfieldNameœ: œmemoryœ, œidœ: œSystemPrompt-Impactœ, œinputTypesœ: [œMessageœ, œTextœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "BufferMemory-Main",
-        "sourceHandle": "messages_text",
+        "sourceHandle": "{œdataTypeœ: œMemoryœ, œidœ: œBufferMemory-Mainœ, œnameœ: œmessages_textœ, œoutput_typesœ: [œMessageœ]}",
         "target": "SystemPrompt-Impact",
-        "targetHandle": "memory"
+        "targetHandle": "{œfieldNameœ: œmemoryœ, œidœ: œSystemPrompt-Impactœ, œinputTypesœ: [œMessageœ, œTextœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -169,21 +199,26 @@
             "dataType": "VectorStoreRetriever",
             "id": "VectorStoreRetriever-Semantic",
             "name": "retrieved_context",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "context",
             "id": "SystemPrompt-Impact",
-            "inputTypes": ["Message", "Text"],
+            "inputTypes": [
+              "Message",
+              "Text"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-vector-to-prompt",
+        "id": "reactflow__edge-VectorStoreRetriever-Semantic{œdataTypeœ: œVectorStoreRetrieverœ, œidœ: œVectorStoreRetriever-Semanticœ, œnameœ: œretrieved_contextœ, œoutput_typesœ: [œMessageœ]}-SystemPrompt-Impact{œfieldNameœ: œcontextœ, œidœ: œSystemPrompt-Impactœ, œinputTypesœ: [œMessageœ, œTextœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "VectorStoreRetriever-Semantic",
-        "sourceHandle": "retrieved_context",
+        "sourceHandle": "{œdataTypeœ: œVectorStoreRetrieverœ, œidœ: œVectorStoreRetriever-Semanticœ, œnameœ: œretrieved_contextœ, œoutput_typesœ: [œMessageœ]}",
         "target": "SystemPrompt-Impact",
-        "targetHandle": "context"
+        "targetHandle": "{œfieldNameœ: œcontextœ, œidœ: œSystemPrompt-Impactœ, œinputTypesœ: [œMessageœ, œTextœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -192,21 +227,25 @@
             "dataType": "OpenAIModel",
             "id": "OpenAIModel-Main",
             "name": "text_output",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "response",
             "id": "Prompt-StageRouter",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-llm-to-router",
+        "id": "reactflow__edge-OpenAIModel-Main{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAIModel-Mainœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}-Prompt-StageRouter{œfieldNameœ: œresponseœ, œidœ: œPrompt-StageRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "OpenAIModel-Main",
-        "sourceHandle": "text_output",
+        "sourceHandle": "{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAIModel-Mainœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}",
         "target": "Prompt-StageRouter",
-        "targetHandle": "response"
+        "targetHandle": "{œfieldNameœ: œresponseœ, œidœ: œPrompt-StageRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -215,21 +254,25 @@
             "dataType": "Prompt",
             "id": "Prompt-StageRouter",
             "name": "prompt",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_value",
             "id": "OpenAI-StageRouter",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-stage-prompt-to-llm",
+        "id": "reactflow__edge-Prompt-StageRouter{œdataTypeœ: œPromptœ, œidœ: œPrompt-StageRouterœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}-OpenAI-StageRouter{œfieldNameœ: œinput_valueœ, œidœ: œOpenAI-StageRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "Prompt-StageRouter",
-        "sourceHandle": "prompt",
+        "sourceHandle": "{œdataTypeœ: œPromptœ, œidœ: œPrompt-StageRouterœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}",
         "target": "OpenAI-StageRouter",
-        "targetHandle": "input_value"
+        "targetHandle": "{œfieldNameœ: œinput_valueœ, œidœ: œOpenAI-StageRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -238,21 +281,25 @@
             "dataType": "OpenAIModel",
             "id": "OpenAI-StageRouter",
             "name": "text_output",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "HTTPTool-SalesMsgSend",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-router-to-sms",
+        "id": "reactflow__edge-OpenAI-StageRouter{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-StageRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}-HTTPTool-SalesMsgSend{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-SalesMsgSendœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "OpenAI-StageRouter",
-        "sourceHandle": "text_output",
+        "sourceHandle": "{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-StageRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}",
         "target": "HTTPTool-SalesMsgSend",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-SalesMsgSendœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -261,21 +308,25 @@
             "dataType": "HTTPTool",
             "id": "HTTPTool-SalesMsgSend",
             "name": "response",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "HTTPTool-SalesMsgGet",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-sms-send-to-get",
+        "id": "reactflow__edge-HTTPTool-SalesMsgSend{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-SalesMsgSendœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}-HTTPTool-SalesMsgGet{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-SalesMsgGetœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "HTTPTool-SalesMsgSend",
-        "sourceHandle": "response",
+        "sourceHandle": "{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-SalesMsgSendœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}",
         "target": "HTTPTool-SalesMsgGet",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-SalesMsgGetœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -284,21 +335,25 @@
             "dataType": "HTTPTool",
             "id": "HTTPTool-SalesMsgGet",
             "name": "response",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "Prompt-ResponseRouter",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-sms-get-to-response-router",
+        "id": "reactflow__edge-HTTPTool-SalesMsgGet{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-SalesMsgGetœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}-Prompt-ResponseRouter{œfieldNameœ: œinput_dataœ, œidœ: œPrompt-ResponseRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "HTTPTool-SalesMsgGet",
-        "sourceHandle": "response",
+        "sourceHandle": "{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-SalesMsgGetœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}",
         "target": "Prompt-ResponseRouter",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œPrompt-ResponseRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -307,21 +362,25 @@
             "dataType": "Prompt",
             "id": "Prompt-ResponseRouter",
             "name": "prompt",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_value",
             "id": "OpenAI-ResponseRouter",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-response-prompt-to-llm",
+        "id": "reactflow__edge-Prompt-ResponseRouter{œdataTypeœ: œPromptœ, œidœ: œPrompt-ResponseRouterœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}-OpenAI-ResponseRouter{œfieldNameœ: œinput_valueœ, œidœ: œOpenAI-ResponseRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "Prompt-ResponseRouter",
-        "sourceHandle": "prompt",
+        "sourceHandle": "{œdataTypeœ: œPromptœ, œidœ: œPrompt-ResponseRouterœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}",
         "target": "OpenAI-ResponseRouter",
-        "targetHandle": "input_value"
+        "targetHandle": "{œfieldNameœ: œinput_valueœ, œidœ: œOpenAI-ResponseRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -330,21 +389,25 @@
             "dataType": "OpenAIModel",
             "id": "OpenAI-ResponseRouter",
             "name": "text_output",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "HTTPTool-ZohoCRMCreate",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-response-positive-to-crm",
+        "id": "reactflow__edge-OpenAI-ResponseRouter{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-ResponseRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}-HTTPTool-ZohoCRMCreate{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-ZohoCRMCreateœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "OpenAI-ResponseRouter",
-        "sourceHandle": "text_output",
+        "sourceHandle": "{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-ResponseRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}",
         "target": "HTTPTool-ZohoCRMCreate",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-ZohoCRMCreateœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -353,21 +416,25 @@
             "dataType": "HTTPTool",
             "id": "HTTPTool-ZohoCRMCreate",
             "name": "response",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "HTTPTool-ZohoCalendar",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-crm-to-calendar",
+        "id": "reactflow__edge-HTTPTool-ZohoCRMCreate{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-ZohoCRMCreateœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}-HTTPTool-ZohoCalendar{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-ZohoCalendarœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "HTTPTool-ZohoCRMCreate",
-        "sourceHandle": "response",
+        "sourceHandle": "{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-ZohoCRMCreateœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}",
         "target": "HTTPTool-ZohoCalendar",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-ZohoCalendarœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -376,21 +443,25 @@
             "dataType": "OpenAIModel",
             "id": "OpenAI-ResponseRouter",
             "name": "text_output",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "HTTPTool-ZohoTagNotInterested",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-response-negative-to-tag",
+        "id": "reactflow__edge-OpenAI-ResponseRouter{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-ResponseRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}-HTTPTool-ZohoTagNotInterested{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-ZohoTagNotInterestedœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "OpenAI-ResponseRouter",
-        "sourceHandle": "text_output",
+        "sourceHandle": "{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-ResponseRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}",
         "target": "HTTPTool-ZohoTagNotInterested",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-ZohoTagNotInterestedœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -399,21 +470,25 @@
             "dataType": "OpenAIModel",
             "id": "OpenAI-ResponseRouter",
             "name": "text_output",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "Prompt-RetryRouter",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-response-no-response-to-retry",
+        "id": "reactflow__edge-OpenAI-ResponseRouter{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-ResponseRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}-Prompt-RetryRouter{œfieldNameœ: œinput_dataœ, œidœ: œPrompt-RetryRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "OpenAI-ResponseRouter",
-        "sourceHandle": "text_output",
+        "sourceHandle": "{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-ResponseRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}",
         "target": "Prompt-RetryRouter",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œPrompt-RetryRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -422,21 +497,25 @@
             "dataType": "Prompt",
             "id": "Prompt-RetryRouter",
             "name": "prompt",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_value",
             "id": "OpenAI-RetryRouter",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-retry-prompt-to-llm",
+        "id": "reactflow__edge-Prompt-RetryRouter{œdataTypeœ: œPromptœ, œidœ: œPrompt-RetryRouterœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}-OpenAI-RetryRouter{œfieldNameœ: œinput_valueœ, œidœ: œOpenAI-RetryRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "Prompt-RetryRouter",
-        "sourceHandle": "prompt",
+        "sourceHandle": "{œdataTypeœ: œPromptœ, œidœ: œPrompt-RetryRouterœ, œnameœ: œpromptœ, œoutput_typesœ: [œMessageœ]}",
         "target": "OpenAI-RetryRouter",
-        "targetHandle": "input_value"
+        "targetHandle": "{œfieldNameœ: œinput_valueœ, œidœ: œOpenAI-RetryRouterœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -445,21 +524,25 @@
             "dataType": "OpenAIModel",
             "id": "OpenAI-RetryRouter",
             "name": "text_output",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "PythonTool-Delay",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-retry-to-delay",
+        "id": "reactflow__edge-OpenAI-RetryRouter{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-RetryRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}-PythonTool-Delay{œfieldNameœ: œinput_dataœ, œidœ: œPythonTool-Delayœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "OpenAI-RetryRouter",
-        "sourceHandle": "text_output",
+        "sourceHandle": "{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-RetryRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}",
         "target": "PythonTool-Delay",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œPythonTool-Delayœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -468,21 +551,25 @@
             "dataType": "PythonTool",
             "id": "PythonTool-Delay",
             "name": "output",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "HTTPTool-SalesMsgSend",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-delay-to-sms-retry",
+        "id": "reactflow__edge-PythonTool-Delay{œdataTypeœ: œPythonToolœ, œidœ: œPythonTool-Delayœ, œnameœ: œoutputœ, œoutput_typesœ: [œMessageœ]}-HTTPTool-SalesMsgSend{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-SalesMsgSendœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "PythonTool-Delay",
-        "sourceHandle": "output",
+        "sourceHandle": "{œdataTypeœ: œPythonToolœ, œidœ: œPythonTool-Delayœ, œnameœ: œoutputœ, œoutput_typesœ: [œMessageœ]}",
         "target": "HTTPTool-SalesMsgSend",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-SalesMsgSendœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -491,21 +578,25 @@
             "dataType": "HTTPTool",
             "id": "HTTPTool-ZohoCalendar",
             "name": "response",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "PostgreSQL-Leads",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-calendar-to-postgres",
+        "id": "reactflow__edge-HTTPTool-ZohoCalendar{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-ZohoCalendarœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}-PostgreSQL-Leads{œfieldNameœ: œinput_dataœ, œidœ: œPostgreSQL-Leadsœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "HTTPTool-ZohoCalendar",
-        "sourceHandle": "response",
+        "sourceHandle": "{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-ZohoCalendarœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}",
         "target": "PostgreSQL-Leads",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œPostgreSQL-Leadsœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -514,21 +605,25 @@
             "dataType": "PostgreSQL",
             "id": "PostgreSQL-Leads",
             "name": "response",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "HTTPTool-GrafanaWebhook",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-postgres-to-webhook",
+        "id": "reactflow__edge-PostgreSQL-Leads{œdataTypeœ: œPostgreSQLœ, œidœ: œPostgreSQL-Leadsœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}-HTTPTool-GrafanaWebhook{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-GrafanaWebhookœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "PostgreSQL-Leads",
-        "sourceHandle": "response",
+        "sourceHandle": "{œdataTypeœ: œPostgreSQLœ, œidœ: œPostgreSQL-Leadsœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}",
         "target": "HTTPTool-GrafanaWebhook",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-GrafanaWebhookœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -537,21 +632,27 @@
             "dataType": "HTTPTool",
             "id": "HTTPTool-GrafanaWebhook",
             "name": "response",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_value",
             "id": "ChatOutput-Recruiting",
-            "inputTypes": ["Data", "DataFrame", "Message"],
+            "inputTypes": [
+              "Data",
+              "DataFrame",
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-webhook-to-output",
+        "id": "reactflow__edge-HTTPTool-GrafanaWebhook{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-GrafanaWebhookœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}-ChatOutput-Recruiting{œfieldNameœ: œinput_valueœ, œidœ: œChatOutput-Recruitingœ, œinputTypesœ: [œDataœ, œDataFrameœ, œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "HTTPTool-GrafanaWebhook",
-        "sourceHandle": "response",
+        "sourceHandle": "{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-GrafanaWebhookœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}",
         "target": "ChatOutput-Recruiting",
-        "targetHandle": "input_value"
+        "targetHandle": "{œfieldNameœ: œinput_valueœ, œidœ: œChatOutput-Recruitingœ, œinputTypesœ: [œDataœ, œDataFrameœ, œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -560,21 +661,25 @@
             "dataType": "OpenAIModel",
             "id": "OpenAI-StageRouter",
             "name": "text_output",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "HTTPTool-ZohoMail",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-router-to-email",
+        "id": "reactflow__edge-OpenAI-StageRouter{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-StageRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}-HTTPTool-ZohoMail{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-ZohoMailœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "OpenAI-StageRouter",
-        "sourceHandle": "text_output",
+        "sourceHandle": "{œdataTypeœ: œOpenAIModelœ, œidœ: œOpenAI-StageRouterœ, œnameœ: œtext_outputœ, œoutput_typesœ: [œMessageœ]}",
         "target": "HTTPTool-ZohoMail",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œHTTPTool-ZohoMailœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
         "className": "",
@@ -583,21 +688,25 @@
             "dataType": "HTTPTool",
             "id": "HTTPTool-ZohoMail",
             "name": "response",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_data",
             "id": "PostgreSQL-Leads",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
-        "id": "edge-email-to-postgres",
+        "id": "reactflow__edge-HTTPTool-ZohoMail{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-ZohoMailœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}-PostgreSQL-Leads{œfieldNameœ: œinput_dataœ, œidœ: œPostgreSQL-Leadsœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}",
         "selected": false,
         "source": "HTTPTool-ZohoMail",
-        "sourceHandle": "response",
+        "sourceHandle": "{œdataTypeœ: œHTTPToolœ, œidœ: œHTTPTool-ZohoMailœ, œnameœ: œresponseœ, œoutput_typesœ: [œMessageœ]}",
         "target": "PostgreSQL-Leads",
-        "targetHandle": "input_data"
+        "targetHandle": "{œfieldNameœ: œinput_dataœ, œidœ: œPostgreSQL-Leadsœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       }
     ],
     "nodes": [
@@ -605,7 +714,9 @@
         "data": {
           "id": "ChatInput-Recruiting",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -613,7 +724,17 @@
             "display_name": "Chat Input",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "should_store_message", "sender", "sender_name", "session_id", "files", "background_color", "chat_icon", "text_color"],
+            "field_order": [
+              "input_value",
+              "should_store_message",
+              "sender",
+              "sender_name",
+              "session_id",
+              "files",
+              "background_color",
+              "chat_icon",
+              "text_color"
+            ],
             "frozen": false,
             "icon": "MessagesSquare",
             "legacy": false,
@@ -629,7 +750,9 @@
                 "name": "message",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -662,7 +785,11 @@
                 "advanced": true,
                 "display_name": "Files",
                 "dynamic": false,
-                "fileTypes": ["csv", "txt", "xlsx"],
+                "fileTypes": [
+                  "csv",
+                  "txt",
+                  "xlsx"
+                ],
                 "file_path": "",
                 "info": "Files to be sent with the message, including CSV files for prospect data.",
                 "list": true,
@@ -684,7 +811,10 @@
         "dragging": false,
         "height": 234,
         "id": "ChatInput-Recruiting",
-        "position": {"x": 100, "y": 50},
+        "position": {
+          "x": 100,
+          "y": 50
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -693,7 +823,9 @@
         "data": {
           "id": "CSVLoader-Upload",
           "node": {
-            "base_classes": ["Data"],
+            "base_classes": [
+              "Data"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -701,7 +833,11 @@
             "display_name": "CSV Loader",
             "documentation": "",
             "edited": false,
-            "field_order": ["file_path", "separator", "encoding"],
+            "field_order": [
+              "file_path",
+              "separator",
+              "encoding"
+            ],
             "frozen": false,
             "icon": "FileSpreadsheet",
             "legacy": false,
@@ -717,7 +853,9 @@
                 "name": "data_output",
                 "selected": "Data",
                 "tool_mode": true,
-                "types": ["Data"],
+                "types": [
+                  "Data"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -729,7 +867,9 @@
                 "advanced": false,
                 "display_name": "File Path",
                 "dynamic": false,
-                "fileTypes": ["csv"],
+                "fileTypes": [
+                  "csv"
+                ],
                 "info": "Path to CSV file containing DBPR agent data",
                 "name": "file_path",
                 "required": true,
@@ -763,7 +903,10 @@
         "dragging": false,
         "height": 260,
         "id": "CSVLoader-Upload",
-        "position": {"x": 100, "y": 350},
+        "position": {
+          "x": 100,
+          "y": 350
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -772,7 +915,9 @@
         "data": {
           "id": "PythonTool-Validation",
           "node": {
-            "base_classes": ["Data"],
+            "base_classes": [
+              "Data"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -780,7 +925,10 @@
             "display_name": "Python Tool",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "code"],
+            "field_order": [
+              "input_data",
+              "code"
+            ],
             "frozen": false,
             "icon": "Python",
             "legacy": false,
@@ -796,7 +944,9 @@
                 "name": "output",
                 "selected": "Data",
                 "tool_mode": true,
-                "types": ["Data"],
+                "types": [
+                  "Data"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -807,7 +957,9 @@
                 "_input_type": "HandleInput",
                 "display_name": "Input Data",
                 "info": "Data to validate",
-                "input_types": ["Data"],
+                "input_types": [
+                  "Data"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "data"
@@ -829,7 +981,10 @@
         "dragging": false,
         "height": 300,
         "id": "PythonTool-Validation",
-        "position": {"x": 500, "y": 350},
+        "position": {
+          "x": 500,
+          "y": 350
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -838,7 +993,9 @@
         "data": {
           "id": "HTTPTool-ZohoDedupe",
           "node": {
-            "base_classes": ["Data"],
+            "base_classes": [
+              "Data"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -846,7 +1003,13 @@
             "display_name": "HTTP Tool",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "url", "method", "headers", "body"],
+            "field_order": [
+              "input_data",
+              "url",
+              "method",
+              "headers",
+              "body"
+            ],
             "frozen": false,
             "icon": "Globe",
             "legacy": false,
@@ -862,7 +1025,9 @@
                 "name": "response",
                 "selected": "Data",
                 "tool_mode": true,
-                "types": ["Data"],
+                "types": [
+                  "Data"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -873,7 +1038,9 @@
                 "_input_type": "HandleInput",
                 "display_name": "Input Data",
                 "info": "Validated prospect data",
-                "input_types": ["Data"],
+                "input_types": [
+                  "Data"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "data"
@@ -892,7 +1059,12 @@
                 "display_name": "Method",
                 "info": "HTTP method",
                 "name": "method",
-                "options": ["GET", "POST", "PUT", "DELETE"],
+                "options": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "DELETE"
+                ],
                 "type": "str",
                 "value": "POST"
               },
@@ -922,7 +1094,10 @@
         "dragging": false,
         "height": 340,
         "id": "HTTPTool-ZohoDedupe",
-        "position": {"x": 900, "y": 350},
+        "position": {
+          "x": 900,
+          "y": 350
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -931,17 +1106,24 @@
         "data": {
           "id": "Prompt-WorkflowOrchestrator",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {
-              "template": ["input_value", "prospect_list"]
+              "template": [
+                "input_value",
+                "prospect_list"
+              ]
             },
             "description": "Create a prompt template with dynamic variables.",
             "display_name": "Prompt",
             "documentation": "",
             "edited": false,
-            "field_order": ["template"],
+            "field_order": [
+              "template"
+            ],
             "frozen": false,
             "icon": "prompts",
             "legacy": false,
@@ -957,7 +1139,9 @@
                 "name": "prompt",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -987,7 +1171,9 @@
                 "dynamic": false,
                 "field_type": "str",
                 "info": "Incoming message to route through workflow",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "multiline": true,
                 "name": "input_value",
@@ -1002,7 +1188,10 @@
                 "dynamic": false,
                 "field_type": "str",
                 "info": "Deduplicated prospect data for workflow processing",
-                "input_types": ["Data", "Message"],
+                "input_types": [
+                  "Data",
+                  "Message"
+                ],
                 "list": false,
                 "multiline": true,
                 "name": "prospect_list",
@@ -1019,7 +1208,10 @@
         "dragging": false,
         "height": 320,
         "id": "Prompt-WorkflowOrchestrator",
-        "position": {"x": 500, "y": 50},
+        "position": {
+          "x": 500,
+          "y": 50
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1028,17 +1220,24 @@
         "data": {
           "id": "SystemPrompt-Impact",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {
-              "template": ["memory", "context"]
+              "template": [
+                "memory",
+                "context"
+              ]
             },
             "description": "Create a prompt template with dynamic variables.",
             "display_name": "Prompt",
             "documentation": "",
             "edited": false,
-            "field_order": ["template"],
+            "field_order": [
+              "template"
+            ],
             "frozen": false,
             "icon": "prompts",
             "legacy": false,
@@ -1054,7 +1253,9 @@
                 "name": "prompt",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1084,7 +1285,10 @@
                 "dynamic": false,
                 "field_type": "str",
                 "info": "Conversation history and context",
-                "input_types": ["Message", "Text"],
+                "input_types": [
+                  "Message",
+                  "Text"
+                ],
                 "list": false,
                 "multiline": true,
                 "name": "memory",
@@ -1099,7 +1303,10 @@
                 "dynamic": false,
                 "field_type": "str",
                 "info": "Semantic context from vector store",
-                "input_types": ["Message", "Text"],
+                "input_types": [
+                  "Message",
+                  "Text"
+                ],
                 "list": false,
                 "multiline": true,
                 "name": "context",
@@ -1116,7 +1323,10 @@
         "dragging": false,
         "height": 380,
         "id": "SystemPrompt-Impact",
-        "position": {"x": 900, "y": 50},
+        "position": {
+          "x": 900,
+          "y": 50
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1125,7 +1335,10 @@
         "data": {
           "id": "BufferMemory-Main",
           "node": {
-            "base_classes": ["Data", "Message"],
+            "base_classes": [
+              "Data",
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -1133,7 +1346,11 @@
             "display_name": "Memory",
             "documentation": "",
             "edited": false,
-            "field_order": ["session_id", "k", "memory_key"],
+            "field_order": [
+              "session_id",
+              "k",
+              "memory_key"
+            ],
             "frozen": false,
             "icon": "Brain",
             "legacy": false,
@@ -1149,7 +1366,9 @@
                 "name": "messages",
                 "selected": "Data",
                 "tool_mode": true,
-                "types": ["Data"],
+                "types": [
+                  "Data"
+                ],
                 "value": "__UNDEFINED__"
               },
               {
@@ -1160,7 +1379,9 @@
                 "name": "messages_text",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1171,7 +1392,9 @@
                 "_input_type": "MessageTextInput",
                 "display_name": "Session ID",
                 "info": "Session ID for conversation tracking",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "session_id",
                 "type": "str"
               },
@@ -1199,7 +1422,10 @@
         "dragging": false,
         "height": 280,
         "id": "BufferMemory-Main",
-        "position": {"x": 1300, "y": 50},
+        "position": {
+          "x": 1300,
+          "y": 50
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1208,7 +1434,9 @@
         "data": {
           "id": "VectorStoreRetriever-Semantic",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -1216,7 +1444,12 @@
             "display_name": "Vector Store Retriever",
             "documentation": "",
             "edited": false,
-            "field_order": ["query", "vector_store", "k", "similarity_threshold"],
+            "field_order": [
+              "query",
+              "vector_store",
+              "k",
+              "similarity_threshold"
+            ],
             "frozen": false,
             "icon": "Database",
             "legacy": false,
@@ -1232,7 +1465,9 @@
                 "name": "retrieved_context",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1243,7 +1478,9 @@
                 "_input_type": "MessageTextInput",
                 "display_name": "Query",
                 "info": "Query for semantic search",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "query",
                 "required": true,
                 "type": "str"
@@ -1269,7 +1506,11 @@
                 "display_name": "Similarity Threshold",
                 "info": "Minimum similarity score for results",
                 "name": "similarity_threshold",
-                "range_spec": {"min": 0.0, "max": 1.0, "step": 0.01},
+                "range_spec": {
+                  "min": 0.0,
+                  "max": 1.0,
+                  "step": 0.01
+                },
                 "type": "slider",
                 "value": 0.7
               }
@@ -1281,7 +1522,10 @@
         "dragging": false,
         "height": 320,
         "id": "VectorStoreRetriever-Semantic",
-        "position": {"x": 1300, "y": 400},
+        "position": {
+          "x": 1300,
+          "y": 400
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1290,7 +1534,10 @@
         "data": {
           "id": "OpenAIModel-Main",
           "node": {
-            "base_classes": ["LanguageModel", "Message"],
+            "base_classes": [
+              "LanguageModel",
+              "Message"
+            ],
             "beta": false,
             "category": "models",
             "conditional_paths": [],
@@ -1299,7 +1546,21 @@
             "display_name": "OpenAI",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "system_message", "stream", "max_tokens", "model_kwargs", "json_mode", "model_name", "openai_api_base", "api_key", "temperature", "seed", "max_retries", "timeout"],
+            "field_order": [
+              "input_value",
+              "system_message",
+              "stream",
+              "max_tokens",
+              "model_kwargs",
+              "json_mode",
+              "model_name",
+              "openai_api_base",
+              "api_key",
+              "temperature",
+              "seed",
+              "max_retries",
+              "timeout"
+            ],
             "frozen": false,
             "icon": "OpenAI",
             "key": "OpenAIModel",
@@ -1316,7 +1577,9 @@
                 "required_inputs": [],
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1346,7 +1609,9 @@
                 "display_name": "Input",
                 "dynamic": false,
                 "info": "",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "input_value",
@@ -1368,7 +1633,19 @@
                 "dynamic": false,
                 "info": "",
                 "name": "model_name",
-                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4-turbo", "gpt-4-turbo-preview", "gpt-4", "gpt-3.5-turbo", "o1"],
+                "options": [
+                  "gpt-4o-mini",
+                  "gpt-4o",
+                  "gpt-4.1",
+                  "gpt-4.1-mini",
+                  "gpt-4.1-nano",
+                  "gpt-4.5-preview",
+                  "gpt-4-turbo",
+                  "gpt-4-turbo-preview",
+                  "gpt-4",
+                  "gpt-3.5-turbo",
+                  "o1"
+                ],
                 "placeholder": "",
                 "required": false,
                 "show": true,
@@ -1384,7 +1661,9 @@
                 "display_name": "System Message",
                 "dynamic": false,
                 "info": "System message to pass to the model.",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
@@ -1407,7 +1686,12 @@
                 "info": "",
                 "name": "temperature",
                 "placeholder": "",
-                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "range_spec": {
+                  "max": 1,
+                  "min": 0,
+                  "step": 0.01,
+                  "step_type": "float"
+                },
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1432,7 +1716,10 @@
         "dragging": false,
         "height": 400,
         "id": "OpenAIModel-Main",
-        "position": {"x": 900, "y": 500},
+        "position": {
+          "x": 900,
+          "y": 500
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1441,17 +1728,23 @@
         "data": {
           "id": "Prompt-StageRouter",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {
-              "template": ["response"]
+              "template": [
+                "response"
+              ]
             },
             "description": "Create a prompt template with dynamic variables.",
             "display_name": "Prompt",
             "documentation": "",
             "edited": false,
-            "field_order": ["template"],
+            "field_order": [
+              "template"
+            ],
             "frozen": false,
             "icon": "prompts",
             "legacy": false,
@@ -1467,7 +1760,9 @@
                 "name": "prompt",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1497,7 +1792,9 @@
                 "dynamic": false,
                 "field_type": "str",
                 "info": "Agent response to analyze for routing",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "multiline": true,
                 "name": "response",
@@ -1514,7 +1811,10 @@
         "dragging": false,
         "height": 340,
         "id": "Prompt-StageRouter",
-        "position": {"x": 1300, "y": 750},
+        "position": {
+          "x": 1300,
+          "y": 750
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1523,7 +1823,10 @@
         "data": {
           "id": "OpenAI-StageRouter",
           "node": {
-            "base_classes": ["LanguageModel", "Message"],
+            "base_classes": [
+              "LanguageModel",
+              "Message"
+            ],
             "beta": false,
             "category": "models",
             "conditional_paths": [],
@@ -1532,7 +1835,21 @@
             "display_name": "OpenAI",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "system_message", "stream", "max_tokens", "model_kwargs", "json_mode", "model_name", "openai_api_base", "api_key", "temperature", "seed", "max_retries", "timeout"],
+            "field_order": [
+              "input_value",
+              "system_message",
+              "stream",
+              "max_tokens",
+              "model_kwargs",
+              "json_mode",
+              "model_name",
+              "openai_api_base",
+              "api_key",
+              "temperature",
+              "seed",
+              "max_retries",
+              "timeout"
+            ],
             "frozen": false,
             "icon": "OpenAI",
             "key": "OpenAIModel",
@@ -1549,7 +1866,9 @@
                 "required_inputs": [],
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1579,7 +1898,9 @@
                 "display_name": "Input",
                 "dynamic": false,
                 "info": "",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "input_value",
@@ -1601,7 +1922,19 @@
                 "dynamic": false,
                 "info": "",
                 "name": "model_name",
-                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4-turbo", "gpt-4-turbo-preview", "gpt-4", "gpt-3.5-turbo", "o1"],
+                "options": [
+                  "gpt-4o-mini",
+                  "gpt-4o",
+                  "gpt-4.1",
+                  "gpt-4.1-mini",
+                  "gpt-4.1-nano",
+                  "gpt-4.5-preview",
+                  "gpt-4-turbo",
+                  "gpt-4-turbo-preview",
+                  "gpt-4",
+                  "gpt-3.5-turbo",
+                  "o1"
+                ],
                 "placeholder": "",
                 "required": false,
                 "show": true,
@@ -1619,7 +1952,12 @@
                 "info": "",
                 "name": "temperature",
                 "placeholder": "",
-                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "range_spec": {
+                  "max": 1,
+                  "min": 0,
+                  "step": 0.01,
+                  "step_type": "float"
+                },
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1644,7 +1982,10 @@
         "dragging": false,
         "height": 400,
         "id": "OpenAI-StageRouter",
-        "position": {"x": 1700, "y": 750},
+        "position": {
+          "x": 1700,
+          "y": 750
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1653,7 +1994,9 @@
         "data": {
           "id": "HTTPTool-SalesMsgSend",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -1661,7 +2004,13 @@
             "display_name": "HTTP Tool",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "url", "method", "headers", "body"],
+            "field_order": [
+              "input_data",
+              "url",
+              "method",
+              "headers",
+              "body"
+            ],
             "frozen": false,
             "icon": "Globe",
             "legacy": false,
@@ -1677,7 +2026,9 @@
                 "name": "response",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1688,7 +2039,9 @@
                 "_input_type": "MessageInput",
                 "display_name": "Input Data",
                 "info": "Message content to send via SMS",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "str"
@@ -1707,7 +2060,12 @@
                 "display_name": "Method",
                 "info": "HTTP method",
                 "name": "method",
-                "options": ["GET", "POST", "PUT", "DELETE"],
+                "options": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "DELETE"
+                ],
                 "type": "str",
                 "value": "POST"
               },
@@ -1737,7 +2095,10 @@
         "dragging": false,
         "height": 360,
         "id": "HTTPTool-SalesMsgSend",
-        "position": {"x": 100, "y": 1000},
+        "position": {
+          "x": 100,
+          "y": 1000
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1746,7 +2107,9 @@
         "data": {
           "id": "HTTPTool-SalesMsgGet",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -1754,7 +2117,12 @@
             "display_name": "HTTP Tool",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "url", "method", "headers"],
+            "field_order": [
+              "input_data",
+              "url",
+              "method",
+              "headers"
+            ],
             "frozen": false,
             "icon": "Globe",
             "legacy": false,
@@ -1770,7 +2138,9 @@
                 "name": "response",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1781,7 +2151,9 @@
                 "_input_type": "MessageInput",
                 "display_name": "Input Data",
                 "info": "SMS thread data to retrieve",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "str"
@@ -1800,7 +2172,12 @@
                 "display_name": "Method",
                 "info": "HTTP method",
                 "name": "method",
-                "options": ["GET", "POST", "PUT", "DELETE"],
+                "options": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "DELETE"
+                ],
                 "type": "str",
                 "value": "GET"
               },
@@ -1821,7 +2198,10 @@
         "dragging": false,
         "height": 320,
         "id": "HTTPTool-SalesMsgGet",
-        "position": {"x": 500, "y": 1000},
+        "position": {
+          "x": 500,
+          "y": 1000
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1830,17 +2210,23 @@
         "data": {
           "id": "Prompt-ResponseRouter",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {
-              "template": ["input_data"]
+              "template": [
+                "input_data"
+              ]
             },
             "description": "Create a prompt template with dynamic variables.",
             "display_name": "Prompt",
             "documentation": "",
             "edited": false,
-            "field_order": ["template"],
+            "field_order": [
+              "template"
+            ],
             "frozen": false,
             "icon": "prompts",
             "legacy": false,
@@ -1856,7 +2242,9 @@
                 "name": "prompt",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1886,7 +2274,9 @@
                 "dynamic": false,
                 "field_type": "str",
                 "info": "SMS response data to analyze",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "multiline": true,
                 "name": "input_data",
@@ -1903,7 +2293,10 @@
         "dragging": false,
         "height": 320,
         "id": "Prompt-ResponseRouter",
-        "position": {"x": 900, "y": 1000},
+        "position": {
+          "x": 900,
+          "y": 1000
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1912,7 +2305,10 @@
         "data": {
           "id": "OpenAI-ResponseRouter",
           "node": {
-            "base_classes": ["LanguageModel", "Message"],
+            "base_classes": [
+              "LanguageModel",
+              "Message"
+            ],
             "beta": false,
             "category": "models",
             "conditional_paths": [],
@@ -1921,7 +2317,21 @@
             "display_name": "OpenAI",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "system_message", "stream", "max_tokens", "model_kwargs", "json_mode", "model_name", "openai_api_base", "api_key", "temperature", "seed", "max_retries", "timeout"],
+            "field_order": [
+              "input_value",
+              "system_message",
+              "stream",
+              "max_tokens",
+              "model_kwargs",
+              "json_mode",
+              "model_name",
+              "openai_api_base",
+              "api_key",
+              "temperature",
+              "seed",
+              "max_retries",
+              "timeout"
+            ],
             "frozen": false,
             "icon": "OpenAI",
             "key": "OpenAIModel",
@@ -1938,7 +2348,9 @@
                 "required_inputs": [],
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1968,7 +2380,9 @@
                 "display_name": "Input",
                 "dynamic": false,
                 "info": "",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "input_value",
@@ -1990,7 +2404,19 @@
                 "dynamic": false,
                 "info": "",
                 "name": "model_name",
-                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4-turbo", "gpt-4-turbo-preview", "gpt-4", "gpt-3.5-turbo", "o1"],
+                "options": [
+                  "gpt-4o-mini",
+                  "gpt-4o",
+                  "gpt-4.1",
+                  "gpt-4.1-mini",
+                  "gpt-4.1-nano",
+                  "gpt-4.5-preview",
+                  "gpt-4-turbo",
+                  "gpt-4-turbo-preview",
+                  "gpt-4",
+                  "gpt-3.5-turbo",
+                  "o1"
+                ],
                 "placeholder": "",
                 "required": false,
                 "show": true,
@@ -2008,7 +2434,12 @@
                 "info": "",
                 "name": "temperature",
                 "placeholder": "",
-                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "range_spec": {
+                  "max": 1,
+                  "min": 0,
+                  "step": 0.01,
+                  "step_type": "float"
+                },
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2033,7 +2464,10 @@
         "dragging": false,
         "height": 400,
         "id": "OpenAI-ResponseRouter",
-        "position": {"x": 1300, "y": 1000},
+        "position": {
+          "x": 1300,
+          "y": 1000
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2042,7 +2476,9 @@
         "data": {
           "id": "HTTPTool-ZohoCRMCreate",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -2050,7 +2486,13 @@
             "display_name": "HTTP Tool",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "url", "method", "headers", "body"],
+            "field_order": [
+              "input_data",
+              "url",
+              "method",
+              "headers",
+              "body"
+            ],
             "frozen": false,
             "icon": "Globe",
             "legacy": false,
@@ -2066,7 +2508,9 @@
                 "name": "response",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -2077,7 +2521,9 @@
                 "_input_type": "MessageInput",
                 "display_name": "Input Data",
                 "info": "Prospect data for CRM record creation/update",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "str"
@@ -2096,7 +2542,12 @@
                 "display_name": "Method",
                 "info": "HTTP method",
                 "name": "method",
-                "options": ["GET", "POST", "PUT", "DELETE"],
+                "options": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "DELETE"
+                ],
                 "type": "str",
                 "value": "POST"
               },
@@ -2126,7 +2577,10 @@
         "dragging": false,
         "height": 380,
         "id": "HTTPTool-ZohoCRMCreate",
-        "position": {"x": 1300, "y": 1000},
+        "position": {
+          "x": 1300,
+          "y": 1000
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2135,7 +2589,9 @@
         "data": {
           "id": "HTTPTool-ZohoCalendar",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -2143,7 +2599,13 @@
             "display_name": "HTTP Tool",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "url", "method", "headers", "body"],
+            "field_order": [
+              "input_data",
+              "url",
+              "method",
+              "headers",
+              "body"
+            ],
             "frozen": false,
             "icon": "Globe",
             "legacy": false,
@@ -2159,7 +2621,9 @@
                 "name": "response",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -2170,7 +2634,9 @@
                 "_input_type": "MessageInput",
                 "display_name": "Input Data",
                 "info": "Contact data for calendar scheduling",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "str"
@@ -2189,7 +2655,12 @@
                 "display_name": "Method",
                 "info": "HTTP method",
                 "name": "method",
-                "options": ["GET", "POST", "PUT", "DELETE"],
+                "options": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "DELETE"
+                ],
                 "type": "str",
                 "value": "POST"
               },
@@ -2219,7 +2690,10 @@
         "dragging": false,
         "height": 380,
         "id": "HTTPTool-ZohoCalendar",
-        "position": {"x": 1700, "y": 1000},
+        "position": {
+          "x": 1700,
+          "y": 1000
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2228,7 +2702,9 @@
         "data": {
           "id": "HTTPTool-ZohoTagNotInterested",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -2236,7 +2712,13 @@
             "display_name": "HTTP Tool",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "url", "method", "headers", "body"],
+            "field_order": [
+              "input_data",
+              "url",
+              "method",
+              "headers",
+              "body"
+            ],
             "frozen": false,
             "icon": "Globe",
             "legacy": false,
@@ -2252,7 +2734,9 @@
                 "name": "response",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -2263,7 +2747,9 @@
                 "_input_type": "MessageInput",
                 "display_name": "Input Data",
                 "info": "Prospect data for tagging as not interested",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "str"
@@ -2282,7 +2768,12 @@
                 "display_name": "Method",
                 "info": "HTTP method",
                 "name": "method",
-                "options": ["GET", "POST", "PUT", "DELETE"],
+                "options": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "DELETE"
+                ],
                 "type": "str",
                 "value": "POST"
               },
@@ -2312,7 +2803,10 @@
         "dragging": false,
         "height": 380,
         "id": "HTTPTool-ZohoTagNotInterested",
-        "position": {"x": 100, "y": 1450},
+        "position": {
+          "x": 100,
+          "y": 1450
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2321,17 +2815,23 @@
         "data": {
           "id": "Prompt-RetryRouter",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {
-              "template": ["input_data"]
+              "template": [
+                "input_data"
+              ]
             },
             "description": "Create a prompt template with dynamic variables.",
             "display_name": "Prompt",
             "documentation": "",
             "edited": false,
-            "field_order": ["template"],
+            "field_order": [
+              "template"
+            ],
             "frozen": false,
             "icon": "prompts",
             "legacy": false,
@@ -2347,7 +2847,9 @@
                 "name": "prompt",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -2377,7 +2879,9 @@
                 "dynamic": false,
                 "field_type": "str",
                 "info": "Data for retry logic evaluation",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "multiline": true,
                 "name": "input_data",
@@ -2394,7 +2898,10 @@
         "dragging": false,
         "height": 300,
         "id": "Prompt-RetryRouter",
-        "position": {"x": 500, "y": 1450},
+        "position": {
+          "x": 500,
+          "y": 1450
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2403,7 +2910,10 @@
         "data": {
           "id": "OpenAI-RetryRouter",
           "node": {
-            "base_classes": ["LanguageModel", "Message"],
+            "base_classes": [
+              "LanguageModel",
+              "Message"
+            ],
             "beta": false,
             "category": "models",
             "conditional_paths": [],
@@ -2412,7 +2922,21 @@
             "display_name": "OpenAI",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "system_message", "stream", "max_tokens", "model_kwargs", "json_mode", "model_name", "openai_api_base", "api_key", "temperature", "seed", "max_retries", "timeout"],
+            "field_order": [
+              "input_value",
+              "system_message",
+              "stream",
+              "max_tokens",
+              "model_kwargs",
+              "json_mode",
+              "model_name",
+              "openai_api_base",
+              "api_key",
+              "temperature",
+              "seed",
+              "max_retries",
+              "timeout"
+            ],
             "frozen": false,
             "icon": "OpenAI",
             "key": "OpenAIModel",
@@ -2429,7 +2953,9 @@
                 "required_inputs": [],
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -2459,7 +2985,9 @@
                 "display_name": "Input",
                 "dynamic": false,
                 "info": "",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "input_value",
@@ -2481,7 +3009,19 @@
                 "dynamic": false,
                 "info": "",
                 "name": "model_name",
-                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4-turbo", "gpt-4-turbo-preview", "gpt-4", "gpt-3.5-turbo", "o1"],
+                "options": [
+                  "gpt-4o-mini",
+                  "gpt-4o",
+                  "gpt-4.1",
+                  "gpt-4.1-mini",
+                  "gpt-4.1-nano",
+                  "gpt-4.5-preview",
+                  "gpt-4-turbo",
+                  "gpt-4-turbo-preview",
+                  "gpt-4",
+                  "gpt-3.5-turbo",
+                  "o1"
+                ],
                 "placeholder": "",
                 "required": false,
                 "show": true,
@@ -2499,7 +3039,12 @@
                 "info": "",
                 "name": "temperature",
                 "placeholder": "",
-                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "range_spec": {
+                  "max": 1,
+                  "min": 0,
+                  "step": 0.01,
+                  "step_type": "float"
+                },
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2524,7 +3069,10 @@
         "dragging": false,
         "height": 400,
         "id": "OpenAI-RetryRouter",
-        "position": {"x": 900, "y": 1450},
+        "position": {
+          "x": 900,
+          "y": 1450
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2533,7 +3081,9 @@
         "data": {
           "id": "PythonTool-Delay",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -2541,7 +3091,10 @@
             "display_name": "Python Tool",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "code"],
+            "field_order": [
+              "input_data",
+              "code"
+            ],
             "frozen": false,
             "icon": "Python",
             "legacy": false,
@@ -2557,7 +3110,9 @@
                 "name": "output",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -2568,7 +3123,9 @@
                 "_input_type": "MessageInput",
                 "display_name": "Input Data",
                 "info": "Data for delay processing",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "str"
@@ -2590,7 +3147,10 @@
         "dragging": false,
         "height": 320,
         "id": "PythonTool-Delay",
-        "position": {"x": 900, "y": 1450},
+        "position": {
+          "x": 900,
+          "y": 1450
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2599,7 +3159,9 @@
         "data": {
           "id": "HTTPTool-ZohoMail",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -2607,7 +3169,13 @@
             "display_name": "HTTP Tool",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "url", "method", "headers", "body"],
+            "field_order": [
+              "input_data",
+              "url",
+              "method",
+              "headers",
+              "body"
+            ],
             "frozen": false,
             "icon": "Globe",
             "legacy": false,
@@ -2623,7 +3191,9 @@
                 "name": "response",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -2634,7 +3204,9 @@
                 "_input_type": "MessageInput",
                 "display_name": "Input Data",
                 "info": "Message content for email follow-up",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "str"
@@ -2653,7 +3225,12 @@
                 "display_name": "Method",
                 "info": "HTTP method",
                 "name": "method",
-                "options": ["GET", "POST", "PUT", "DELETE"],
+                "options": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "DELETE"
+                ],
                 "type": "str",
                 "value": "POST"
               },
@@ -2683,7 +3260,10 @@
         "dragging": false,
         "height": 380,
         "id": "HTTPTool-ZohoMail",
-        "position": {"x": 1300, "y": 1450},
+        "position": {
+          "x": 1300,
+          "y": 1450
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2692,7 +3272,9 @@
         "data": {
           "id": "PostgreSQL-Leads",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -2700,7 +3282,11 @@
             "display_name": "PostgreSQL",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "connection_string", "query"],
+            "field_order": [
+              "input_data",
+              "connection_string",
+              "query"
+            ],
             "frozen": false,
             "icon": "Database",
             "legacy": false,
@@ -2716,7 +3302,9 @@
                 "name": "response",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -2727,7 +3315,9 @@
                 "_input_type": "MessageInput",
                 "display_name": "Input Data",
                 "info": "Data to store in PostgreSQL",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "str"
@@ -2759,7 +3349,10 @@
         "dragging": false,
         "height": 320,
         "id": "PostgreSQL-Leads",
-        "position": {"x": 1700, "y": 1450},
+        "position": {
+          "x": 1700,
+          "y": 1450
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2768,7 +3361,9 @@
         "data": {
           "id": "HTTPTool-GrafanaWebhook",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -2776,7 +3371,13 @@
             "display_name": "HTTP Tool",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_data", "url", "method", "headers", "body"],
+            "field_order": [
+              "input_data",
+              "url",
+              "method",
+              "headers",
+              "body"
+            ],
             "frozen": false,
             "icon": "Globe",
             "legacy": false,
@@ -2792,7 +3393,9 @@
                 "name": "response",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -2803,7 +3406,9 @@
                 "_input_type": "MessageInput",
                 "display_name": "Input Data",
                 "info": "Metrics data to send to Grafana",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "name": "input_data",
                 "required": true,
                 "type": "str"
@@ -2822,7 +3427,12 @@
                 "display_name": "Method",
                 "info": "HTTP method",
                 "name": "method",
-                "options": ["GET", "POST", "PUT", "DELETE"],
+                "options": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "DELETE"
+                ],
                 "type": "str",
                 "value": "POST"
               },
@@ -2852,7 +3462,10 @@
         "dragging": false,
         "height": 380,
         "id": "HTTPTool-GrafanaWebhook",
-        "position": {"x": 2100, "y": 1450},
+        "position": {
+          "x": 2100,
+          "y": 1450
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -2863,7 +3476,9 @@
           "display_name": "Chat Output",
           "id": "ChatOutput-Recruiting",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
@@ -2871,7 +3486,17 @@
             "display_name": "Chat Output",
             "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "should_store_message", "sender", "sender_name", "session_id", "data_template", "background_color", "chat_icon", "text_color"],
+            "field_order": [
+              "input_value",
+              "should_store_message",
+              "sender",
+              "sender_name",
+              "session_id",
+              "data_template",
+              "background_color",
+              "chat_icon",
+              "text_color"
+            ],
             "frozen": false,
             "icon": "MessagesSquare",
             "legacy": false,
@@ -2887,7 +3512,9 @@
                 "name": "message",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -2900,7 +3527,11 @@
                 "display_name": "Text",
                 "dynamic": false,
                 "info": "Message to be passed as output.",
-                "input_types": ["Data", "DataFrame", "Message"],
+                "input_types": [
+                  "Data",
+                  "DataFrame",
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "input_value",
@@ -2919,7 +3550,9 @@
                 "display_name": "Sender Name",
                 "dynamic": false,
                 "info": "Name of the sender.",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "sender_name",
@@ -2957,13 +3590,20 @@
         "dragging": false,
         "height": 260,
         "id": "ChatOutput-Recruiting",
-        "position": {"x": 2500, "y": 1450},
+        "position": {
+          "x": 2500,
+          "y": 1450
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
       }
     ],
-    "viewport": {"x": 0, "y": 0, "zoom": 0.6}
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "zoom": 0.6
+    }
   },
   "description": "Production-ready Impact Realty recruiting agent with NATIVE LANGFLOW COMPONENTS ONLY: CSV ingestion & validation, Zoho deduplication, native HTTP tools for SalesMsg & Zoho MCP operations, prompt-based routing with OpenAI decision making, retry/backoff logic, PostgreSQL persistence, and Grafana webhook integration. All CustomComponents replaced with native Prompt+OpenAI combinations.",
   "endpoint_name": "impact-recruiting-agent-native",
@@ -2973,5 +3613,19 @@
   "is_component": false,
   "last_tested_version": "1.0.19.post2",
   "name": "Impact Realty Perfect Recruiter Flow - Native Components",
-  "tags": ["recruiting", "impact-realty", "perfect-flow", "http-tools", "mcp", "sms", "email", "crm", "retry-logic", "grafana", "postgresql", "native-components", "prompt-based-routing"]
+  "tags": [
+    "recruiting",
+    "impact-realty",
+    "perfect-flow",
+    "http-tools",
+    "mcp",
+    "sms",
+    "email",
+    "crm",
+    "retry-logic",
+    "grafana",
+    "postgresql",
+    "native-components",
+    "prompt-based-routing"
+  ]
 }
