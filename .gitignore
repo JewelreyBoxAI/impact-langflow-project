@@ -118,4 +118,94 @@ temp/
 # Documentation files (except main README)
 docs/
 *.md
-!README.mdMCPServers/zoho-crm-mcp-server/.git
+!README.md
+
+# MCP Servers - exclude any nested git repos
+MCPServers/*/.git/
+MCPServers/*/venv/
+MCPServers/*/.env*
+MCPServers/*/logs/
+
+# Additional Python security
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Docker secrets and runtime
+*.dockerignore
+docker-compose.override.yml
+.docker/
+.dockerenv
+
+# MCP Token storage (ensure token persistence files are secure)
+MCPServers/*/.tokens.json
+MCPServers/*/tokens/
+*.tokens.json
+*token*.json
+*refresh*.json
+
+# Zoho OAuth and API credentials
+*zoho*token*
+*zoho*auth*
+*zoho*client*
+*zoho*secret*
+*zoho*refresh*
+*crm*token*
+*oauth*token*
+
+# LangFlow sensitive data
+flows/*/credentials/
+flows/*/.env*
+*.flow.secrets
+*langflow*secrets*
+
+# Additional sensitive file patterns
+*backup*
+*dump*
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+
+# Runtime and cache
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+.npm/
+.yarn/
+.pnp.*
+.yarn/
+.pnpm-debug.log*
+
+# Testing secrets
+test_*.env
+*test*secrets*
+*mock*credentials*
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# System files
+*.pid
+*.seed
+*.pid.lock
