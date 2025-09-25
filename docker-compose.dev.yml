@@ -1,0 +1,139 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - POSTGRES_URL=postgresql://postgres:password@postgres:5432/impact_realty
+      - REDIS_URL=redis://redis:6379
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ZOHO_CLIENT_ID=${ZOHO_CLIENT_ID}
+      - ZOHO_CLIENT_SECRET=${ZOHO_CLIENT_SECRET}
+      - ZOHO_REFRESH_TOKEN=${ZOHO_REFRESH_TOKEN}
+      - SALESMSG_API_TOKEN=${SALESMSG_API_TOKEN}
+      - GMAIL_ACCESS_TOKEN=${GMAIL_ACCESS_TOKEN}
+      - LANGFLOW_BASE_URL=${LANGFLOW_BASE_URL:-http://langflow:7860}
+    volumes:
+      - ./backend:/app
+      - ./flows:/app/flows
+    depends_on:
+      - postgres
+      - redis
+      - langflow
+    restart: unless-stopped
+    networks:
+      - impact-network
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+      - NEXT_PUBLIC_WS_BASE_URL=ws://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - impact-network
+
+  # LangFlow
+  langflow:
+    image: langflowai/langflow:latest
+    ports:
+      - "7860:7860"
+    environment:
+      - LANGFLOW_DATABASE_URL=postgresql://postgres:password@postgres:5432/langflow
+      - LANGFLOW_AUTO_LOGIN=true
+      - LANGFLOW_SUPERUSER_USERNAME=admin
+      - LANGFLOW_SUPERUSER_PASSWORD=${LANGFLOW_ADMIN_PASSWORD:-admin123}
+    volumes:
+      - ./flows:/app/flows
+      - langflow_data:/app/data
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - impact-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=impact_realty
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    networks:
+      - impact-network
+
+  # Redis for caching and sessions
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - impact-network
+
+  # MCP Server for Zoho
+  zoho-mcp:
+    build:
+      context: ./backend/integrations/MCPServers
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - ZOHO_CLIENT_ID=${ZOHO_CLIENT_ID}
+      - ZOHO_CLIENT_SECRET=${ZOHO_CLIENT_SECRET}
+      - ZOHO_REFRESH_TOKEN=${ZOHO_REFRESH_TOKEN}
+      - MCP_SERVER_PORT=3001
+    volumes:
+      - ./backend/integrations/MCPServers:/app
+    restart: unless-stopped
+    networks:
+      - impact-network
+
+  # Nginx Reverse Proxy (optional for production-like setup)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infrastructure/nginx/dev.conf:/etc/nginx/conf.d/default.conf
+      - ./infrastructure/nginx/certs:/etc/nginx/certs
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped
+    networks:
+      - impact-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  langflow_data:
+
+networks:
+  impact-network:
+    driver: bridge

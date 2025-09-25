@@ -8,9 +8,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 from datetime import datetime
 
-from ..api.routes import health, crm, flows, realty, webhooks
-from .middleware import audit_middleware
-from .config import get_settings
+from backend.api.routes import health, crm, flows, realty, webhooks, recruiting, mcp
+from backend.app.middleware import audit_middleware
+from backend.app.config import get_settings
 
 settings = get_settings()
 
@@ -43,6 +43,8 @@ def create_app() -> FastAPI:
     app.include_router(flows.router, prefix="/api/flows", tags=["Flows"])
     app.include_router(realty.router, prefix="/api/realty", tags=["Real Estate"])
     app.include_router(webhooks.router, prefix="/api/webhooks", tags=["Webhooks"])
+    app.include_router(recruiting.router, prefix="/api/recruiting", tags=["Recruiting"])
+    app.include_router(mcp.router, prefix="/api/mcp", tags=["MCP"])
 
     @app.on_event("startup")
     async def startup_event():
