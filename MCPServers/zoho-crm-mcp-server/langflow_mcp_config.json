@@ -1,0 +1,247 @@
+{
+  "name": "Zoho CRM MCP Server",
+  "description": "Model Context Protocol server for comprehensive Zoho CRM integration",
+  "server_type": "mcp",
+  "connection": {
+    "command": "python",
+    "args": ["-m", "zoho_crm_mcp.server", "main"],
+    "env": {
+      "ZOHO_CLIENT_ID": "${ZOHO_CLIENT_ID}",
+      "ZOHO_CLIENT_SECRET": "${ZOHO_CLIENT_SECRET}",
+      "ZOHO_REFRESH_TOKEN": "${ZOHO_REFRESH_TOKEN}",
+      "ZOHO_ACCESS_TOKEN": "${ZOHO_ACCESS_TOKEN}",
+      "ZOHO_CRM_BASE_URL": "${ZOHO_CRM_BASE_URL:-https://www.zohoapis.com/crm/v2}",
+      "ZOHO_AUTH_URL": "${ZOHO_AUTH_URL:-https://accounts.zoho.com/oauth/v2/token}"
+    }
+  },
+  "tools": [
+    {
+      "name": "get_token_status",
+      "description": "Get the current status of OAuth tokens and authentication",
+      "parameters": {}
+    },
+    {
+      "name": "set_refresh_token",
+      "description": "Manually set a long-lived refresh token for autonomous operation",
+      "parameters": {
+        "refresh_token": {
+          "type": "string",
+          "description": "A valid Zoho refresh token obtained through OAuth flow",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "test_zoho_connection",
+      "description": "Test the connection to Zoho CRM API with current tokens",
+      "parameters": {}
+    },
+    {
+      "name": "get_module_data",
+      "description": "Fetch data from Zoho CRM modules",
+      "parameters": {
+        "module_name": {
+          "type": "string",
+          "description": "Specific module name (e.g., 'Contacts', 'Leads'). If None, fetches from all modules.",
+          "optional": true,
+          "enum": ["Leads", "Accounts", "Contacts", "Deals"]
+        }
+      }
+    },
+    {
+      "name": "get_available_modules",
+      "description": "Get list of all available modules in Zoho CRM",
+      "parameters": {}
+    },
+    {
+      "name": "search_records",
+      "description": "Search for records in a specific module",
+      "parameters": {
+        "module_name": {
+          "type": "string",
+          "description": "Module to search in (e.g., 'Contacts', 'Leads')",
+          "required": true
+        },
+        "search_criteria": {
+          "type": "string",
+          "description": "Search query (e.g., 'email:john@example.com')",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "create_record",
+      "description": "Create a new record in a specific module",
+      "parameters": {
+        "module_name": {
+          "type": "string",
+          "description": "Module to create record in (e.g., 'Contacts', 'Leads')",
+          "required": true
+        },
+        "record_data": {
+          "type": "object",
+          "description": "Dictionary containing the record fields and values. Example: {\"First_Name\": \"John\", \"Last_Name\": \"Doe\", \"Email\": \"john@example.com\"}",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "update_record",
+      "description": "Update an existing record in a specific module",
+      "parameters": {
+        "module_name": {
+          "type": "string",
+          "description": "Module containing the record (e.g., 'Contacts', 'Leads')",
+          "required": true
+        },
+        "record_id": {
+          "type": "string",
+          "description": "ID of the record to update",
+          "required": true
+        },
+        "record_data": {
+          "type": "object",
+          "description": "Dictionary containing the fields to update and their new values. Example: {\"First_Name\": \"Jane\", \"Email\": \"jane@example.com\"}",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "delete_record",
+      "description": "Delete a record from a specific module",
+      "parameters": {
+        "module_name": {
+          "type": "string",
+          "description": "Module containing the record (e.g., 'Contacts', 'Leads')",
+          "required": true
+        },
+        "record_id": {
+          "type": "string",
+          "description": "ID of the record to delete",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "bulk_create_records",
+      "description": "Create multiple records in a specific module (max 100 per call)",
+      "parameters": {
+        "module_name": {
+          "type": "string",
+          "description": "Module to create records in (e.g., 'Contacts', 'Leads')",
+          "required": true
+        },
+        "records_data": {
+          "type": "array",
+          "description": "List of dictionaries containing record data. Example: [{\"First_Name\": \"John\", \"Last_Name\": \"Doe\"}, {\"First_Name\": \"Jane\", \"Last_Name\": \"Smith\"}]",
+          "required": true,
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "name": "get_record_by_id",
+      "description": "Get a specific record by its ID",
+      "parameters": {
+        "module_name": {
+          "type": "string",
+          "description": "Module containing the record (e.g., 'Contacts', 'Leads')",
+          "required": true
+        },
+        "record_id": {
+          "type": "string",
+          "description": "ID of the record to retrieve",
+          "required": true
+        }
+      }
+    }
+  ],
+  "resources": [
+    {
+      "name": "greeting://{name}",
+      "description": "Get a personalized greeting",
+      "parameters": {
+        "name": {
+          "type": "string",
+          "description": "Name to personalize the greeting",
+          "required": true
+        }
+      }
+    }
+  ],
+  "setup_instructions": {
+    "prerequisites": [
+      "Python 3.8+ installed",
+      "Zoho CRM account with API access",
+      "Valid Zoho OAuth credentials"
+    ],
+    "installation": [
+      "pip install zoho-crm-mcp-server",
+      "Set environment variables for Zoho credentials",
+      "Complete OAuth setup to generate access and refresh tokens"
+    ],
+    "environment_variables": {
+      "required": [
+        "ZOHO_CLIENT_ID",
+        "ZOHO_CLIENT_SECRET"
+      ],
+      "optional": [
+        "ZOHO_REFRESH_TOKEN",
+        "ZOHO_ACCESS_TOKEN",
+        "ZOHO_CRM_BASE_URL",
+        "ZOHO_AUTH_URL"
+      ]
+    },
+    "autonomous_operation": {
+      "description": "The server now operates autonomously with automatic token management:",
+      "features": [
+        "1. Automatic token loading from persistent storage (.tokens.json)",
+        "2. Self-refresh of access tokens using refresh tokens",
+        "3. Fallback to client_credentials grant for server-to-server auth",
+        "4. Manual token setting via 'set_refresh_token' tool if needed",
+        "5. Token status monitoring via 'get_token_status' tool",
+        "6. Connection testing via 'test_zoho_connection' tool"
+      ],
+      "first_time_setup": [
+        "1. Ensure ZOHO_CLIENT_ID and ZOHO_CLIENT_SECRET are set in .env.local",
+        "2. Server will attempt autonomous token generation on startup",
+        "3. If autonomous generation fails, use 'set_refresh_token' tool with valid refresh token",
+        "4. Use 'test_zoho_connection' to verify the setup is working"
+      ]
+    }
+  },
+  "examples": {
+    "get_all_contacts": {
+      "tool": "get_module_data",
+      "parameters": {
+        "module_name": "Contacts"
+      }
+    },
+    "search_leads_by_email": {
+      "tool": "search_records",
+      "parameters": {
+        "module_name": "Leads",
+        "search_criteria": "email:john@example.com"
+      }
+    },
+    "create_new_contact": {
+      "tool": "create_record",
+      "parameters": {
+        "module_name": "Contacts",
+        "record_data": {
+          "First_Name": "John",
+          "Last_Name": "Doe",
+          "Email": "john@example.com",
+          "Phone": "+1234567890"
+        }
+      }
+    }
+  },
+  "error_handling": {
+    "authentication_errors": "The server will automatically attempt to refresh tokens on 401 errors",
+    "rate_limits": "Zoho CRM API has standard rate limits - the server will return appropriate error messages",
+    "validation_errors": "Invalid parameters will return detailed error messages"
+  }
+}

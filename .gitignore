@@ -1,0 +1,211 @@
+# SECURITY - PREVENT ALL SECRET EXPOSURE
+*.env
+*.env.*
+!*.env.example
+.env.local
+.env.production
+.env.development
+.env.staging
+.env.impact
+.env.dev
+
+# Azure and Cloud Secrets
+azure_keyvault_secrets.txt
+*keyvault*secrets*
+*credentials*
+*secrets*
+*_secrets.*
+*secret*
+*.pem
+*.key
+*.p12
+*.pfx
+service-account*.json
+gcloud-service-key.json
+
+# Infrastructure Summaries with Real Credentials
+INFRASTRUCTURE_ACCESS_SUMMARY.md
+*ACCESS_SUMMARY*
+*SETUP_COMPLETE*
+*FULL_ACCESS*
+*VERIFICATION*
+
+# API Keys and Tokens
+*api_key*
+*token*
+*password*
+*auth*
+*oauth*
+*client_secret*
+*access_key*
+*secret_key*
+
+# Database Connection Strings
+*connection_string*
+*database_url*
+*postgres_url*
+*redis_url*
+
+# Logs that might contain secrets
+*.log
+logs/
+*.log.*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Claude settings with potential secrets
+.claude/settings.local.json
+
+# Documentation files (except main README)
+docs/
+*.md
+!README.md
+
+# MCP Servers - exclude any nested git repos
+MCPServers/*/.git/
+MCPServers/*/venv/
+MCPServers/*/.env*
+MCPServers/*/logs/
+
+# Additional Python security
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Docker secrets and runtime
+*.dockerignore
+docker-compose.override.yml
+.docker/
+.dockerenv
+
+# MCP Token storage (ensure token persistence files are secure)
+MCPServers/*/.tokens.json
+MCPServers/*/tokens/
+*.tokens.json
+*token*.json
+*refresh*.json
+
+# Zoho OAuth and API credentials
+*zoho*token*
+*zoho*auth*
+*zoho*client*
+*zoho*secret*
+*zoho*refresh*
+*crm*token*
+*oauth*token*
+
+# LangFlow sensitive data
+flows/*/credentials/
+flows/*/.env*
+*.flow.secrets
+*langflow*secrets*
+
+# Additional sensitive file patterns
+*backup*
+*dump*
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+
+# Runtime and cache
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+.npm/
+.yarn/
+.pnp.*
+.yarn/
+.pnpm-debug.log*
+
+# Testing secrets
+test_*.env
+*test*secrets*
+*mock*credentials*
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# System files
+*.pid
+*.seed
+*.pid.lock
