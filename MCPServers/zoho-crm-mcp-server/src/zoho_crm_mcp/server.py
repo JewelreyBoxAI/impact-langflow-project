@@ -205,9 +205,13 @@ def make_authenticated_request(method, url, **kwargs):
 
 ZOHO_MODULES = [
     "Leads",
-    "Accounts", 
+    "Accounts",
     "Contacts",
-    "Deals"
+    "Deals",
+    "Events",
+    "Tasks",
+    "Calls",
+    "users"
 ]
 
 @mcp.tool()
@@ -504,10 +508,6 @@ def get_record_by_id(ctx, module_name: str, record_id: str):
             "code": response.status_code
         }
 
-@mcp.resource("greeting://{name}")
-def get_greeting(name: str) -> str:
-    """Get a personalized greeting"""
-    return f"Hello, {name}!"
 
 @mcp.tool()
 def set_refresh_token(ctx, refresh_token: str):
@@ -597,6 +597,258 @@ def test_zoho_connection(ctx):
             "message": f"Connection test error: {str(e)}"
         }
 
+@mcp.tool()
+def get_users(ctx, user_type: str = "AllUsers"):
+    """
+    Get all users in the Zoho CRM organization
+
+    Args:
+        user_type: Type of users to fetch (AllUsers, ActiveUsers, DeactiveUsers, ConfirmedUsers)
+    """
+    try:
+        url = f"{ZOHO_CRM_BASE_URL}/settings/users"
+        params = {"type": user_type}
+        response = make_authenticated_request("GET", url, params=params)
+
+        if response.status_code == 200:
+            users_data = response.json()
+            users = users_data.get("users", [])
+            return {
+                "status": "success",
+                "user_type": user_type,
+                "count": len(users),
+                "users": users
+            }
+        else:
+            return {
+                "status": "error",
+                "message": f"Failed to fetch users: {response.status_code} - {response.text}"
+            }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Error fetching users: {str(e)}"
+        }
+
+@mcp.tool()
+def schedule_appointment(ctx, lead_id: str, appointment_data: dict):
+    """
+    Schedule an appointment/event for a lead in Zoho CRM
+
+    Args:
+        lead_id: ID of the lead to schedule appointment for
+        appointment_data: Dictionary containing appointment details
+                         Example: {
+                             "Event_Title": "Initial Consultation",
+                             "Start_DateTime": "2024-01-15T10:00:00-05:00",
+                             "End_DateTime": "2024-01-15T11:00:00-05:00",
+                             "Description": "Meet with potential client"
+                         }
+    """
+    try:
+        # Add the lead as a participant
+        appointment_data["What_Id"] = lead_id
+        appointment_data["Participants"] = [{
+            "type": "lead",
+            "participant": lead_id
+        }]
+
+        # Create event
+        url = f"{ZOHO_CRM_BASE_URL}/Events"
+        payload = {"data": [appointment_data]}
+        response = make_authenticated_request("POST", url, data=json.dumps(payload))
+
+        if response.status_code == 201:
+            result = response.json()
+            return {
+                "status": "success",
+                "message": "Appointment scheduled successfully",
+                "data": result.get("data", [])
+            }
+        else:
+            return {
+                "status": "error",
+                "message": f"Failed to schedule appointment: {response.status_code} - {response.text}"
+            }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Error scheduling appointment: {str(e)}"
+        }
+
+@mcp.tool()
+def qualify_lead(ctx, lead_id: str, qualification_data: dict):
+    """
+    Update lead qualification status and convert to contact/deal if qualified
+
+    Args:
+        lead_id: ID of the lead to qualify
+        qualification_data: Dictionary containing qualification information
+                           Example: {
+                               "Lead_Status": "Qualified",
+                               "Rating": "Hot",
+                               "Annual_Revenue": "100000",
+                               "No_of_Employees": "25"
+                           }
+    """
+    try:
+        # Update lead with qualification data
+        url = f"{ZOHO_CRM_BASE_URL}/Leads/{lead_id}"
+        qualification_data["id"] = lead_id
+        payload = {"data": [qualification_data]}
+
+        response = make_authenticated_request("PUT", url, data=json.dumps(payload))
+
+        if response.status_code == 200:
+            result = response.json()
+            return {
+                "status": "success",
+                "message": "Lead qualified successfully",
+                "lead_id": lead_id,
+                "data": result.get("data", [])
+            }
+        else:
+            return {
+                "status": "error",
+                "lead_id": lead_id,
+                "message": f"Failed to qualify lead: {response.status_code} - {response.text}"
+            }
+    except Exception as e:
+        return {
+            "status": "error",
+            "lead_id": lead_id,
+            "message": f"Error qualifying lead: {str(e)}"
+        }
+
+@mcp.tool()
+def convert_lead(ctx, lead_id: str, conversion_data: dict = None):
+    """
+    Convert a qualified lead to Contact, Account, and Deal
+
+    Args:
+        lead_id: ID of the lead to convert
+        conversion_data: Optional dictionary with conversion settings
+                        Example: {
+                            "notify_lead_owner": True,
+                            "notify_new_entity_owner": True,
+                            "accounts": "Account_Name",
+                            "deals": "Deal_Name"
+                        }
+    """
+    try:
+        url = f"{ZOHO_CRM_BASE_URL}/Leads/{lead_id}/actions/convert"
+
+        # Default conversion data
+        if not conversion_data:
+            conversion_data = {
+                "notify_lead_owner": True,
+                "notify_new_entity_owner": True
+            }
+
+        payload = {"data": [conversion_data]}
+        response = make_authenticated_request("POST", url, data=json.dumps(payload))
+
+        if response.status_code == 200:
+            result = response.json()
+            return {
+                "status": "success",
+                "message": "Lead converted successfully",
+                "lead_id": lead_id,
+                "data": result.get("data", [])
+            }
+        else:
+            return {
+                "status": "error",
+                "lead_id": lead_id,
+                "message": f"Failed to convert lead: {response.status_code} - {response.text}"
+            }
+    except Exception as e:
+        return {
+            "status": "error",
+            "lead_id": lead_id,
+            "message": f"Error converting lead: {str(e)}"
+        }
+
+@mcp.tool()
+def create_task(ctx, task_data: dict):
+    """
+    Create a task in Zoho CRM for follow-up activities
+
+    Args:
+        task_data: Dictionary containing task details
+                  Example: {
+                      "Subject": "Follow up with lead",
+                      "What_Id": "lead_id_here",
+                      "Due_Date": "2024-01-20",
+                      "Status": "Not Started",
+                      "Priority": "High"
+                  }
+    """
+    try:
+        url = f"{ZOHO_CRM_BASE_URL}/Tasks"
+        payload = {"data": [task_data]}
+        response = make_authenticated_request("POST", url, data=json.dumps(payload))
+
+        if response.status_code == 201:
+            result = response.json()
+            return {
+                "status": "success",
+                "message": "Task created successfully",
+                "data": result.get("data", [])
+            }
+        else:
+            return {
+                "status": "error",
+                "message": f"Failed to create task: {response.status_code} - {response.text}"
+            }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Error creating task: {str(e)}"
+        }
+
+@mcp.tool()
+def get_lead_activities(ctx, lead_id: str):
+    """
+    Get all activities (tasks, events, calls) for a specific lead
+
+    Args:
+        lead_id: ID of the lead to get activities for
+    """
+    try:
+        activities = {}
+
+        # Get tasks
+        tasks_url = f"{ZOHO_CRM_BASE_URL}/Leads/{lead_id}/Tasks"
+        tasks_response = make_authenticated_request("GET", tasks_url)
+        if tasks_response.status_code == 200:
+            activities["tasks"] = tasks_response.json().get("data", [])
+
+        # Get events
+        events_url = f"{ZOHO_CRM_BASE_URL}/Leads/{lead_id}/Events"
+        events_response = make_authenticated_request("GET", events_url)
+        if events_response.status_code == 200:
+            activities["events"] = events_response.json().get("data", [])
+
+        # Get calls
+        calls_url = f"{ZOHO_CRM_BASE_URL}/Leads/{lead_id}/Calls"
+        calls_response = make_authenticated_request("GET", calls_url)
+        if calls_response.status_code == 200:
+            activities["calls"] = calls_response.json().get("data", [])
+
+        return {
+            "status": "success",
+            "lead_id": lead_id,
+            "activities": activities
+        }
+
+    except Exception as e:
+        return {
+            "status": "error",
+            "lead_id": lead_id,
+            "message": f"Error fetching activities: {str(e)}"
+        }
+
 def main():
     """Main entry point for the MCP server"""
     global current_access_token, current_refresh_token
@@ -614,9 +866,9 @@ def main():
     # Initialize tokens
     print("Initializing OAuth tokens...")
     if ensure_valid_token():
-        print("✅ OAuth tokens ready - server is autonomous!")
+        print("SUCCESS: OAuth tokens ready - server is autonomous!")
     else:
-        print("⚠️  No valid tokens found.")
+        print("WARNING: No valid tokens found.")
         print("   The server will start, but you'll need to:")
         print("   1. Use the 'set_refresh_token' tool to provide a long-lived refresh token")
         print("   2. Or complete OAuth setup manually and update .env.local")

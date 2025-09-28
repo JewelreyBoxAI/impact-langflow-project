@@ -1,6 +1,6 @@
 {
   "description": "Office Operations - Eileen's Hybrid Workflow",
-  "name": "Office Operations Flow", 
+  "name": "Office Operations Flow",
   "id": "office_ops",
   "data": {
     "nodes": [
@@ -9,108 +9,168 @@
         "type": "PromptTemplate",
         "data": {
           "template": "You are A1 - OfficeOps Orchestrator. Daily at 08:05 ET, load context from Zoho CRM, Gmail and Calendar. Produce prioritized plan and dispatch work to agents A2-A12 only when changes detected. Context: {context}",
-          "input_variables": ["context"]
+          "input_variables": [
+            "context"
+          ]
         },
-        "position": {"x": 100, "y": 50}
+        "position": {
+          "x": 100,
+          "y": 50
+        }
       },
       {
         "id": "a2_comms_triage",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A2 - Comms Triage. Classify incoming emails/SMS by topic (commissions, DA, vendors, general). Auto-reply when confident, route otherwise. Track thread state and enforce rate caps. Message: {message}",
-          "input_variables": ["message"]
+          "input_variables": [
+            "message"
+          ]
         },
-        "position": {"x": 300, "y": 50}
+        "position": {
+          "x": 300,
+          "y": 50
+        }
       },
       {
         "id": "a3_commission_processing",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A3 - Commission Processing. OCR scanned checks, deposit via bank API, update CRM commissions, attach to Drive, notify accountant. Prevent double-deposit via fingerprinting. Check data: {check_data}",
-          "input_variables": ["check_data"]
+          "input_variables": [
+            "check_data"
+          ]
         },
-        "position": {"x": 500, "y": 50}
+        "position": {
+          "x": 500,
+          "y": 50
+        }
       },
       {
         "id": "a4_disbursement_auth",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A4 - Disbursement Authorization. Fetch closing docs, cross-validate numbers, create discrepancy tickets or generate DA PDFs, update CRM statuses. Request missing docs and retry. Documents: {documents}",
-          "input_variables": ["documents"]
+          "input_variables": [
+            "documents"
+          ]
         },
-        "position": {"x": 700, "y": 50}
+        "position": {
+          "x": 700,
+          "y": 50
+        }
       },
       {
         "id": "a5_vendor_facilities",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A5 - Vendor & Facilities. Poll vendor status endpoints, open tickets, schedule on-site visits when needed. Escalate after repeated failures. Status: {vendor_status}",
-          "input_variables": ["vendor_status"]
+          "input_variables": [
+            "vendor_status"
+          ]
         },
-        "position": {"x": 100, "y": 200}
+        "position": {
+          "x": 100,
+          "y": 200
+        }
       },
       {
         "id": "a6_task_sync",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A6 - Task Sync. Bi-directional sync between CRM tasks and operations queue. Reconcile mismatches. Tasks: {tasks}",
-          "input_variables": ["tasks"]
+          "input_variables": [
+            "tasks"
+          ]
         },
-        "position": {"x": 300, "y": 200}
+        "position": {
+          "x": 300,
+          "y": 200
+        }
       },
       {
         "id": "a7_missing_checks",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A7 - Missing Checks Monitor. At 08:00 ET, list all DAs still pending deposit and send follow-ups until funds arrive. Pending DAs: {pending_das}",
-          "input_variables": ["pending_das"]
+          "input_variables": [
+            "pending_das"
+          ]
         },
-        "position": {"x": 500, "y": 200}
+        "position": {
+          "x": 500,
+          "y": 200
+        }
       },
       {
         "id": "a8_mentor_assignment",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A8 - Mentor Assignment. On new agent creation, select mentor, update CRM, send intro emails. New agent: {new_agent}",
-          "input_variables": ["new_agent"]
+          "input_variables": [
+            "new_agent"
+          ]
         },
-        "position": {"x": 700, "y": 200}
+        "position": {
+          "x": 700,
+          "y": 200
+        }
       },
       {
         "id": "a9_license_audit",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A9 - License Audit. Monthly, fetch DBPR license statuses, diff against roster, email expiring agents, generate reports for Drive. Audit date: {audit_date}",
-          "input_variables": ["audit_date"]
+          "input_variables": [
+            "audit_date"
+          ]
         },
-        "position": {"x": 100, "y": 350}
+        "position": {
+          "x": 100,
+          "y": 350
+        }
       },
       {
         "id": "a10_dues_processing",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A10 - Dues Processing. On 1st and 15th, run BrokerSumo charges, parse iTransact confirmations, update CRM statuses. Dues cycle: {dues_cycle}",
-          "input_variables": ["dues_cycle"]
+          "input_variables": [
+            "dues_cycle"
+          ]
         },
-        "position": {"x": 300, "y": 350}
+        "position": {
+          "x": 300,
+          "y": 350
+        }
       },
       {
         "id": "a11_month_end_metrics",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A11 - Month-End Metrics. Aggregate dashboards and cycle times, create PDF, email leadership. Month: {month}",
-          "input_variables": ["month"]
+          "input_variables": [
+            "month"
+          ]
         },
-        "position": {"x": 500, "y": 350}
+        "position": {
+          "x": 500,
+          "y": 350
+        }
       },
       {
         "id": "a12_event_projects",
         "type": "PromptTemplate",
         "data": {
           "template": "You are A12 - Event Projects. Manage special events (awards, holiday parties) by creating projects, sending invites, tracking budgets, distributing collateral. Event: {event}",
-          "input_variables": ["event"]
+          "input_variables": [
+            "event"
+          ]
         },
-        "position": {"x": 700, "y": 350}
+        "position": {
+          "x": 700,
+          "y": 350
+        }
       },
       {
         "id": "scheduler_daily_ops",
@@ -119,16 +179,22 @@
           "cron": "5 8 * * *",
           "timezone": "America/New_York"
         },
-        "position": {"x": 100, "y": 500}
+        "position": {
+          "x": 100,
+          "y": 500
+        }
       },
       {
         "id": "scheduler_checks",
-        "type": "Scheduler", 
+        "type": "Scheduler",
         "data": {
           "cron": "0 8 * * *",
           "timezone": "America/New_York"
         },
-        "position": {"x": 300, "y": 500}
+        "position": {
+          "x": 300,
+          "y": 500
+        }
       },
       {
         "id": "scheduler_monthly",
@@ -137,7 +203,10 @@
           "cron": "0 9 1 * *",
           "timezone": "America/New_York"
         },
-        "position": {"x": 500, "y": 500}
+        "position": {
+          "x": 500,
+          "y": 500
+        }
       },
       {
         "id": "scheduler_dues",
@@ -146,16 +215,37 @@
           "cron": "0 9 1,15 * *",
           "timezone": "America/New_York"
         },
-        "position": {"x": 700, "y": 500}
+        "position": {
+          "x": 700,
+          "y": 500
+        }
       }
     ],
     "edges": [
-      {"source": "scheduler_daily_ops", "target": "a1_orchestrator"},
-      {"source": "a1_orchestrator", "target": "a2_comms_triage"},
-      {"source": "a2_comms_triage", "target": "a3_commission_processing"},
-      {"source": "scheduler_checks", "target": "a7_missing_checks"},
-      {"source": "scheduler_monthly", "target": "a9_license_audit"},
-      {"source": "scheduler_dues", "target": "a10_dues_processing"}
+      {
+        "source": "scheduler_daily_ops",
+        "target": "a1_orchestrator"
+      },
+      {
+        "source": "a1_orchestrator",
+        "target": "a2_comms_triage"
+      },
+      {
+        "source": "a2_comms_triage",
+        "target": "a3_commission_processing"
+      },
+      {
+        "source": "scheduler_checks",
+        "target": "a7_missing_checks"
+      },
+      {
+        "source": "scheduler_monthly",
+        "target": "a9_license_audit"
+      },
+      {
+        "source": "scheduler_dues",
+        "target": "a10_dues_processing"
+      }
     ]
   }
 }

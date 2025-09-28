@@ -1,0 +1,19 @@
+# VERSION STAMPS FOR FLOW FILES
+# =================================
+# Snapshot Created: 2025-09-27 13:47:20
+# Git Commit Hash: 6a2f25fdab48c8fda8d16656ca0c3b65d6a39ae4
+# Git Branch: local-dev
+# Source Directory: C:\AI_src\ImpactLangFlow\flows\
+#
+# All JSON files in this directory are part of the MCP (Model Context Protocol)
+# configuration for the ImpactLangFlow system.
+#
+# Files included:
+# - Recruiting Agent 1.5.1 - with MCP Server.json (Primary MCP flow configuration)
+# - recruiting.json (Contains MCP references)
+# - sob_supervisor.json (Contains MCP references)
+# - admin_compliance.json (Contains MCP references)
+# - office_ops.json (Contains MCP references)
+#
+# These files represent the complete state of MCP-related flow configurations
+# at the time of snapshot creation.

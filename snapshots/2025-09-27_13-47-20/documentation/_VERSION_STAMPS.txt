@@ -1,0 +1,13 @@
+# VERSION STAMPS FOR MCP DOCUMENTATION
+# =====================================
+# Snapshot Created: 2025-09-27 13:47:20
+# Git Commit Hash: 6a2f25fdab48c8fda8d16656ca0c3b65d6a39ae4
+# Git Branch: local-dev
+# Source Directory: C:\AI_src\ImpactLangFlow\
+#
+# MCP-related documentation files:
+# - MCP_ARCHITECTURE_AUDIT_REPORT.md (Comprehensive audit report of MCP architecture)
+# - mcp_audit.log (Log file from MCP auditing processes)
+#
+# These files contain documentation and audit information about the
+# Model Context Protocol implementation and architecture within ImpactLangFlow.

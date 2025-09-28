@@ -1,0 +1,14 @@
+# VERSION STAMPS FOR MCP SERVERS
+# ===============================
+# Snapshot Created: 2025-09-27 13:47:20
+# Git Commit Hash: 6a2f25fdab48c8fda8d16656ca0c3b65d6a39ae4
+# Git Branch: local-dev
+# Source Directory: C:\AI_src\ImpactLangFlow\MCPServers\
+#
+# MCP Server implementations and configurations:
+# - consolidated_zoho_mcp_server.py (Consolidated Zoho MCP server)
+# - legacy_zoho_mcp/ (Legacy Zoho MCP implementation)
+# - zoho-crm-mcp-server/ (Current Zoho CRM MCP server)
+#
+# This directory contains all Model Context Protocol server implementations
+# for various integrations, primarily focusing on Zoho CRM integration.

@@ -1,71 +1,52 @@
-# Zoho CRM MCP Server
+# Zoho CRM MCP Server Directory - IMPACT REALTY
 
-<div align="center">
+## 🚀 ACTIVE CONFIGURATION
 
-# Zoho Crm Mcp Server
+**Currently Running Server:** `C:\AI_src\ImpactLangFlow\MCPServers\simple_zoho_mcp_server.py`
+**Port:** 8001
+**Status:** ✅ Production Ready
 
-[![GitHub stars](https://img.shields.io/github/stars/LokiMCPUniverse/zoho-crm-mcp-server?style=social)](https://github.com/LokiMCPUniverse/zoho-crm-mcp-server/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/LokiMCPUniverse/zoho-crm-mcp-server?style=social)](https://github.com/LokiMCPUniverse/zoho-crm-mcp-server/network)
-[![GitHub watchers](https://img.shields.io/github/watchers/LokiMCPUniverse/zoho-crm-mcp-server?style=social)](https://github.com/LokiMCPUniverse/zoho-crm-mcp-server/watchers)
+### Active Files:
+- `zoho_langflow_config.json` - **SINGLE ACTIVE ZOHO CONFIGURATION** - Use this for all Langflow operations
+- `.env.local` - Working credentials and environment variables
+- `src/zoho_crm_mcp/server.py` - Alternative MCP implementation (not currently active)
 
-[![License](https://img.shields.io/github/license/LokiMCPUniverse/zoho-crm-mcp-server?style=for-the-badge)](https://github.com/LokiMCPUniverse/zoho-crm-mcp-server/blob/main/LICENSE)
-[![Issues](https://img.shields.io/github/issues/LokiMCPUniverse/zoho-crm-mcp-server?style=for-the-badge)](https://github.com/LokiMCPUniverse/zoho-crm-mcp-server/issues)
-[![Pull Requests](https://img.shields.io/github/issues-pr/LokiMCPUniverse/zoho-crm-mcp-server?style=for-the-badge)](https://github.com/LokiMCPUniverse/zoho-crm-mcp-server/pulls)
-[![Last Commit](https://img.shields.io/github/last-commit/LokiMCPUniverse/zoho-crm-mcp-server?style=for-the-badge)](https://github.com/LokiMCPUniverse/zoho-crm-mcp-server/commits)
+## 📁 INACTIVE DIRECTORY
 
-[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![MCP](https://img.shields.io/badge/Model_Context_Protocol-DC143C?style=for-the-badge)](https://modelcontextprotocol.io)
+Files moved to `inactive/` folder:
+- `.tokens.json` - Outdated token storage format
+- `langflow_production_nodes.json` - Over-engineered Langflow node configurations
+- `langflow_mcp_config_comprehensive.json` - Comprehensive but unused tool definitions
 
-[![Commit Activity](https://img.shields.io/github/commit-activity/m/LokiMCPUniverse/zoho-crm-mcp-server?style=flat-square)](https://github.com/LokiMCPUniverse/zoho-crm-mcp-server/pulse)
-[![Code Size](https://img.shields.io/github/languages/code-size/LokiMCPUniverse/zoho-crm-mcp-server?style=flat-square)](https://github.com/LokiMCPUniverse/zoho-crm-mcp-server)
-[![Contributors](https://img.shields.io/github/contributors/LokiMCPUniverse/zoho-crm-mcp-server?style=flat-square)](https://github.com/LokiMCPUniverse/zoho-crm-mcp-server/graphs/contributors)
+## 🎯 USAGE
 
-</div>
-
-A Model Context Protocol (MCP) server for integrating Zoho CRM with GenAI applications.
-
-## Overview
-
-Complete CRM suite integration
-
-## Features
-
-- Comprehensive Zoho CRM API coverage
-- Multiple authentication methods
-- Enterprise-ready with rate limiting
-- Full error handling and retry logic
-- Async support for better performance
-
-## Installation
-
-```bash
-pip install zoho-crm-mcp-server
+For **Langflow integration**, use the single configuration:
+```json
+// Reference: zoho_langflow_config.json
+{
+  "server_url": "http://localhost:8001",
+  "active_endpoints": {
+    "health": "/health",
+    "tools": "/mcp/tools",
+    "zoho_users": "/zoho/users",
+    "zoho_leads": "/zoho/leads"
+  }
+}
 ```
 
-Or install from source:
+## 🔐 CREDENTIALS
 
-```bash
-git clone https://github.com/asklokesh/zoho-crm-mcp-server.git
-cd zoho-crm-mcp-server
-pip install -e .
-```
+All credentials sourced from `.env.local`:
+- ZOHO_CLIENT_ID
+- ZOHO_CLIENT_SECRET
+- ZOHO_REFRESH_TOKEN
+- ZOHO_ACCESS_TOKEN
+- SALESMSG_API_TOKEN
+- OPENAI_API_KEY
 
-## Configuration
+## ⚠️ IMPORTANT
 
-Create a `.env` file or set environment variables according to Zoho CRM API requirements.
-
-## Quick Start
-
-```python
-from zoho_crm_mcp import ZohoCrmMCPServer
-
-# Initialize the server
-server = ZohoCrmMCPServer()
-
-# Start the server
-server.start()
-```
-
-## License
-
-MIT License - see LICENSE file for details
+- **DO NOT** modify `.env.local` without permission
+- **USE** `langflow_active_config.json` for current operations
+- **REFERENCE** `langflow_mcp_config.json` for comprehensive tool documentation
+- **IGNORE** files in `inactive/` directory

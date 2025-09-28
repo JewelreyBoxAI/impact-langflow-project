@@ -3,10 +3,12 @@ Zoho API client with OAuth handling and retry logic
 """
 
 import aiohttp
+import aiofiles
 import asyncio
 import os
 import json
 import logging
+import mimetypes
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 from urllib.parse import urlencode
@@ -235,19 +237,52 @@ class ZohoClient:
         file_path: str,
         file_name: str
     ) -> Dict[str, Any]:
-        """Attach file to CRM record"""
+        """Attach file to CRM record - COMPLETE IMPLEMENTATION"""
         url = f"{self.crm_base_url}/{module}/{record_id}/Attachments"
-        
-        # TODO: Implement file upload
-        # For now, return placeholder
-        return {
-            "data": [{
-                "details": {
-                    "id": f"attachment_{datetime.utcnow().timestamp()}",
-                    "file_name": file_name
-                }
-            }]
-        }
+
+        try:
+            # Read file content
+            async with aiofiles.open(file_path, 'rb') as file:
+                file_content = await file.read()
+
+            # Determine content type based on file extension
+            import mimetypes
+            content_type, _ = mimetypes.guess_type(file_path)
+            if content_type is None:
+                content_type = 'application/octet-stream'
+
+            # Prepare multipart form data
+            data = aiohttp.FormData()
+            data.add_field('file',
+                          file_content,
+                          filename=file_name,
+                          content_type=content_type)
+            data.add_field('type', 'attachment')
+
+            # Make request with file upload
+            headers = {
+                'Authorization': f'Zoho-oauthtoken {await self._get_current_token()}'
+            }
+
+            async with aiohttp.ClientSession() as session:
+                async with session.post(url, headers=headers, data=data) as response:
+                    if response.status not in [200, 201]:
+                        error_text = await response.text()
+                        logger.error(f"File upload failed: {response.status} - {error_text}")
+                        raise Exception(f"File upload failed: {response.status} - {error_text}")
+
+                    result = await response.json()
+                    logger.info(f"File '{file_name}' uploaded successfully to {module}/{record_id}")
+                    return result
+
+        except Exception as e:
+            logger.error(f"Error uploading file '{file_name}': {str(e)}")
+            raise Exception(f"File upload error: {str(e)}")
+
+    async def _get_current_token(self) -> str:
+        """Get current access token, refreshing if needed"""
+        await self._ensure_valid_token()
+        return self.access_token
     
     # Enhanced CRM methods for Impact Realty workflows
     async def get_crm_record(self, module: str, record_id: str, fields: Optional[List[str]] = None) -> Dict[str, Any]:

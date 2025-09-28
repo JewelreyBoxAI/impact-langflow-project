@@ -1,0 +1,14 @@
+# VERSION STAMPS FOR BACKEND MCP FILES
+# ====================================
+# Snapshot Created: 2025-09-27 13:47:20
+# Git Commit Hash: 6a2f25fdab48c8fda8d16656ca0c3b65d6a39ae4
+# Git Branch: local-dev
+# Source Directory: C:\AI_src\ImpactLangFlow\backend\
+#
+# Backend MCP-related files:
+# - mcp.py (API routes for MCP functionality)
+# - mcp_schemas.py (Pydantic schemas for MCP data models)
+# - mcp_service.py (Business logic for MCP operations)
+#
+# These files implement the backend integration for Model Context Protocol
+# services within the ImpactLangFlow application.

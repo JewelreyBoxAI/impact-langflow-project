@@ -1,0 +1,201 @@
+{
+  "description": "Supreme Oversight Board (SOB) - Kevin's Supervisor Agent",
+  "name": "SOB Supervisor Flow",
+  "id": "sob_supervisor",
+  "data": {
+    "nodes": [
+      {
+        "id": "s1_orchestrator",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are S1 - SOB Boot & Routing Orchestrator. Handle boot sequence and route incoming requests to appropriate sub-agents (S2-S8). Context: {context}",
+          "input_variables": [
+            "context"
+          ]
+        },
+        "position": {
+          "x": 100,
+          "y": 100
+        }
+      },
+      {
+        "id": "s2_telemetry",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are S2 - Telemetry Normalizer. Collect events from subordinate flows (A1-A17) and normalize into common schema. Input: {telemetry_data}",
+          "input_variables": [
+            "telemetry_data"
+          ]
+        },
+        "position": {
+          "x": 300,
+          "y": 100
+        }
+      },
+      {
+        "id": "s3_kpi_analyzer",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are S3 - KPI & Anomaly Detector. Compute KPIs, trend deltas, detect breaches and raise incidents. Data: {normalized_data}",
+          "input_variables": [
+            "normalized_data"
+          ]
+        },
+        "position": {
+          "x": 500,
+          "y": 100
+        }
+      },
+      {
+        "id": "s4_brief_qa",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are S4 - Executive Brief & Q/A. Deliver daily brief at 08:10 ET and handle Kevin's queries with citations. Query: {query}",
+          "input_variables": [
+            "query"
+          ]
+        },
+        "position": {
+          "x": 100,
+          "y": 300
+        }
+      },
+      {
+        "id": "s5_command_router",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are S5 - Command Router. Parse Kevin's commands, produce dry-run with affected records and risks. Execute only after CONFIRM. Command: {command}",
+          "input_variables": [
+            "command"
+          ]
+        },
+        "position": {
+          "x": 300,
+          "y": 300
+        }
+      },
+      {
+        "id": "s6_portfolio",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are S6 - Portfolio Assistant. Maintain commercial real-estate watchlists, run MLS comparisons, manage tasks. Request: {portfolio_request}",
+          "input_variables": [
+            "portfolio_request"
+          ]
+        },
+        "position": {
+          "x": 500,
+          "y": 300
+        }
+      },
+      {
+        "id": "s7_incident_escalation",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are S7 - Incident Manager & Escalations. Handle escalations for risky actions (money/compliance) and HITL approvals. Incident: {incident}",
+          "input_variables": [
+            "incident"
+          ]
+        },
+        "position": {
+          "x": 100,
+          "y": 500
+        }
+      },
+      {
+        "id": "s8_reporting",
+        "type": "PromptTemplate",
+        "data": {
+          "template": "You are S8 - Report Publisher. Create weekly/monthly dashboards in Google Sheets/Slides, send email links. Report type: {report_type}",
+          "input_variables": [
+            "report_type"
+          ]
+        },
+        "position": {
+          "x": 300,
+          "y": 500
+        }
+      },
+      {
+        "id": "scheduler_daily",
+        "type": "Scheduler",
+        "data": {
+          "cron": "10 8 * * *",
+          "timezone": "America/New_York"
+        },
+        "position": {
+          "x": 700,
+          "y": 100
+        }
+      },
+      {
+        "id": "redis_memory",
+        "type": "RedisMemory",
+        "data": {
+          "redis_url": "${REDIS_URL}",
+          "session_id": "sob_session"
+        },
+        "position": {
+          "x": 700,
+          "y": 300
+        }
+      },
+      {
+        "id": "zoho_integration",
+        "type": "HttpRequest",
+        "data": {
+          "url": "${MCP_SERVER_URL}/zoho",
+          "method": "POST",
+          "headers": {
+            "Authorization": "Bearer ${ZOHO_ACCESS_TOKEN}"
+          }
+        },
+        "position": {
+          "x": 500,
+          "y": 500
+        }
+      },
+      {
+        "id": "mls_integration",
+        "type": "HttpRequest",
+        "data": {
+          "url": "${MLS_API_URL}",
+          "method": "GET",
+          "headers": {
+            "X-API-Key": "${MLS_API_KEY}"
+          }
+        },
+        "position": {
+          "x": 700,
+          "y": 500
+        }
+      }
+    ],
+    "edges": [
+      {
+        "source": "s1_orchestrator",
+        "target": "s2_telemetry"
+      },
+      {
+        "source": "s2_telemetry",
+        "target": "s3_kpi_analyzer"
+      },
+      {
+        "source": "s3_kpi_analyzer",
+        "target": "s4_brief_qa"
+      },
+      {
+        "source": "s5_command_router",
+        "target": "s7_incident_escalation"
+      },
+      {
+        "source": "scheduler_daily",
+        "target": "s4_brief_qa"
+      },
+      {
+        "source": "redis_memory",
+        "target": "s1_orchestrator"
+      }
+    ]
+  }
+}

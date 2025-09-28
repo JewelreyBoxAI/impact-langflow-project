@@ -1,0 +1,1878 @@
+{
+  "data": {
+    "nodes": [
+      {
+        "data": {
+          "id": "ChatInput-entry",
+          "node": {
+            "base_classes": ["Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Get chat inputs from the Playground - supports CSV file upload and direct prospect data entry.",
+            "display_name": "Chat Input",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "should_store_message", "sender", "sender_name", "session_id", "files"],
+            "frozen": false,
+            "icon": "MessagesSquare",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Message",
+                "method": "message_response",
+                "name": "message",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "input_value": {
+                "_input_type": "MultilineInput",
+                "advanced": false,
+                "display_name": "Text",
+                "dynamic": false,
+                "info": "Message to be passed as input.",
+                "input_types": [],
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "input_value",
+                "placeholder": "Upload CSV or enter prospect data",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "files": {
+                "_input_type": "FileInput",
+                "advanced": false,
+                "display_name": "Files",
+                "dynamic": false,
+                "fileTypes": ["csv", "txt", "xlsx"],
+                "file_path": "",
+                "info": "CSV files containing prospect data to process.",
+                "list": true,
+                "name": "files",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "temp_file": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "file",
+                "value": ""
+              },
+              "should_store_message": {
+                "_input_type": "BoolInput",
+                "advanced": true,
+                "display_name": "Store Messages",
+                "dynamic": false,
+                "info": "Store the message in the history.",
+                "list": false,
+                "name": "should_store_message",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "bool",
+                "value": true
+              },
+              "sender": {
+                "_input_type": "DropdownInput",
+                "advanced": true,
+                "combobox": false,
+                "display_name": "Sender Type",
+                "dynamic": false,
+                "info": "Type of sender.",
+                "name": "sender",
+                "options": ["Machine", "User"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "User"
+              },
+              "sender_name": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Sender Name",
+                "dynamic": false,
+                "info": "Name of the sender.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "sender_name",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "Recruiter"
+              },
+              "session_id": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Session ID",
+                "dynamic": false,
+                "info": "The session ID of the chat. If empty, the current session ID parameter will be used.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "session_id",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "ChatInput"
+        },
+        "dragging": false,
+        "height": 284,
+        "id": "ChatInput-entry",
+        "measured": {"height": 284, "width": 320},
+        "position": {"x": 100, "y": 200},
+        "positionAbsolute": {"x": 100, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "PythonCode-validation",
+          "node": {
+            "base_classes": ["Text"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Execute Python code for data validation and CSV processing.",
+            "display_name": "Data Validation",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_data", "code"],
+            "frozen": false,
+            "icon": "Code",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Text",
+                "method": "run_code",
+                "name": "text_output",
+                "selected": "Text",
+                "tool_mode": true,
+                "types": ["Text"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "input_data": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Input Data",
+                "dynamic": false,
+                "info": "Prospect data from ChatInput to validate and process",
+                "input_types": ["Message", "Text"],
+                "list": false,
+                "load_from_db": false,
+                "name": "input_data",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "code": {
+                "_input_type": "CodeInput",
+                "advanced": false,
+                "display_name": "Python Code",
+                "dynamic": false,
+                "info": "Python code for data validation and CSV processing.",
+                "list": false,
+                "name": "code",
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "code",
+                "value": "import pandas as pd\nimport re\nimport json\nfrom io import StringIO\nimport html\n\ndef sanitize_input(data):\n    \"\"\"Sanitize input to prevent code injection\"\"\"\n    if isinstance(data, str):\n        # HTML escape and remove potentially dangerous characters\n        data = html.escape(data)\n        # Remove potentially dangerous patterns\n        dangerous_patterns = [\n            r'__import__', r'exec\\s*\\(', r'eval\\s*\\(', r'compile\\s*\\(',\n            r'subprocess', r'os\\.system', r'open\\s*\\(.*[\"\\']w',\n            r'<script', r'javascript:', r'vbscript:', r'data:',\n            r'\\\\x[0-9a-fA-F]{2}', r'\\\\u[0-9a-fA-F]{4}'\n        ]\n        for pattern in dangerous_patterns:\n            data = re.sub(pattern, '', data, flags=re.IGNORECASE)\n    return data\n\ndef validate_prospect_data(input_data):\n    \"\"\"Validate and process prospect data from CSV or direct input\"\"\"\n    # Convert Message object to string if needed\n    if hasattr(input_data, 'text'):\n        input_data = input_data.text\n    elif hasattr(input_data, 'content'):\n        input_data = input_data.content\n    elif not isinstance(input_data, str):\n        input_data = str(input_data)\n    \n    # Sanitize input to prevent code injection\n    input_data = sanitize_input(input_data)\n    \n    # Validate input length (prevent DoS)\n    if len(input_data) > 100000:  # 100KB limit\n        return json.dumps({'error': 'Input too large', 'status': 'error'})\n        \n    validated_data = []\n    \n    try:\n        # Try to parse as CSV first\n        if ',' in input_data and ('\\n' in input_data or '\\r' in input_data):\n            # Validate CSV structure before parsing\n            lines = input_data.split('\\n')\n            if len(lines) > 1000:  # Limit rows\n                return json.dumps({'error': 'Too many rows', 'status': 'error'})\n            \n            df = pd.read_csv(StringIO(input_data), nrows=1000)\n            data = df.to_dict('records')\n        else:\n            # Try to parse as JSON with size limits\n            if input_data.startswith('[') or input_data.startswith('{'):\n                parsed_data = json.loads(input_data)\n                if isinstance(parsed_data, list) and len(parsed_data) > 1000:\n                    return json.dumps({'error': 'Too many records', 'status': 'error'})\n                data = parsed_data if isinstance(parsed_data, list) else [parsed_data]\n            else:\n                data = [{'raw_input': input_data}]\n    except (json.JSONDecodeError, pd.errors.ParserError) as e:\n        # Fallback: treat as single prospect entry if parsing fails\n        data = [{'raw_input': input_data}]\n    except Exception as e:\n        return json.dumps({'error': 'Invalid input format', 'status': 'error'})\n    \n    for record in data[:100]:  # Limit processing to 100 records\n        # Sanitize all record values\n        record = {k: sanitize_input(v) if isinstance(v, str) else v for k, v in record.items()}\n        \n        # Extract fields from raw input if needed\n        if 'raw_input' in record:\n            raw = record['raw_input']\n            # Validate raw input length\n            if len(raw) > 1000:\n                continue\n                \n            # Simple extraction patterns with validation\n            email_match = re.search(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}', raw)\n            phone_match = re.search(r'\\+?1?[-.]?\\(?([0-9]{3})\\)?[-.]?([0-9]{3})[-.]?([0-9]{4})', raw)\n            \n            if email_match:\n                email = email_match.group()\n                # Validate email length and format\n                if len(email) <= 254 and '@' in email:\n                    record['email'] = email\n            if phone_match:\n                record['phone'] = phone_match.group()\n            \n            # Extract name (assume first part before email/phone)\n            name_parts = raw.split(',')[0] if ',' in raw else raw.split()[0] if ' ' in raw else 'Unknown'\n            # Validate and limit name length\n            if len(name_parts) <= 100:\n                record['name'] = name_parts\n        \n        # Validate required fields and sanitize\n        if (record.get('email') and record.get('phone') and record.get('name') and \n            len(record['name']) <= 100 and len(record['email']) <= 254):\n            \n            # Clean and validate phone number\n            phone = re.sub(r'\\D', '', record['phone'])\n            if 10 <= len(phone) <= 15:  # Valid phone length\n                record['phone'] = phone\n                record['company'] = (record.get('company', 'Unknown') or 'Unknown')[:100]\n                record['license_number'] = (record.get('license_number', '') or '')[:50]\n                record['license_type'] = (record.get('license_type', 'Sales Associate') or 'Sales Associate')[:50]\n                validated_data.append(record)\n    \n    result = {\n        'validated_prospects': validated_data,\n        'count': len(validated_data),\n        'status': 'success' if validated_data else 'no_valid_data'\n    }\n    \n    return json.dumps(result)\n\n# Execute validation with error handling\ntry:\n    result = validate_prospect_data(input_data)\n    print(result)\nexcept Exception as e:\n    print(json.dumps({'error': 'Validation failed', 'status': 'error'}))"
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "PythonCode"
+        },
+        "dragging": false,
+        "height": 300,
+        "id": "PythonCode-validation",
+        "measured": {"height": 300, "width": 320},
+        "position": {"x": 500, "y": 200},
+        "positionAbsolute": {"x": 500, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "HTTPTool-zoho-dedupe",
+          "node": {
+            "base_classes": ["Tool"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "HTTP tool for Zoho MCP deduplication operations.",
+            "display_name": "Zoho Dedupe MCP",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["method", "url", "headers", "body", "timeout"],
+            "frozen": false,
+            "icon": "Globe",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Response",
+                "method": "make_request",
+                "name": "response",
+                "selected": "Data",
+                "tool_mode": true,
+                "types": ["Data"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "method": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": false,
+                "display_name": "Method",
+                "dynamic": false,
+                "info": "HTTP method to use",
+                "name": "method",
+                "options": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "POST"
+              },
+              "url": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "URL",
+                "dynamic": false,
+                "info": "Zoho MCP endpoint URL",
+                "list": false,
+                "name": "url",
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "http://localhost:3001/mcp/zoho/dedupe"
+              },
+              "headers": {
+                "_input_type": "DictInput",
+                "advanced": false,
+                "display_name": "Headers",
+                "dynamic": false,
+                "info": "HTTP headers",
+                "list": false,
+                "name": "headers",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "type": "dict",
+                "value": {"Content-Type": "application/json"}
+              },
+              "body": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Request Body",
+                "dynamic": false,
+                "info": "JSON request body with prospect data",
+                "input_types": ["Message", "Text"],
+                "list": false,
+                "load_from_db": false,
+                "name": "body",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "timeout": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Timeout",
+                "dynamic": false,
+                "info": "Request timeout in seconds",
+                "list": false,
+                "name": "timeout",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "int",
+                "value": 30
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "HTTPTool"
+        },
+        "dragging": false,
+        "height": 300,
+        "id": "HTTPTool-zoho-dedupe",
+        "measured": {"height": 300, "width": 320},
+        "position": {"x": 900, "y": 200},
+        "positionAbsolute": {"x": 900, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "Prompt-recruiter-identity",
+          "node": {
+            "base_classes": ["Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {"template": ["prospect_data", "context"]},
+            "description": "System prompt for Impact Realty recruiter identity and memory context.",
+            "display_name": "Impact Realty Recruiter Prompt",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["template"],
+            "frozen": false,
+            "icon": "prompts",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Prompt Message",
+                "method": "build_prompt",
+                "name": "prompt",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "template": {
+                "_input_type": "PromptInput",
+                "advanced": false,
+                "display_name": "Template",
+                "dynamic": false,
+                "info": "System prompt template for Impact Realty recruiter identity.",
+                "list": false,
+                "name": "template",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "type": "prompt",
+                "value": "You are a professional recruiter with Impact Realty, Florida's premier luxury real estate brokerage. Your mission is to identify and attract top-performing real estate professionals to join our elite team.\n\n## Your Identity:\n- Professional Recruiter at Impact Realty\n- Expertise: Luxury real estate, high-end residential, commercial properties\n- Known for: Building genuine relationships, understanding agent potential, results-oriented approach\n- Communication: Professional yet personable, direct but empathetic, focused on mutual success\n\n## Impact Realty Value Proposition:\n- Leading luxury brokerage in Florida\n- Cutting-edge technology and marketing support\n- Competitive commission structures and bonus programs\n- Comprehensive training and mentorship programs\n- Strong brand recognition and market presence\n- Collaborative, success-driven culture\n\n## Context from Previous Interactions:\n{context}\n\n## Current Prospect Data:\n{prospect_data}\n\n## Your Mission:\nPersonalize outreach based on the prospect's current license status, experience level, and market focus. Present compelling opportunities that align with their career goals and highlight Impact Realty's advantages. Always maintain professional boundaries while being genuinely helpful.\n\n## Response Guidelines:\n1. Acknowledge their current license status and experience\n2. Present relevant Impact Realty opportunities\n3. Highlight specific benefits that match their profile\n4. Suggest next steps (brief call, meeting, or information session)\n5. Provide clear contact information\n6. Be concise but thorough (2-3 sentences max for SMS, more detailed for email)\n7. Always include compliance with Florida real estate regulations"
+              },
+              "prospect_data": {
+                "advanced": false,
+                "display_name": "prospect_data",
+                "dynamic": false,
+                "field_type": "str",
+                "info": "Current prospect information.",
+                "input_types": ["Message", "Text", "Data"],
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "prospect_data",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": ""
+              },
+              "context": {
+                "advanced": false,
+                "display_name": "context",
+                "dynamic": false,
+                "field_type": "str",
+                "info": "Retrieved context from previous interactions.",
+                "input_types": ["Message", "Text"],
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "context",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": ""
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "Prompt"
+        },
+        "dragging": false,
+        "height": 400,
+        "id": "Prompt-recruiter-identity",
+        "measured": {"height": 400, "width": 320},
+        "position": {"x": 1300, "y": 200},
+        "positionAbsolute": {"x": 1300, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "OpenAIModel-main-llm",
+          "node": {
+            "base_classes": ["LanguageModel", "Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Generates text using OpenAI LLMs for intelligent recruiting decisions and message generation.",
+            "display_name": "Main Recruiter LLM",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "system_message", "model_name", "api_key", "temperature", "max_tokens"],
+            "frozen": false,
+            "icon": "OpenAI",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Text Response",
+                "method": "invoke",
+                "name": "text_output",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "api_key": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "OpenAI API Key",
+                "dynamic": false,
+                "info": "The OpenAI API Key to use for the OpenAI model.",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "api_key",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "openai-api-key"
+              },
+              "model_name": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": true,
+                "display_name": "Model Name",
+                "dynamic": false,
+                "info": "OpenAI model to use for recruiting analysis.",
+                "name": "model_name",
+                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4-turbo"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "gpt-4o-mini"
+              },
+              "temperature": {
+                "_input_type": "SliderInput",
+                "advanced": false,
+                "display_name": "Temperature",
+                "dynamic": false,
+                "info": "Controls randomness in responses.",
+                "name": "temperature",
+                "placeholder": "",
+                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "type": "slider",
+                "value": 0.3
+              },
+              "max_tokens": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Max Tokens",
+                "dynamic": false,
+                "info": "The maximum number of tokens to generate.",
+                "list": false,
+                "name": "max_tokens",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "int",
+                "value": 1000
+              },
+              "input_value": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Input Message",
+                "dynamic": false,
+                "info": "User input for generating recruitment messages.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "input_value",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "system_message": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "System Message",
+                "dynamic": false,
+                "info": "System message with recruiter identity and instructions.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "system_message",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "OpenAIModel"
+        },
+        "dragging": false,
+        "height": 400,
+        "id": "OpenAIModel-main-llm",
+        "measured": {"height": 400, "width": 320},
+        "position": {"x": 1700, "y": 200},
+        "positionAbsolute": {"x": 1700, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "Prompt-outreach-router",
+          "node": {
+            "base_classes": ["Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {"template": ["llm_response"]},
+            "description": "Routes outreach based on LLM decision - SMS, Email, or Calendar scheduling.",
+            "display_name": "Outreach Router",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["template"],
+            "frozen": false,
+            "icon": "prompts",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Routing Decision",
+                "method": "build_prompt",
+                "name": "prompt",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "template": {
+                "_input_type": "PromptInput",
+                "advanced": false,
+                "display_name": "Template",
+                "dynamic": false,
+                "info": "Outreach routing logic prompt.",
+                "list": false,
+                "name": "template",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "type": "prompt",
+                "value": "Based on the LLM response, determine the appropriate outreach channel and generate the specific message:\n\nLLM Response:\n{llm_response}\n\nRouting Rules:\n1. SMS: For initial contact, quick follow-ups, brief messages (under 160 chars)\n2. Email: For detailed information, formal introductions, document sharing\n3. Calendar: For scheduling meetings, interviews, or information sessions\n\nOutput a JSON with this structure:\n{{\n  \"channel\": \"sms|email|calendar\",\n  \"message\": \"actual message content\",\n  \"subject\": \"email subject (if email)\",\n  \"priority\": \"high|medium|low\",\n  \"follow_up_days\": 3\n}}\n\nEnsure compliance with real estate communication regulations and professional standards."
+              },
+              "llm_response": {
+                "advanced": false,
+                "display_name": "llm_response",
+                "dynamic": false,
+                "field_type": "str",
+                "info": "LLM generated response to route.",
+                "input_types": ["Message", "Text"],
+                "list": false,
+                "load_from_db": false,
+                "multiline": true,
+                "name": "llm_response",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": ""
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "Prompt"
+        },
+        "dragging": false,
+        "height": 350,
+        "id": "Prompt-outreach-router",
+        "measured": {"height": 350, "width": 320},
+        "position": {"x": 2100, "y": 200},
+        "positionAbsolute": {"x": 2100, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "OpenAIModel-router-llm",
+          "node": {
+            "base_classes": ["LanguageModel", "Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "OpenAI model for outreach routing decisions.",
+            "display_name": "Router LLM",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "system_message", "model_name", "api_key", "temperature", "max_tokens"],
+            "frozen": false,
+            "icon": "OpenAI",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Routing Response",
+                "method": "invoke",
+                "name": "text_output",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "api_key": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "OpenAI API Key",
+                "dynamic": false,
+                "info": "The OpenAI API Key to use for the OpenAI model.",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "api_key",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "openai-api-key"
+              },
+              "model_name": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": true,
+                "display_name": "Model Name",
+                "dynamic": false,
+                "info": "OpenAI model for routing decisions.",
+                "name": "model_name",
+                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4-turbo"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "gpt-4o-mini"
+              },
+              "temperature": {
+                "_input_type": "SliderInput",
+                "advanced": false,
+                "display_name": "Temperature",
+                "dynamic": false,
+                "info": "Controls randomness in routing decisions.",
+                "name": "temperature",
+                "placeholder": "",
+                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "type": "slider",
+                "value": 0.1
+              },
+              "max_tokens": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Max Tokens",
+                "dynamic": false,
+                "info": "The maximum number of tokens to generate.",
+                "list": false,
+                "name": "max_tokens",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "int",
+                "value": 500
+              },
+              "input_value": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Input Message",
+                "dynamic": false,
+                "info": "Routing prompt input.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "input_value",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "system_message": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "System Message",
+                "dynamic": false,
+                "info": "System message for routing logic.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "system_message",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "OpenAIModel"
+        },
+        "dragging": false,
+        "height": 400,
+        "id": "OpenAIModel-router-llm",
+        "measured": {"height": 400, "width": 320},
+        "position": {"x": 2500, "y": 200},
+        "positionAbsolute": {"x": 2500, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "HTTPTool-salesmsg-sms",
+          "node": {
+            "base_classes": ["Tool"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "HTTP tool for SalesMsg SMS outreach integration.",
+            "display_name": "SalesMsg SMS",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["method", "url", "headers", "body", "timeout"],
+            "frozen": false,
+            "icon": "MessageSquare",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "SMS Response",
+                "method": "make_request",
+                "name": "response",
+                "selected": "Data",
+                "tool_mode": true,
+                "types": ["Data"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "method": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": false,
+                "display_name": "Method",
+                "dynamic": false,
+                "info": "HTTP method to use",
+                "name": "method",
+                "options": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "POST"
+              },
+              "url": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "URL",
+                "dynamic": false,
+                "info": "SalesMsg API endpoint",
+                "list": false,
+                "name": "url",
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "https://api.salesmsg.com/v1/messages"
+              },
+              "headers": {
+                "_input_type": "DictInput",
+                "advanced": false,
+                "display_name": "Headers",
+                "dynamic": false,
+                "info": "HTTP headers including SalesMsg authorization",
+                "list": false,
+                "name": "headers",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "type": "dict",
+                "value": {"Content-Type": "application/json", "Authorization": "Bearer {SALESMSG-API-TOKEN}"}
+              },
+              "body": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Message Body",
+                "dynamic": false,
+                "info": "SMS message JSON payload",
+                "input_types": ["Message", "Text"],
+                "list": false,
+                "load_from_db": false,
+                "name": "body",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "timeout": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Timeout",
+                "dynamic": false,
+                "info": "Request timeout in seconds",
+                "list": false,
+                "name": "timeout",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "int",
+                "value": 30
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "HTTPTool"
+        },
+        "dragging": false,
+        "height": 300,
+        "id": "HTTPTool-salesmsg-sms",
+        "measured": {"height": 300, "width": 320},
+        "position": {"x": 2900, "y": 100},
+        "positionAbsolute": {"x": 2900, "y": 100},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "HTTPTool-gmail-email",
+          "node": {
+            "base_classes": ["Tool"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "HTTP tool for Gmail API email outreach integration.",
+            "display_name": "Gmail Email",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["method", "url", "headers", "body", "timeout"],
+            "frozen": false,
+            "icon": "Mail",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Email Response",
+                "method": "make_request",
+                "name": "response",
+                "selected": "Data",
+                "tool_mode": true,
+                "types": ["Data"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "method": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": false,
+                "display_name": "Method",
+                "dynamic": false,
+                "info": "HTTP method to use",
+                "name": "method",
+                "options": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "POST"
+              },
+              "url": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "URL",
+                "dynamic": false,
+                "info": "Gmail API endpoint",
+                "list": false,
+                "name": "url",
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "https://gmail.googleapis.com/gmail/v1/users/me/messages/send"
+              },
+              "headers": {
+                "_input_type": "DictInput",
+                "advanced": false,
+                "display_name": "Headers",
+                "dynamic": false,
+                "info": "HTTP headers including Gmail OAuth token",
+                "list": false,
+                "name": "headers",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "type": "dict",
+                "value": {"Content-Type": "application/json", "Authorization": "Bearer {GMAIL-ACCESS-TOKEN}"}
+              },
+              "body": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Email Body",
+                "dynamic": false,
+                "info": "Email message JSON payload",
+                "input_types": ["Message", "Text"],
+                "list": false,
+                "load_from_db": false,
+                "name": "body",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "timeout": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Timeout",
+                "dynamic": false,
+                "info": "Request timeout in seconds",
+                "list": false,
+                "name": "timeout",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "int",
+                "value": 30
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "HTTPTool"
+        },
+        "dragging": false,
+        "height": 300,
+        "id": "HTTPTool-gmail-email",
+        "measured": {"height": 300, "width": 320},
+        "position": {"x": 2900, "y": 450},
+        "positionAbsolute": {"x": 2900, "y": 450},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "HTTPTool-zoho-calendar",
+          "node": {
+            "base_classes": ["Tool"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "HTTP tool for Zoho Calendar MCP scheduling integration.",
+            "display_name": "Zoho Calendar",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["method", "url", "headers", "body", "timeout"],
+            "frozen": false,
+            "icon": "Calendar",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Calendar Response",
+                "method": "make_request",
+                "name": "response",
+                "selected": "Data",
+                "tool_mode": true,
+                "types": ["Data"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "method": {
+                "_input_type": "DropdownInput",
+                "advanced": false,
+                "combobox": false,
+                "display_name": "Method",
+                "dynamic": false,
+                "info": "HTTP method to use",
+                "name": "method",
+                "options": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "POST"
+              },
+              "url": {
+                "_input_type": "StrInput",
+                "advanced": false,
+                "display_name": "URL",
+                "dynamic": false,
+                "info": "Zoho Calendar MCP endpoint",
+                "list": false,
+                "name": "url",
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "http://localhost:3001/mcp/zoho/calendar/schedule"
+              },
+              "headers": {
+                "_input_type": "DictInput",
+                "advanced": false,
+                "display_name": "Headers",
+                "dynamic": false,
+                "info": "HTTP headers including Zoho authorization",
+                "list": false,
+                "name": "headers",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "type": "dict",
+                "value": {"Content-Type": "application/json"}
+              },
+              "body": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Scheduling Body",
+                "dynamic": false,
+                "info": "Calendar scheduling JSON payload",
+                "input_types": ["Message", "Text"],
+                "list": false,
+                "load_from_db": false,
+                "name": "body",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "timeout": {
+                "_input_type": "IntInput",
+                "advanced": true,
+                "display_name": "Timeout",
+                "dynamic": false,
+                "info": "Request timeout in seconds",
+                "list": false,
+                "name": "timeout",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "int",
+                "value": 30
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "HTTPTool"
+        },
+        "dragging": false,
+        "height": 300,
+        "id": "HTTPTool-zoho-calendar",
+        "measured": {"height": 300, "width": 320},
+        "position": {"x": 2900, "y": 800},
+        "positionAbsolute": {"x": 2900, "y": 800},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "PostgreSQL-persistence",
+          "node": {
+            "base_classes": ["Data"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "PostgreSQL database connection for prospect data persistence and interaction logging.",
+            "display_name": "PostgreSQL Persistence",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["connection_string", "query", "input_data"],
+            "frozen": false,
+            "icon": "Database",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Query Result",
+                "method": "execute_query",
+                "name": "result",
+                "selected": "Data",
+                "tool_mode": true,
+                "types": ["Data"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "connection_string": {
+                "_input_type": "SecretStrInput",
+                "advanced": false,
+                "display_name": "Connection String",
+                "dynamic": false,
+                "info": "PostgreSQL connection string",
+                "input_types": [],
+                "load_from_db": true,
+                "name": "connection_string",
+                "password": true,
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "str",
+                "value": "POSTGRES-URL"
+              },
+              "query": {
+                "_input_type": "CodeInput",
+                "advanced": false,
+                "display_name": "SQL Query",
+                "dynamic": false,
+                "info": "SQL query for data persistence",
+                "list": false,
+                "name": "query",
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "type": "code",
+                "value": "INSERT INTO recruiting_interactions (prospect_name, prospect_email, prospect_phone, channel, message_content, response_status, created_at, updated_at) VALUES (%(name)s, %(email)s, %(phone)s, %(channel)s, %(message)s, 'sent', NOW(), NOW()) ON CONFLICT (prospect_email) DO UPDATE SET message_content = EXCLUDED.message_content, channel = EXCLUDED.channel, updated_at = NOW();"
+              },
+              "input_data": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Input Data",
+                "dynamic": false,
+                "info": "Data to persist in database",
+                "input_types": ["Message", "Data"],
+                "list": false,
+                "load_from_db": false,
+                "name": "input_data",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "PostgreSQL"
+        },
+        "dragging": false,
+        "height": 350,
+        "id": "PostgreSQL-persistence",
+        "measured": {"height": 350, "width": 320},
+        "position": {"x": 3300, "y": 400},
+        "positionAbsolute": {"x": 3300, "y": 400},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      },
+      {
+        "data": {
+          "id": "ChatOutput-result",
+          "description": "Display a chat message in the Playground.",
+          "display_name": "Recruiting Flow Result",
+          "node": {
+            "base_classes": ["Message"],
+            "beta": false,
+            "conditional_paths": [],
+            "custom_fields": {},
+            "description": "Display structured JSON output for FastAPI UI integration and final results.",
+            "display_name": "Recruiting Flow Result",
+            "documentation": "",
+            "edited": false,
+            "field_order": ["input_value", "should_store_message", "sender", "sender_name", "session_id"],
+            "frozen": false,
+            "icon": "MessagesSquare",
+            "legacy": false,
+            "lf_version": "1.0.19.post2",
+            "metadata": {},
+            "output_types": [],
+            "outputs": [
+              {
+                "allows_loop": false,
+                "cache": true,
+                "display_name": "Message",
+                "method": "message_response",
+                "name": "message",
+                "selected": "Message",
+                "tool_mode": true,
+                "types": ["Message"],
+                "value": "__UNDEFINED__"
+              }
+            ],
+            "pinned": false,
+            "template": {
+              "_type": "Component",
+              "input_value": {
+                "_input_type": "MessageInput",
+                "advanced": false,
+                "display_name": "Text",
+                "dynamic": false,
+                "info": "Message to be passed as output.",
+                "input_types": ["Data", "DataFrame", "Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "input_value",
+                "placeholder": "",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              },
+              "should_store_message": {
+                "_input_type": "BoolInput",
+                "advanced": true,
+                "display_name": "Store Messages",
+                "dynamic": false,
+                "info": "Store the message in the history.",
+                "list": false,
+                "name": "should_store_message",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "trace_as_metadata": true,
+                "type": "bool",
+                "value": true
+              },
+              "sender": {
+                "_input_type": "DropdownInput",
+                "advanced": true,
+                "combobox": false,
+                "display_name": "Sender Type",
+                "dynamic": false,
+                "info": "Type of sender.",
+                "name": "sender",
+                "options": ["Machine", "User"],
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "Machine"
+              },
+              "sender_name": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Sender Name",
+                "dynamic": false,
+                "info": "Name of the sender.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "sender_name",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "Impact Realty Recruiter"
+              },
+              "session_id": {
+                "_input_type": "MessageTextInput",
+                "advanced": true,
+                "display_name": "Session ID",
+                "dynamic": false,
+                "info": "The session ID of the chat.",
+                "input_types": ["Message"],
+                "list": false,
+                "load_from_db": false,
+                "name": "session_id",
+                "placeholder": "",
+                "required": false,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": ""
+              }
+            },
+            "tool_mode": false
+          },
+          "type": "ChatOutput"
+        },
+        "dragging": false,
+        "height": 234,
+        "id": "ChatOutput-result",
+        "measured": {"height": 234, "width": 320},
+        "position": {"x": 4100, "y": 200},
+        "positionAbsolute": {"x": 4100, "y": 200},
+        "selected": false,
+        "type": "genericNode",
+        "width": 320
+      }
+    ],
+    "edges": [
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "ChatInput",
+            "id": "ChatInput-entry",
+            "name": "message",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "input_data",
+            "id": "PythonCode-validation",
+            "inputTypes": ["Message", "Text"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-ChatInput-entry{œdataTypeœ:œChatInputœ,œidœ:œChatInput-entryœ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}-PythonCode-validation{œfieldNameœ:œinput_dataœ,œidœ:œPythonCode-validationœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "ChatInput-entry",
+        "sourceHandle": "{œdataTypeœ:œChatInputœ,œidœ:œChatInput-entryœ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}",
+        "target": "PythonCode-validation",
+        "targetHandle": "{œfieldNameœ:œinput_dataœ,œidœ:œPythonCode-validationœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "PythonCode",
+            "id": "PythonCode-validation",
+            "name": "text_output",
+            "output_types": ["Text"]
+          },
+          "targetHandle": {
+            "fieldName": "body",
+            "id": "HTTPTool-zoho-dedupe",
+            "inputTypes": ["Message", "Text"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-PythonCode-validation{œdataTypeœ:œPythonCodeœ,œidœ:œPythonCode-validationœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œTextœ]}-HTTPTool-zoho-dedupe{œfieldNameœ:œbodyœ,œidœ:œHTTPTool-zoho-dedupeœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "PythonCode-validation",
+        "sourceHandle": "{œdataTypeœ:œPythonCodeœ,œidœ:œPythonCode-validationœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œTextœ]}",
+        "target": "HTTPTool-zoho-dedupe",
+        "targetHandle": "{œfieldNameœ:œbodyœ,œidœ:œHTTPTool-zoho-dedupeœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "HTTPTool",
+            "id": "HTTPTool-zoho-dedupe",
+            "name": "response",
+            "output_types": ["Data"]
+          },
+          "targetHandle": {
+            "fieldName": "prospect_data",
+            "id": "Prompt-recruiter-identity",
+            "inputTypes": ["Message", "Text", "Data"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-HTTPTool-zoho-dedupe{œdataTypeœ:œHTTPToolœ,œidœ:œHTTPTool-zoho-dedupeœ,œnameœ:œresponseœ,œoutput_typesœ:[œDataœ]}-Prompt-recruiter-identity{œfieldNameœ:œprospect_dataœ,œidœ:œPrompt-recruiter-identityœ,œinputTypesœ:[œMessageœ,œTextœ,œDataœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "HTTPTool-zoho-dedupe",
+        "sourceHandle": "{œdataTypeœ:œHTTPToolœ,œidœ:œHTTPTool-zoho-dedupeœ,œnameœ:œresponseœ,œoutput_typesœ:[œDataœ]}",
+        "target": "Prompt-recruiter-identity",
+        "targetHandle": "{œfieldNameœ:œprospect_dataœ,œidœ:œPrompt-recruiter-identityœ,œinputTypesœ:[œMessageœ,œTextœ,œDataœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "Prompt",
+            "id": "Prompt-recruiter-identity",
+            "name": "prompt",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "system_message",
+            "id": "OpenAIModel-main-llm",
+            "inputTypes": ["Message"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-Prompt-recruiter-identity{œdataTypeœ:œPromptœ,œidœ:œPrompt-recruiter-identityœ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}-OpenAIModel-main-llm{œfieldNameœ:œsystem_messageœ,œidœ:œOpenAIModel-main-llmœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "Prompt-recruiter-identity",
+        "sourceHandle": "{œdataTypeœ:œPromptœ,œidœ:œPrompt-recruiter-identityœ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}",
+        "target": "OpenAIModel-main-llm",
+        "targetHandle": "{œfieldNameœ:œsystem_messageœ,œidœ:œOpenAIModel-main-llmœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "ChatInput",
+            "id": "ChatInput-entry",
+            "name": "message",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "OpenAIModel-main-llm",
+            "inputTypes": ["Message"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-ChatInput-entry{œdataTypeœ:œChatInputœ,œidœ:œChatInput-entryœ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}-OpenAIModel-main-llm{œfieldNameœ:œinput_valueœ,œidœ:œOpenAIModel-main-llmœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "ChatInput-entry",
+        "sourceHandle": "{œdataTypeœ:œChatInputœ,œidœ:œChatInput-entryœ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}",
+        "target": "OpenAIModel-main-llm",
+        "targetHandle": "{œfieldNameœ:œinput_valueœ,œidœ:œOpenAIModel-main-llmœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "OpenAIModel",
+            "id": "OpenAIModel-main-llm",
+            "name": "text_output",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "llm_response",
+            "id": "Prompt-outreach-router",
+            "inputTypes": ["Message", "Text"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-OpenAIModel-main-llm{œdataTypeœ:œOpenAIModelœ,œidœ:œOpenAIModel-main-llmœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œMessageœ]}-Prompt-outreach-router{œfieldNameœ:œllm_responseœ,œidœ:œPrompt-outreach-routerœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "OpenAIModel-main-llm",
+        "sourceHandle": "{œdataTypeœ:œOpenAIModelœ,œidœ:œOpenAIModel-main-llmœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œMessageœ]}",
+        "target": "Prompt-outreach-router",
+        "targetHandle": "{œfieldNameœ:œllm_responseœ,œidœ:œPrompt-outreach-routerœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "Prompt",
+            "id": "Prompt-outreach-router",
+            "name": "prompt",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "OpenAIModel-router-llm",
+            "inputTypes": ["Message"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-Prompt-outreach-router{œdataTypeœ:œPromptœ,œidœ:œPrompt-outreach-routerœ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}-OpenAIModel-router-llm{œfieldNameœ:œinput_valueœ,œidœ:œOpenAIModel-router-llmœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "Prompt-outreach-router",
+        "sourceHandle": "{œdataTypeœ:œPromptœ,œidœ:œPrompt-outreach-routerœ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}",
+        "target": "OpenAIModel-router-llm",
+        "targetHandle": "{œfieldNameœ:œinput_valueœ,œidœ:œOpenAIModel-router-llmœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "OpenAIModel",
+            "id": "OpenAIModel-router-llm",
+            "name": "text_output",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "body",
+            "id": "HTTPTool-salesmsg-sms",
+            "inputTypes": ["Message", "Text"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-OpenAIModel-router-llm{œdataTypeœ:œOpenAIModelœ,œidœ:œOpenAIModel-router-llmœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œMessageœ]}-HTTPTool-salesmsg-sms{œfieldNameœ:œbodyœ,œidœ:œHTTPTool-salesmsg-smsœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "OpenAIModel-router-llm",
+        "sourceHandle": "{œdataTypeœ:œOpenAIModelœ,œidœ:œOpenAIModel-router-llmœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œMessageœ]}",
+        "target": "HTTPTool-salesmsg-sms",
+        "targetHandle": "{œfieldNameœ:œbodyœ,œidœ:œHTTPTool-salesmsg-smsœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "OpenAIModel",
+            "id": "OpenAIModel-router-llm",
+            "name": "text_output",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "body",
+            "id": "HTTPTool-gmail-email",
+            "inputTypes": ["Message", "Text"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-OpenAIModel-router-llm{œdataTypeœ:œOpenAIModelœ,œidœ:œOpenAIModel-router-llmœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œMessageœ]}-HTTPTool-gmail-email{œfieldNameœ:œbodyœ,œidœ:œHTTPTool-gmail-emailœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "OpenAIModel-router-llm",
+        "sourceHandle": "{œdataTypeœ:œOpenAIModelœ,œidœ:œOpenAIModel-router-llmœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œMessageœ]}",
+        "target": "HTTPTool-gmail-email",
+        "targetHandle": "{œfieldNameœ:œbodyœ,œidœ:œHTTPTool-gmail-emailœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "OpenAIModel",
+            "id": "OpenAIModel-router-llm",
+            "name": "text_output",
+            "output_types": ["Message"]
+          },
+          "targetHandle": {
+            "fieldName": "body",
+            "id": "HTTPTool-zoho-calendar",
+            "inputTypes": ["Message", "Text"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-OpenAIModel-router-llm{œdataTypeœ:œOpenAIModelœ,œidœ:œOpenAIModel-router-llmœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œMessageœ]}-HTTPTool-zoho-calendar{œfieldNameœ:œbodyœ,œidœ:œHTTPTool-zoho-calendarœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "OpenAIModel-router-llm",
+        "sourceHandle": "{œdataTypeœ:œOpenAIModelœ,œidœ:œOpenAIModel-router-llmœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œMessageœ]}",
+        "target": "HTTPTool-zoho-calendar",
+        "targetHandle": "{œfieldNameœ:œbodyœ,œidœ:œHTTPTool-zoho-calendarœ,œinputTypesœ:[œMessageœ,œTextœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "HTTPTool",
+            "id": "HTTPTool-salesmsg-sms",
+            "name": "response",
+            "output_types": ["Data"]
+          },
+          "targetHandle": {
+            "fieldName": "input_data",
+            "id": "PostgreSQL-persistence",
+            "inputTypes": ["Message", "Data"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-HTTPTool-salesmsg-sms{œdataTypeœ:œHTTPToolœ,œidœ:œHTTPTool-salesmsg-smsœ,œnameœ:œresponseœ,œoutput_typesœ:[œDataœ]}-PostgreSQL-persistence{œfieldNameœ:œinput_dataœ,œidœ:œPostgreSQL-persistenceœ,œinputTypesœ:[œMessageœ,œDataœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "HTTPTool-salesmsg-sms",
+        "sourceHandle": "{œdataTypeœ:œHTTPToolœ,œidœ:œHTTPTool-salesmsg-smsœ,œnameœ:œresponseœ,œoutput_typesœ:[œDataœ]}",
+        "target": "PostgreSQL-persistence",
+        "targetHandle": "{œfieldNameœ:œinput_dataœ,œidœ:œPostgreSQL-persistenceœ,œinputTypesœ:[œMessageœ,œDataœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "HTTPTool",
+            "id": "HTTPTool-gmail-email",
+            "name": "response",
+            "output_types": ["Data"]
+          },
+          "targetHandle": {
+            "fieldName": "input_data",
+            "id": "PostgreSQL-persistence",
+            "inputTypes": ["Message", "Data"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-HTTPTool-gmail-email{œdataTypeœ:œHTTPToolœ,œidœ:œHTTPTool-gmail-emailœ,œnameœ:œresponseœ,œoutput_typesœ:[œDataœ]}-PostgreSQL-persistence{œfieldNameœ:œinput_dataœ,œidœ:œPostgreSQL-persistenceœ,œinputTypesœ:[œMessageœ,œDataœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "HTTPTool-gmail-email",
+        "sourceHandle": "{œdataTypeœ:œHTTPToolœ,œidœ:œHTTPTool-gmail-emailœ,œnameœ:œresponseœ,œoutput_typesœ:[œDataœ]}",
+        "target": "PostgreSQL-persistence",
+        "targetHandle": "{œfieldNameœ:œinput_dataœ,œidœ:œPostgreSQL-persistenceœ,œinputTypesœ:[œMessageœ,œDataœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "HTTPTool",
+            "id": "HTTPTool-zoho-calendar",
+            "name": "response",
+            "output_types": ["Data"]
+          },
+          "targetHandle": {
+            "fieldName": "input_data",
+            "id": "PostgreSQL-persistence",
+            "inputTypes": ["Message", "Data"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-HTTPTool-zoho-calendar{œdataTypeœ:œHTTPToolœ,œidœ:œHTTPTool-zoho-calendarœ,œnameœ:œresponseœ,œoutput_typesœ:[œDataœ]}-PostgreSQL-persistence{œfieldNameœ:œinput_dataœ,œidœ:œPostgreSQL-persistenceœ,œinputTypesœ:[œMessageœ,œDataœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "HTTPTool-zoho-calendar",
+        "sourceHandle": "{œdataTypeœ:œHTTPToolœ,œidœ:œHTTPTool-zoho-calendarœ,œnameœ:œresponseœ,œoutput_typesœ:[œDataœ]}",
+        "target": "PostgreSQL-persistence",
+        "targetHandle": "{œfieldNameœ:œinput_dataœ,œidœ:œPostgreSQL-persistenceœ,œinputTypesœ:[œMessageœ,œDataœ],œtypeœ:œstrœ}"
+      },
+      {
+        "className": "",
+        "data": {
+          "sourceHandle": {
+            "dataType": "PostgreSQL",
+            "id": "PostgreSQL-persistence",
+            "name": "result",
+            "output_types": ["Data"]
+          },
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "ChatOutput-result",
+            "inputTypes": ["Data", "DataFrame", "Message"],
+            "type": "str"
+          }
+        },
+        "id": "reactflow__edge-PostgreSQL-persistence{œdataTypeœ:œPostgreSQLœ,œidœ:œPostgreSQL-persistenceœ,œnameœ:œresultœ,œoutput_typesœ:[œDataœ]}-ChatOutput-result{œfieldNameœ:œinput_valueœ,œidœ:œChatOutput-resultœ,œinputTypesœ:[œDataœ,œDataFrameœ,œMessageœ],œtypeœ:œstrœ}",
+        "selected": false,
+        "source": "PostgreSQL-persistence",
+        "sourceHandle": "{œdataTypeœ:œPostgreSQLœ,œidœ:œPostgreSQL-persistenceœ,œnameœ:œresultœ,œoutput_typesœ:[œDataœ]}",
+        "target": "ChatOutput-result",
+        "targetHandle": "{œfieldNameœ:œinput_valueœ,œidœ:œChatOutput-resultœ,œinputTypesœ:[œDataœ,œDataFrameœ,œMessageœ],œtypeœ:œstrœ}"
+      }
+    ],
+    "viewport": {
+      "x": -100,
+      "y": -50,
+      "zoom": 0.8
+    }
+  },
+  "description": "Impact Realty Recruiting Agent - Complete production-ready recruiting automation with CSV ingestion, validation, intelligent outreach via SMS/Email/Calendar, response routing, CRM operations, retry logic, and comprehensive logging.",
+  "endpoint_name": "impact-realty-recruiting-flow",
+  "gradient": "1",
+  "icon": "Users",
+  "id": "impact-realty-recruiting-flow",
+  "is_component": false,
+  "last_tested_version": "1.5.1",
+  "name": "Impact Realty Recruiting Agent",
+  "tags": [
+    "recruiting",
+    "impact-realty",
+    "sms",
+    "email",
+    "crm",
+    "retry-logic",
+    "postgresql",
+    "native-components",
+    "salesmsg"
+  ]
+}

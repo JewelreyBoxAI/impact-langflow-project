@@ -1,0 +1,377 @@
+{
+  "name": "Zoho CRM MCP Integration - Production Ready",
+  "description": "Complete Langflow MCP node configurations for Zoho CRM recruiting agent operations",
+  "version": "2.0.0",
+  "nodes": [
+    {
+      "id": "zoho_mcp_leads_search",
+      "type": "MCPTool",
+      "name": "Zoho Lead Search",
+      "config": {
+        "server": "mcp://zoho-crm",
+        "endpoint": "search_records",
+        "auth": {
+          "type": "environment",
+          "variables": ["ZOHO_CLIENT_ID", "ZOHO_CLIENT_SECRET", "ZOHO_REFRESH_TOKEN"]
+        },
+        "params": {
+          "module_name": "Leads",
+          "search_criteria": "${input.search_query}"
+        },
+        "retry": {
+          "max_attempts": 3,
+          "backoff_multiplier": 2
+        },
+        "timeout": 30
+      },
+      "outputs": {
+        "success": "data",
+        "error": "error_message",
+        "count": "count"
+      }
+    },
+    {
+      "id": "zoho_mcp_lead_create",
+      "type": "MCPTool",
+      "name": "Zoho Lead Creation",
+      "config": {
+        "server": "mcp://zoho-crm",
+        "endpoint": "create_record",
+        "auth": {
+          "type": "environment",
+          "variables": ["ZOHO_CLIENT_ID", "ZOHO_CLIENT_SECRET", "ZOHO_REFRESH_TOKEN"]
+        },
+        "params": {
+          "module_name": "Leads",
+          "record_data": {
+            "First_Name": "${input.first_name}",
+            "Last_Name": "${input.last_name}",
+            "Email": "${input.email}",
+            "Phone": "${input.phone}",
+            "Company": "${input.company}",
+            "Lead_Source": "${input.lead_source || 'AI Agent'}",
+            "Lead_Status": "${input.lead_status || 'New'}"
+          }
+        },
+        "validation": {
+          "required_fields": ["first_name", "last_name", "email"],
+          "email_validation": true
+        }
+      },
+      "outputs": {
+        "success": "data",
+        "error": "error_message",
+        "zoho_id": "zoho_id"
+      }
+    },
+    {
+      "id": "zoho_mcp_appointment_schedule",
+      "type": "MCPTool",
+      "name": "Zoho Appointment Scheduler",
+      "config": {
+        "server": "mcp://zoho-crm",
+        "endpoint": "schedule_appointment",
+        "auth": {
+          "type": "environment",
+          "variables": ["ZOHO_CLIENT_ID", "ZOHO_CLIENT_SECRET", "ZOHO_REFRESH_TOKEN"]
+        },
+        "params": {
+          "lead_id": "${input.lead_id}",
+          "appointment_data": {
+            "Event_Title": "${input.title || 'Initial Consultation'}",
+            "Start_DateTime": "${input.start_datetime}",
+            "End_DateTime": "${input.end_datetime}",
+            "Description": "${input.description || 'Recruiting consultation with AI agent'}",
+            "Location": "${input.location || 'Virtual Meeting'}"
+          }
+        },
+        "validation": {
+          "required_fields": ["lead_id", "start_datetime", "end_datetime"],
+          "datetime_format": "ISO8601"
+        }
+      },
+      "outputs": {
+        "success": "data",
+        "error": "error_message",
+        "event_id": "zoho_id"
+      }
+    },
+    {
+      "id": "zoho_mcp_lead_qualify",
+      "type": "MCPTool",
+      "name": "Zoho Lead Qualification",
+      "config": {
+        "server": "mcp://zoho-crm",
+        "endpoint": "qualify_lead",
+        "auth": {
+          "type": "environment",
+          "variables": ["ZOHO_CLIENT_ID", "ZOHO_CLIENT_SECRET", "ZOHO_REFRESH_TOKEN"]
+        },
+        "params": {
+          "lead_id": "${input.lead_id}",
+          "qualification_data": {
+            "Lead_Status": "${input.lead_status || 'Qualified'}",
+            "Rating": "${input.rating}",
+            "Annual_Revenue": "${input.annual_revenue}",
+            "No_of_Employees": "${input.employee_count}",
+            "Industry": "${input.industry}",
+            "Lead_Score": "${input.lead_score}"
+          }
+        },
+        "business_rules": {
+          "auto_convert_threshold": 80,
+          "high_priority_score": 70
+        }
+      },
+      "outputs": {
+        "success": "data",
+        "error": "error_message",
+        "qualified": "status",
+        "score": "lead_score"
+      }
+    },
+    {
+      "id": "zoho_mcp_lead_convert",
+      "type": "MCPTool",
+      "name": "Zoho Lead Conversion",
+      "config": {
+        "server": "mcp://zoho-crm",
+        "endpoint": "convert_lead",
+        "auth": {
+          "type": "environment",
+          "variables": ["ZOHO_CLIENT_ID", "ZOHO_CLIENT_SECRET", "ZOHO_REFRESH_TOKEN"]
+        },
+        "params": {
+          "lead_id": "${input.lead_id}",
+          "conversion_data": {
+            "notify_lead_owner": true,
+            "notify_new_entity_owner": true,
+            "accounts": "${input.account_name || ''}",
+            "deals": "${input.deal_name || ''}"
+          }
+        },
+        "conditions": {
+          "min_lead_score": 60,
+          "required_status": "Qualified"
+        }
+      },
+      "outputs": {
+        "success": "data",
+        "error": "error_message",
+        "contact_id": "contact_id",
+        "account_id": "account_id",
+        "deal_id": "deal_id"
+      }
+    },
+    {
+      "id": "zoho_mcp_task_create",
+      "type": "MCPTool",
+      "name": "Zoho Task Creation",
+      "config": {
+        "server": "mcp://zoho-crm",
+        "endpoint": "create_task",
+        "auth": {
+          "type": "environment",
+          "variables": ["ZOHO_CLIENT_ID", "ZOHO_CLIENT_SECRET", "ZOHO_REFRESH_TOKEN"]
+        },
+        "params": {
+          "task_data": {
+            "Subject": "${input.subject}",
+            "What_Id": "${input.related_id}",
+            "Due_Date": "${input.due_date}",
+            "Status": "${input.status || 'Not Started'}",
+            "Priority": "${input.priority || 'Normal'}",
+            "Description": "${input.description}"
+          }
+        },
+        "automation": {
+          "auto_assign": true,
+          "default_reminder": "15 minutes"
+        }
+      },
+      "outputs": {
+        "success": "data",
+        "error": "error_message",
+        "task_id": "zoho_id"
+      }
+    },
+    {
+      "id": "zoho_mcp_user_list",
+      "type": "MCPTool",
+      "name": "Zoho User Management",
+      "config": {
+        "server": "mcp://zoho-crm",
+        "endpoint": "get_users",
+        "auth": {
+          "type": "environment",
+          "variables": ["ZOHO_CLIENT_ID", "ZOHO_CLIENT_SECRET", "ZOHO_REFRESH_TOKEN"]
+        },
+        "params": {
+          "user_type": "${input.user_type || 'ActiveUsers'}"
+        },
+        "cache": {
+          "enabled": true,
+          "ttl": 3600
+        }
+      },
+      "outputs": {
+        "success": "users",
+        "error": "error_message",
+        "count": "count"
+      }
+    },
+    {
+      "id": "zoho_mcp_activities_get",
+      "type": "MCPTool",
+      "name": "Zoho Lead Activities",
+      "config": {
+        "server": "mcp://zoho-crm",
+        "endpoint": "get_lead_activities",
+        "auth": {
+          "type": "environment",
+          "variables": ["ZOHO_CLIENT_ID", "ZOHO_CLIENT_SECRET", "ZOHO_REFRESH_TOKEN"]
+        },
+        "params": {
+          "lead_id": "${input.lead_id}"
+        },
+        "processing": {
+          "include_history": true,
+          "sort_by": "created_time",
+          "limit": 50
+        }
+      },
+      "outputs": {
+        "success": "activities",
+        "error": "error_message",
+        "tasks": "tasks",
+        "events": "events",
+        "calls": "calls"
+      }
+    },
+    {
+      "id": "zoho_mcp_connection_test",
+      "type": "MCPTool",
+      "name": "Zoho Connection Test",
+      "config": {
+        "server": "mcp://zoho-crm",
+        "endpoint": "test_zoho_connection",
+        "auth": {
+          "type": "environment",
+          "variables": ["ZOHO_CLIENT_ID", "ZOHO_CLIENT_SECRET", "ZOHO_REFRESH_TOKEN"]
+        },
+        "params": {},
+        "health_check": {
+          "enabled": true,
+          "interval": 300
+        }
+      },
+      "outputs": {
+        "success": "status",
+        "error": "error_message",
+        "user_info": "user_info",
+        "api_status": "api_base_url"
+      }
+    }
+  ],
+  "workflows": [
+    {
+      "name": "complete_recruiting_flow",
+      "description": "Full recruiting workflow from lead capture to conversion",
+      "nodes": [
+        "zoho_mcp_lead_create",
+        "zoho_mcp_appointment_schedule",
+        "zoho_mcp_lead_qualify",
+        "zoho_mcp_lead_convert",
+        "zoho_mcp_task_create"
+      ],
+      "flow": {
+        "trigger": "lead_capture",
+        "steps": [
+          {
+            "node": "zoho_mcp_lead_create",
+            "condition": "always"
+          },
+          {
+            "node": "zoho_mcp_appointment_schedule",
+            "condition": "lead_created"
+          },
+          {
+            "node": "zoho_mcp_lead_qualify",
+            "condition": "appointment_scheduled"
+          },
+          {
+            "node": "zoho_mcp_lead_convert",
+            "condition": "lead_qualified AND score >= 60"
+          },
+          {
+            "node": "zoho_mcp_task_create",
+            "condition": "always"
+          }
+        ]
+      }
+    }
+  ],
+  "environment_setup": {
+    "required_variables": [
+      "ZOHO_CLIENT_ID=1000.58LVTQ2HYAP0VW7DB814U5OC2TE55Y",
+      "ZOHO_CLIENT_SECRET=289c8c0b64f2ee062e93dd6b3e27043fe4575618af",
+      "ZOHO_REFRESH_TOKEN=1000.6281d839190bc98f9c5c7f5c58caa150.e0b2ea5a06f4cc3de164896330a7ccae",
+      "MCP_SERVER_URL=http://localhost:8001",
+      "MCP_SERVER_PORT=8001"
+    ],
+    "mcp_server_command": "cd /MCPServers/zoho-crm-mcp-server/src && python -m zoho_crm_mcp.server",
+    "validation": {
+      "connection_test": "zoho_mcp_connection_test",
+      "required_permissions": ["crm.modules.all", "crm.settings.read"]
+    }
+  },
+  "error_handling": {
+    "circuit_breaker": {
+      "failure_threshold": 5,
+      "recovery_timeout": 60
+    },
+    "retry_policy": {
+      "max_attempts": 3,
+      "backoff_strategy": "exponential",
+      "retry_codes": [401, 429, 500, 502, 503]
+    },
+    "fallback_actions": [
+      "log_error",
+      "notify_admin",
+      "use_cached_data"
+    ]
+  },
+  "performance": {
+    "rate_limiting": {
+      "requests_per_minute": 100,
+      "concurrent_requests": 10
+    },
+    "caching": {
+      "user_data_ttl": 3600,
+      "lead_data_ttl": 300,
+      "connection_test_ttl": 60
+    },
+    "monitoring": {
+      "track_response_times": true,
+      "log_api_usage": true,
+      "alert_on_errors": true
+    }
+  },
+  "security": {
+    "token_management": {
+      "auto_refresh": true,
+      "token_expiry_buffer": 300,
+      "secure_storage": true
+    },
+    "data_validation": {
+      "input_sanitization": true,
+      "email_validation": true,
+      "phone_validation": true
+    },
+    "audit_logging": {
+      "log_all_requests": true,
+      "include_user_context": true,
+      "retention_days": 90
+    }
+  }
+}

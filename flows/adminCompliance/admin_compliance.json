@@ -5,15 +5,26 @@
         "data": {
           "id": "ChatInput-9KfA2",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
             "description": "Get chat inputs from the Playground.",
             "display_name": "Chat Input",
-            "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "should_store_message", "sender", "sender_name", "session_id", "files", "background_color", "chat_icon", "text_color"],
+            "field_order": [
+              "input_value",
+              "should_store_message",
+              "sender",
+              "sender_name",
+              "session_id",
+              "files",
+              "background_color",
+              "chat_icon",
+              "text_color"
+            ],
             "frozen": false,
             "icon": "MessagesSquare",
             "legacy": false,
@@ -29,7 +40,9 @@
                 "name": "message",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -47,15 +60,13 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "input_value",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "should_store_message": {
                 "_input_type": "BoolInput",
@@ -65,7 +76,6 @@
                 "info": "Store the message in the history.",
                 "list": false,
                 "name": "should_store_message",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -81,8 +91,10 @@
                 "dynamic": false,
                 "info": "Type of sender.",
                 "name": "sender",
-                "options": ["Machine", "User"],
-                "placeholder": "",
+                "options": [
+                  "Machine",
+                  "User"
+                ],
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -97,11 +109,12 @@
                 "display_name": "Sender Name",
                 "dynamic": false,
                 "info": "Name of the sender.",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "sender_name",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -117,19 +130,19 @@
                 "display_name": "Session ID",
                 "dynamic": false,
                 "info": "The session ID of the chat. If empty, the current session ID parameter will be used.",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "session_id",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               }
             },
             "tool_mode": false
@@ -139,9 +152,18 @@
         "dragging": false,
         "height": 234,
         "id": "ChatInput-9KfA2",
-        "measured": {"height": 234, "width": 320},
-        "position": {"x": 100, "y": 200},
-        "positionAbsolute": {"x": 100, "y": 200},
+        "measured": {
+          "height": 234,
+          "width": 320
+        },
+        "position": {
+          "x": 100,
+          "y": 200
+        },
+        "positionAbsolute": {
+          "x": 100,
+          "y": 200
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -150,15 +172,21 @@
         "data": {
           "id": "Redis-7Jm1P",
           "node": {
-            "base_classes": ["Memory"],
+            "base_classes": [
+              "Memory"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
             "description": "Redis-based memory storage for persistent conversation history.",
             "display_name": "Redis Memory",
-            "documentation": "",
             "edited": false,
-            "field_order": ["redis_url", "session_id", "ttl", "namespace"],
+            "field_order": [
+              "redis_url",
+              "session_id",
+              "ttl",
+              "namespace"
+            ],
             "frozen": false,
             "icon": "database",
             "legacy": false,
@@ -174,7 +202,9 @@
                 "name": "memory",
                 "selected": "Memory",
                 "tool_mode": true,
-                "types": ["Memory"],
+                "types": [
+                  "Memory"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -191,7 +221,6 @@
                 "load_from_db": true,
                 "name": "redis_url",
                 "password": true,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -204,19 +233,19 @@
                 "display_name": "Session ID",
                 "dynamic": false,
                 "info": "Session identifier for memory isolation",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "session_id",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "ttl": {
                 "_input_type": "IntInput",
@@ -226,7 +255,6 @@
                 "info": "Time to live for stored messages",
                 "list": false,
                 "name": "ttl",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -240,11 +268,12 @@
                 "display_name": "Namespace",
                 "dynamic": false,
                 "info": "Memory namespace for organization",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "namespace",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -262,9 +291,18 @@
         "dragging": false,
         "height": 264,
         "id": "Redis-7Jm1P",
-        "measured": {"height": 264, "width": 320},
-        "position": {"x": 100, "y": 500},
-        "positionAbsolute": {"x": 100, "y": 500},
+        "measured": {
+          "height": 264,
+          "width": 320
+        },
+        "position": {
+          "x": 100,
+          "y": 500
+        },
+        "positionAbsolute": {
+          "x": 100,
+          "y": 500
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -273,15 +311,24 @@
         "data": {
           "id": "Prompt-8Xz9L",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
-            "custom_fields": {"template": ["memory", "current_time", "user_input"]},
+            "custom_fields": {
+              "template": [
+                "memory",
+                "current_time",
+                "user_input"
+              ]
+            },
             "description": "Create a prompt template with dynamic variables.",
             "display_name": "Prompt",
-            "documentation": "",
             "edited": false,
-            "field_order": ["template"],
+            "field_order": [
+              "template"
+            ],
             "frozen": false,
             "icon": "prompts",
             "legacy": false,
@@ -297,7 +344,9 @@
                 "name": "prompt",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -309,10 +358,8 @@
                 "advanced": false,
                 "display_name": "Template",
                 "dynamic": false,
-                "info": "",
                 "list": false,
                 "name": "template",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -326,54 +373,53 @@
                 "display_name": "memory",
                 "dynamic": false,
                 "field_type": "str",
-                "info": "",
-                "input_types": ["Memory", "Text"],
+                "input_types": [
+                  "Memory",
+                  "Text"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "memory",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "current_time": {
                 "advanced": false,
                 "display_name": "current_time",
                 "dynamic": false,
                 "field_type": "str",
-                "info": "",
-                "input_types": ["Text"],
+                "input_types": [
+                  "Text"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "multiline": false,
                 "name": "current_time",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "user_input": {
                 "advanced": false,
                 "display_name": "user_input",
                 "dynamic": false,
                 "field_type": "str",
-                "info": "",
-                "input_types": ["Message", "Text"],
+                "input_types": [
+                  "Message",
+                  "Text"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "user_input",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
-                "type": "str",
-                "value": ""
+                "type": "str"
               }
             },
             "tool_mode": false
@@ -383,9 +429,18 @@
         "dragging": false,
         "height": 400,
         "id": "Prompt-8Xz9L",
-        "measured": {"height": 400, "width": 320},
-        "position": {"x": 500, "y": 200},
-        "positionAbsolute": {"x": 500, "y": 200},
+        "measured": {
+          "height": 400,
+          "width": 320
+        },
+        "position": {
+          "x": 500,
+          "y": 200
+        },
+        "positionAbsolute": {
+          "x": 500,
+          "y": 200
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -394,15 +449,21 @@
         "data": {
           "id": "ZohoMCP-4Nw7Q",
           "node": {
-            "base_classes": ["Tool"],
+            "base_classes": [
+              "Tool"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
             "description": "Zoho MCP integration for CRM and administrative operations.",
             "display_name": "Zoho MCP Tool",
-            "documentation": "",
             "edited": false,
-            "field_order": ["zoho_client_id", "zoho_client_secret", "refresh_token", "sandbox_mode"],
+            "field_order": [
+              "zoho_client_id",
+              "zoho_client_secret",
+              "refresh_token",
+              "sandbox_mode"
+            ],
             "frozen": false,
             "icon": "tool",
             "legacy": false,
@@ -418,7 +479,9 @@
                 "name": "component_as_tool",
                 "selected": "Tool",
                 "tool_mode": true,
-                "types": ["Tool"],
+                "types": [
+                  "Tool"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -435,7 +498,6 @@
                 "load_from_db": true,
                 "name": "zoho_client_id",
                 "password": true,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -452,7 +514,6 @@
                 "load_from_db": true,
                 "name": "zoho_client_secret",
                 "password": true,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -469,7 +530,6 @@
                 "load_from_db": true,
                 "name": "refresh_token",
                 "password": true,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -484,7 +544,6 @@
                 "info": "Use Zoho sandbox environment",
                 "list": false,
                 "name": "sandbox_mode",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -500,9 +559,18 @@
         "dragging": false,
         "height": 284,
         "id": "ZohoMCP-4Nw7Q",
-        "measured": {"height": 284, "width": 320},
-        "position": {"x": 500, "y": 650},
-        "positionAbsolute": {"x": 500, "y": 650},
+        "measured": {
+          "height": 284,
+          "width": 320
+        },
+        "position": {
+          "x": 500,
+          "y": 650
+        },
+        "positionAbsolute": {
+          "x": 500,
+          "y": 650
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -511,15 +579,20 @@
         "data": {
           "id": "TavilySearch-5Rk8M",
           "node": {
-            "base_classes": ["Tool"],
+            "base_classes": [
+              "Tool"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
             "description": "Search the web for current information using Tavily API.",
             "display_name": "Tavily Search",
-            "documentation": "",
             "edited": false,
-            "field_order": ["tavily_api_key", "max_results", "search_depth"],
+            "field_order": [
+              "tavily_api_key",
+              "max_results",
+              "search_depth"
+            ],
             "frozen": false,
             "icon": "search",
             "legacy": false,
@@ -535,7 +608,9 @@
                 "name": "component_as_tool",
                 "selected": "Tool",
                 "tool_mode": true,
-                "types": ["Tool"],
+                "types": [
+                  "Tool"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -552,7 +627,6 @@
                 "load_from_db": true,
                 "name": "tavily_api_key",
                 "password": true,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -567,7 +641,6 @@
                 "info": "Maximum number of search results",
                 "list": false,
                 "name": "max_results",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -583,8 +656,10 @@
                 "dynamic": false,
                 "info": "Depth of search results",
                 "name": "search_depth",
-                "options": ["basic", "advanced"],
-                "placeholder": "",
+                "options": [
+                  "basic",
+                  "advanced"
+                ],
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -601,9 +676,18 @@
         "dragging": false,
         "height": 244,
         "id": "TavilySearch-5Rk8M",
-        "measured": {"height": 244, "width": 320},
-        "position": {"x": 500, "y": 980},
-        "positionAbsolute": {"x": 500, "y": 980},
+        "measured": {
+          "height": 244,
+          "width": 320
+        },
+        "position": {
+          "x": 500,
+          "y": 980
+        },
+        "positionAbsolute": {
+          "x": 500,
+          "y": 980
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -612,15 +696,26 @@
         "data": {
           "id": "Agent-6Lm3K",
           "node": {
-            "base_classes": ["Agent", "Message"],
+            "base_classes": [
+              "Agent",
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
             "description": "Agent with LLM and tools for executing admin and compliance tasks.",
             "display_name": "Karen Admin Agent",
-            "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "llm", "tools", "system_prompt", "memory", "agent_type", "max_iterations", "handle_parsing_errors"],
+            "field_order": [
+              "input_value",
+              "llm",
+              "tools",
+              "system_prompt",
+              "memory",
+              "agent_type",
+              "max_iterations",
+              "handle_parsing_errors"
+            ],
             "frozen": false,
             "icon": "bot",
             "legacy": false,
@@ -636,7 +731,9 @@
                 "name": "response",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -649,19 +746,19 @@
                 "display_name": "Input",
                 "dynamic": false,
                 "info": "Input message for the agent",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "input_value",
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "llm": {
                 "_input_type": "HandleInput",
@@ -669,16 +766,16 @@
                 "display_name": "Language Model",
                 "dynamic": false,
                 "info": "Language model for the agent",
-                "input_types": ["LanguageModel"],
+                "input_types": [
+                  "LanguageModel"
+                ],
                 "list": false,
                 "name": "llm",
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
                 "trace_as_metadata": true,
-                "type": "other",
-                "value": ""
+                "type": "other"
               },
               "tools": {
                 "_input_type": "HandleInput",
@@ -686,16 +783,16 @@
                 "display_name": "Tools",
                 "dynamic": false,
                 "info": "Tools available to the agent",
-                "input_types": ["Tool"],
+                "input_types": [
+                  "Tool"
+                ],
                 "list": true,
                 "name": "tools",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "trace_as_metadata": true,
-                "type": "other",
-                "value": ""
+                "type": "other"
               },
               "system_prompt": {
                 "_input_type": "MessageInput",
@@ -703,19 +800,19 @@
                 "display_name": "System Prompt",
                 "dynamic": false,
                 "info": "System prompt for the agent",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "system_prompt",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "memory": {
                 "_input_type": "HandleInput",
@@ -723,16 +820,16 @@
                 "display_name": "Memory",
                 "dynamic": false,
                 "info": "Memory component for the agent",
-                "input_types": ["Memory"],
+                "input_types": [
+                  "Memory"
+                ],
                 "list": false,
                 "name": "memory",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "trace_as_metadata": true,
-                "type": "other",
-                "value": ""
+                "type": "other"
               },
               "agent_type": {
                 "_input_type": "DropdownInput",
@@ -742,8 +839,11 @@
                 "dynamic": false,
                 "info": "Type of agent to use",
                 "name": "agent_type",
-                "options": ["react", "conversational", "structured_chat"],
-                "placeholder": "",
+                "options": [
+                  "react",
+                  "conversational",
+                  "structured_chat"
+                ],
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -760,7 +860,6 @@
                 "info": "Maximum iterations for agent execution",
                 "list": false,
                 "name": "max_iterations",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -776,7 +875,6 @@
                 "info": "Handle parsing errors gracefully",
                 "list": false,
                 "name": "handle_parsing_errors",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -792,9 +890,18 @@
         "dragging": false,
         "height": 500,
         "id": "Agent-6Lm3K",
-        "measured": {"height": 500, "width": 320},
-        "position": {"x": 900, "y": 200},
-        "positionAbsolute": {"x": 900, "y": 200},
+        "measured": {
+          "height": 500,
+          "width": 320
+        },
+        "position": {
+          "x": 900,
+          "y": 200
+        },
+        "positionAbsolute": {
+          "x": 900,
+          "y": 200
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -803,15 +910,29 @@
         "data": {
           "id": "OpenAIModel-2Xy9B",
           "node": {
-            "base_classes": ["LanguageModel", "Message"],
+            "base_classes": [
+              "LanguageModel",
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
             "description": "Generates text using OpenAI LLMs.",
             "display_name": "OpenAI",
-            "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "system_message", "stream", "max_tokens", "model_kwargs", "json_mode", "model_name", "openai_api_base", "api_key", "temperature", "seed"],
+            "field_order": [
+              "input_value",
+              "system_message",
+              "stream",
+              "max_tokens",
+              "model_kwargs",
+              "json_mode",
+              "model_name",
+              "openai_api_base",
+              "api_key",
+              "temperature",
+              "seed"
+            ],
             "frozen": false,
             "icon": "OpenAI",
             "legacy": false,
@@ -827,7 +948,9 @@
                 "name": "model_output",
                 "selected": "LanguageModel",
                 "tool_mode": true,
-                "types": ["LanguageModel"],
+                "types": [
+                  "LanguageModel"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -844,7 +967,6 @@
                 "load_from_db": true,
                 "name": "api_key",
                 "password": true,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -857,10 +979,20 @@
                 "combobox": true,
                 "display_name": "Model Name",
                 "dynamic": false,
-                "info": "",
                 "name": "model_name",
-                "options": ["gpt-4o-mini", "gpt-4o", "gpt-4.1", "gpt-4.1-mini", "gpt-4.1-nano", "gpt-4.5-preview", "gpt-4-turbo", "gpt-4-turbo-preview", "gpt-4", "gpt-3.5-turbo", "o1"],
-                "placeholder": "",
+                "options": [
+                  "gpt-4o-mini",
+                  "gpt-4o",
+                  "gpt-4.1",
+                  "gpt-4.1-mini",
+                  "gpt-4.1-nano",
+                  "gpt-4.5-preview",
+                  "gpt-4-turbo",
+                  "gpt-4-turbo-preview",
+                  "gpt-4",
+                  "gpt-3.5-turbo",
+                  "o1"
+                ],
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -874,10 +1006,13 @@
                 "advanced": false,
                 "display_name": "Temperature",
                 "dynamic": false,
-                "info": "",
                 "name": "temperature",
-                "placeholder": "",
-                "range_spec": {"max": 1, "min": 0, "step": 0.01, "step_type": "float"},
+                "range_spec": {
+                  "max": 1,
+                  "min": 0,
+                  "step": 0.01,
+                  "step_type": "float"
+                },
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -893,7 +1028,6 @@
                 "info": "The maximum number of tokens to generate. Set to 0 for unlimited tokens.",
                 "list": false,
                 "name": "max_tokens",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -909,9 +1043,18 @@
         "dragging": false,
         "height": 400,
         "id": "OpenAIModel-2Xy9B",
-        "measured": {"height": 400, "width": 320},
-        "position": {"x": 900, "y": 750},
-        "positionAbsolute": {"x": 900, "y": 750},
+        "measured": {
+          "height": 400,
+          "width": 320
+        },
+        "position": {
+          "x": 900,
+          "y": 750
+        },
+        "positionAbsolute": {
+          "x": 900,
+          "y": 750
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -922,15 +1065,26 @@
           "display_name": "Chat Output",
           "id": "ChatOutput-1Bv4N",
           "node": {
-            "base_classes": ["Message"],
+            "base_classes": [
+              "Message"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
             "description": "Display a chat message in the Playground.",
             "display_name": "Chat Output",
-            "documentation": "",
             "edited": false,
-            "field_order": ["input_value", "should_store_message", "sender", "sender_name", "session_id", "data_template", "background_color", "chat_icon", "text_color"],
+            "field_order": [
+              "input_value",
+              "should_store_message",
+              "sender",
+              "sender_name",
+              "session_id",
+              "data_template",
+              "background_color",
+              "chat_icon",
+              "text_color"
+            ],
             "frozen": false,
             "icon": "MessagesSquare",
             "legacy": false,
@@ -946,7 +1100,9 @@
                 "name": "message",
                 "selected": "Message",
                 "tool_mode": true,
-                "types": ["Message"],
+                "types": [
+                  "Message"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -959,18 +1115,20 @@
                 "display_name": "Text",
                 "dynamic": false,
                 "info": "Message to be passed as output.",
-                "input_types": ["Data", "DataFrame", "Message"],
+                "input_types": [
+                  "Data",
+                  "DataFrame",
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "input_value",
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "should_store_message": {
                 "_input_type": "BoolInput",
@@ -980,7 +1138,6 @@
                 "info": "Store the message in the history.",
                 "list": false,
                 "name": "should_store_message",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -996,8 +1153,10 @@
                 "dynamic": false,
                 "info": "Type of sender.",
                 "name": "sender",
-                "options": ["Machine", "User"],
-                "placeholder": "",
+                "options": [
+                  "Machine",
+                  "User"
+                ],
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1012,11 +1171,12 @@
                 "display_name": "Sender Name",
                 "dynamic": false,
                 "info": "Name of the sender.",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "sender_name",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1032,19 +1192,19 @@
                 "display_name": "Session ID",
                 "dynamic": false,
                 "info": "The session ID of the chat. If empty, the current session ID parameter will be used.",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "load_from_db": false,
                 "name": "session_id",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               }
             },
             "tool_mode": false
@@ -1054,9 +1214,18 @@
         "dragging": false,
         "height": 234,
         "id": "ChatOutput-1Bv4N",
-        "measured": {"height": 234, "width": 320},
-        "position": {"x": 1300, "y": 350},
-        "positionAbsolute": {"x": 1300, "y": 350},
+        "measured": {
+          "height": 234,
+          "width": 320
+        },
+        "position": {
+          "x": 1300,
+          "y": 350
+        },
+        "positionAbsolute": {
+          "x": 1300,
+          "y": 350
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1065,15 +1234,19 @@
         "data": {
           "id": "TimeProvider-9Qr2W",
           "node": {
-            "base_classes": ["Text"],
+            "base_classes": [
+              "Text"
+            ],
             "beta": false,
             "conditional_paths": [],
             "custom_fields": {},
             "description": "Provides current time for quiet hours enforcement and audit logging.",
             "display_name": "Time Provider",
-            "documentation": "",
             "edited": false,
-            "field_order": ["timezone", "format"],
+            "field_order": [
+              "timezone",
+              "format"
+            ],
             "frozen": false,
             "icon": "clock",
             "legacy": false,
@@ -1089,7 +1262,9 @@
                 "name": "time_output",
                 "selected": "Text",
                 "tool_mode": true,
-                "types": ["Text"],
+                "types": [
+                  "Text"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -1104,8 +1279,13 @@
                 "dynamic": false,
                 "info": "Timezone for time calculation",
                 "name": "timezone",
-                "options": ["UTC", "US/Eastern", "US/Central", "US/Mountain", "US/Pacific"],
-                "placeholder": "",
+                "options": [
+                  "UTC",
+                  "US/Eastern",
+                  "US/Central",
+                  "US/Mountain",
+                  "US/Pacific"
+                ],
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1122,8 +1302,12 @@
                 "dynamic": false,
                 "info": "Time format string",
                 "name": "format",
-                "options": ["%Y-%m-%d %H:%M:%S %Z", "%H:%M:%S", "%Y-%m-%d", "ISO"],
-                "placeholder": "",
+                "options": [
+                  "%Y-%m-%d %H:%M:%S %Z",
+                  "%H:%M:%S",
+                  "%Y-%m-%d",
+                  "ISO"
+                ],
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1140,9 +1324,18 @@
         "dragging": false,
         "height": 204,
         "id": "TimeProvider-9Qr2W",
-        "measured": {"height": 204, "width": 320},
-        "position": {"x": 100, "y": 800},
-        "positionAbsolute": {"x": 100, "y": 800},
+        "measured": {
+          "height": 204,
+          "width": 320
+        },
+        "position": {
+          "x": 100,
+          "y": 800
+        },
+        "positionAbsolute": {
+          "x": 100,
+          "y": 800
+        },
         "selected": false,
         "type": "genericNode",
         "width": 320
@@ -1150,18 +1343,22 @@
     ],
     "edges": [
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "ChatInput",
             "id": "ChatInput-9KfA2",
             "name": "message",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "user_input",
             "id": "Prompt-8Xz9L",
-            "inputTypes": ["Message", "Text"],
+            "inputTypes": [
+              "Message",
+              "Text"
+            ],
             "type": "str"
           }
         },
@@ -1173,18 +1370,22 @@
         "targetHandle": "{œfieldNameœ: œuser_inputœ, œidœ: œPrompt-8Xz9Lœ, œinputTypesœ: [œMessageœ, œTextœ], œtypeœ: œstrœ}"
       },
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "Redis",
             "id": "Redis-7Jm1P",
             "name": "memory",
-            "output_types": ["Memory"]
+            "output_types": [
+              "Memory"
+            ]
           },
           "targetHandle": {
             "fieldName": "memory",
             "id": "Prompt-8Xz9L",
-            "inputTypes": ["Memory", "Text"],
+            "inputTypes": [
+              "Memory",
+              "Text"
+            ],
             "type": "str"
           }
         },
@@ -1196,18 +1397,21 @@
         "targetHandle": "{œfieldNameœ: œmemoryœ, œidœ: œPrompt-8Xz9Lœ, œinputTypesœ: [œMemoryœ, œTextœ], œtypeœ: œstrœ}"
       },
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "TimeProvider",
             "id": "TimeProvider-9Qr2W",
             "name": "time_output",
-            "output_types": ["Text"]
+            "output_types": [
+              "Text"
+            ]
           },
           "targetHandle": {
             "fieldName": "current_time",
             "id": "Prompt-8Xz9L",
-            "inputTypes": ["Text"],
+            "inputTypes": [
+              "Text"
+            ],
             "type": "str"
           }
         },
@@ -1219,18 +1423,21 @@
         "targetHandle": "{œfieldNameœ: œcurrent_timeœ, œidœ: œPrompt-8Xz9Lœ, œinputTypesœ: [œTextœ], œtypeœ: œstrœ}"
       },
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "Prompt",
             "id": "Prompt-8Xz9L",
             "name": "prompt",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "system_prompt",
             "id": "Agent-6Lm3K",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
@@ -1242,18 +1449,21 @@
         "targetHandle": "{œfieldNameœ: œsystem_promptœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "ChatInput",
             "id": "ChatInput-9KfA2",
             "name": "message",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_value",
             "id": "Agent-6Lm3K",
-            "inputTypes": ["Message"],
+            "inputTypes": [
+              "Message"
+            ],
             "type": "str"
           }
         },
@@ -1265,18 +1475,21 @@
         "targetHandle": "{œfieldNameœ: œinput_valueœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œMessageœ], œtypeœ: œstrœ}"
       },
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "OpenAIModel",
             "id": "OpenAIModel-2Xy9B",
             "name": "model_output",
-            "output_types": ["LanguageModel"]
+            "output_types": [
+              "LanguageModel"
+            ]
           },
           "targetHandle": {
             "fieldName": "llm",
             "id": "Agent-6Lm3K",
-            "inputTypes": ["LanguageModel"],
+            "inputTypes": [
+              "LanguageModel"
+            ],
             "type": "other"
           }
         },
@@ -1288,18 +1501,21 @@
         "targetHandle": "{œfieldNameœ: œllmœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œLanguageModelœ], œtypeœ: œotherœ}"
       },
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "ZohoMCP",
             "id": "ZohoMCP-4Nw7Q",
             "name": "component_as_tool",
-            "output_types": ["Tool"]
+            "output_types": [
+              "Tool"
+            ]
           },
           "targetHandle": {
             "fieldName": "tools",
             "id": "Agent-6Lm3K",
-            "inputTypes": ["Tool"],
+            "inputTypes": [
+              "Tool"
+            ],
             "type": "other"
           }
         },
@@ -1311,18 +1527,21 @@
         "targetHandle": "{œfieldNameœ: œtoolsœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œToolœ], œtypeœ: œotherœ}"
       },
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "TavilySearch",
             "id": "TavilySearch-5Rk8M",
             "name": "component_as_tool",
-            "output_types": ["Tool"]
+            "output_types": [
+              "Tool"
+            ]
           },
           "targetHandle": {
             "fieldName": "tools",
             "id": "Agent-6Lm3K",
-            "inputTypes": ["Tool"],
+            "inputTypes": [
+              "Tool"
+            ],
             "type": "other"
           }
         },
@@ -1334,18 +1553,21 @@
         "targetHandle": "{œfieldNameœ: œtoolsœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œToolœ], œtypeœ: œotherœ}"
       },
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "Redis",
             "id": "Redis-7Jm1P",
             "name": "memory",
-            "output_types": ["Memory"]
+            "output_types": [
+              "Memory"
+            ]
           },
           "targetHandle": {
             "fieldName": "memory",
             "id": "Agent-6Lm3K",
-            "inputTypes": ["Memory"],
+            "inputTypes": [
+              "Memory"
+            ],
             "type": "other"
           }
         },
@@ -1357,18 +1579,23 @@
         "targetHandle": "{œfieldNameœ: œmemoryœ, œidœ: œAgent-6Lm3Kœ, œinputTypesœ: [œMemoryœ], œtypeœ: œotherœ}"
       },
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "Agent",
             "id": "Agent-6Lm3K",
             "name": "response",
-            "output_types": ["Message"]
+            "output_types": [
+              "Message"
+            ]
           },
           "targetHandle": {
             "fieldName": "input_value",
             "id": "ChatOutput-1Bv4N",
-            "inputTypes": ["Data", "DataFrame", "Message"],
+            "inputTypes": [
+              "Data",
+              "DataFrame",
+              "Message"
+            ],
             "type": "str"
           }
         },

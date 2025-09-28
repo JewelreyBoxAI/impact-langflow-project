@@ -1,0 +1,152 @@
+# MCP FILES SNAPSHOT MANIFEST
+# ===========================
+#
+# Snapshot Information:
+# Created: 2025-09-27 13:47:20
+# Git Commit: 6a2f25fdab48c8fda8d16656ca0c3b65d6a39ae4
+# Git Branch: local-dev
+# Source Directory: C:\AI_src\ImpactLangFlow
+# Snapshot Directory: snapshots/2025-09-27_13-47-20/
+#
+# Purpose: Complete backup of MCP (Model Context Protocol) related files
+#
+# ===========================
+# DIRECTORY STRUCTURE
+# ===========================
+#
+# backend/               - Backend MCP implementation files
+# config/                - Environment and configuration files
+# documentation/         - MCP documentation and audit reports
+# flows/                 - LangFlow configuration files with MCP integration
+# MCPServers/           - MCP server implementations and utilities
+# scripts/              - MCP-related utility scripts
+#
+# ===========================
+# FILE INVENTORY
+# ===========================
+#
+# FLOWS (LangFlow Configurations):
+# --------------------------------
+flows/admin_compliance.json                    - Admin compliance flow with MCP references
+flows/office_ops.json                         - Office operations flow with MCP references
+flows/Recruiting Agent 1.5.1 - with MCP Server.json - Primary recruiting agent flow with MCP server integration
+flows/recruiting.json                         - Core recruiting flow with MCP references
+flows/sob_supervisor.json                     - SOB supervisor flow with MCP references
+flows/_VERSION_STAMPS.txt                     - Version information for flow files
+
+# BACKEND (Python Implementation):
+# --------------------------------
+backend/mcp.py                                 - FastAPI routes for MCP functionality
+backend/mcp_schemas.py                         - Pydantic schemas for MCP data models
+backend/mcp_service.py                         - Business logic for MCP operations
+backend/_VERSION_STAMPS.txt                   - Version information for backend files
+
+# CONFIGURATION FILES:
+# -------------------
+config/.env                                    - Production environment variables (contains MCP server settings)
+config/.env.development                        - Development environment variables
+config/.env.example                            - Template for environment variables
+config/docker-compose.dev.yml                 - Docker Compose with MCP services configuration
+config/_VERSION_STAMPS.txt                    - Version information for config files
+
+# MCP SERVERS:
+# -----------
+MCPServers/consolidated_zoho_mcp_server.py     - Consolidated Zoho MCP server implementation
+MCPServers/legacy_zoho_mcp/automated_zoho_oauth.py - Legacy OAuth automation
+MCPServers/legacy_zoho_mcp/check_zoho_tokens.py - Token validation utility
+MCPServers/legacy_zoho_mcp/exchange_auth_code.py - OAuth code exchange
+MCPServers/legacy_zoho_mcp/generate_zoho_tokens.py - Token generation utility
+MCPServers/legacy_zoho_mcp/mcp_audit.log       - Legacy MCP audit log
+MCPServers/legacy_zoho_mcp/refresh_tokens_auto.py - Automatic token refresh
+MCPServers/legacy_zoho_mcp/requirements.txt    - Python dependencies for legacy MCP
+MCPServers/legacy_zoho_mcp/setup_keyvault_tokens.py - Azure KeyVault token setup
+MCPServers/legacy_zoho_mcp/start_mcp_server.bat - Windows batch script to start MCP server
+MCPServers/legacy_zoho_mcp/zoho_auto_oauth.py  - Automated Zoho OAuth flow
+MCPServers/legacy_zoho_mcp/zoho_mcp_server.py  - Legacy Zoho MCP server implementation
+MCPServers/zoho-crm-mcp-server/.env.local      - Local environment for Zoho CRM MCP server
+MCPServers/zoho-crm-mcp-server/.gitignore      - Git ignore file for MCP server
+MCPServers/zoho-crm-mcp-server/langflow_mcp_config.json - LangFlow MCP configuration
+MCPServers/zoho-crm-mcp-server/pyproject.toml  - Python project configuration
+MCPServers/zoho-crm-mcp-server/README.md       - Documentation for Zoho CRM MCP server
+MCPServers/zoho-crm-mcp-server/src/zoho_crm_mcp/__init__.py - Package initialization
+MCPServers/zoho-crm-mcp-server/src/zoho_crm_mcp/server.py - Current Zoho CRM MCP server implementation
+MCPServers/zoho-crm-mcp-server/src/zoho_crm_mcp/uv.lock - UV dependency lock file
+MCPServers/__pycache__/zoho_mcp_server.cpython-312.pyc - Compiled Python bytecode
+MCPServers/_VERSION_STAMPS.txt                - Version information for MCP servers
+
+# SCRIPTS (Utilities and Testing):
+# --------------------------------
+scripts/infrastructure_check.py               - Infrastructure validation including MCP components
+scripts/test_mcp_load.py                      - MCP server loading and connectivity tests
+scripts/validate_flows.py                     - Flow configuration validation
+scripts/_VERSION_STAMPS.txt                   - Version information for scripts
+
+# DOCUMENTATION:
+# -------------
+documentation/MCP_ARCHITECTURE_AUDIT_REPORT.md - Comprehensive MCP architecture audit
+documentation/mcp_audit.log                   - MCP audit process log
+documentation/_VERSION_STAMPS.txt             - Version information for documentation
+
+# VERSION CONTROL:
+# ----------------
+version_info.txt                              - Snapshot version and metadata
+
+# ===========================
+# GIT STATUS AT SNAPSHOT TIME
+# ===========================
+#
+# Modified Files:
+backend/integrations/zoho/client.py
+flows/Recruiting Agent 1.5.1 - with MCP Server.json
+flows/admin_compliance.json
+flows/office_ops.json
+flows/recruiting.json
+flows/sob_supervisor.json
+frontend/hooks/useRecruiting.ts
+infrastructure/frontend/app/agents/recruiting/page.tsx
+infrastructure/frontend/app/layout.tsx
+infrastructure/frontend/components/chat/ChatInterface.tsx
+infrastructure/frontend/components/chat/MessageBubble.tsx
+infrastructure/frontend/components/shared/ThemeToggle.tsx
+infrastructure/frontend/context/AgentContext.tsx
+infrastructure/frontend/hooks/useTheme.ts
+infrastructure/frontend/package.json
+infrastructure/frontend/styles/globals.css
+
+# Untracked Files (New):
+MCPServers/consolidated_zoho_mcp_server.py
+backend/core/
+frontend/ (entire directory)
+infrastructure_check.py
+scripts/
+test_mcp_load.py
+validate_flows.py
+
+# ===========================
+# DEPENDENCIES AND RELATED FILES
+# ===========================
+#
+# This snapshot captures all MCP-related configurations, but note these dependencies:
+# 1. Azure KeyVault integration (for secure token storage)
+# 2. Zoho CRM API credentials and tokens
+# 3. LangFlow runtime environment
+# 4. Docker containers for MCP services
+# 5. FastAPI backend framework
+# 6. Python dependencies listed in pyproject.toml files
+#
+# ===========================
+# RESTORATION NOTES
+# ===========================
+#
+# To restore this MCP configuration:
+# 1. Copy files back to their original locations as indicated by the source paths
+# 2. Ensure environment variables are properly configured
+# 3. Install Python dependencies from pyproject.toml and requirements.txt files
+# 4. Configure Azure KeyVault access if using token storage
+# 5. Update Zoho API credentials and endpoints as needed
+# 6. Start MCP servers using the provided scripts
+# 7. Verify LangFlow can connect to MCP servers
+#
+# Total Files: 45
+# Created: 2025-09-27 13:47:20
+# Snapshot Complete: YES

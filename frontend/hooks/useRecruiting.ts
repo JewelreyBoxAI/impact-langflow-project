@@ -5,7 +5,8 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { RecruitingApi } from '@/lib/api/recruiting';
-import { ApiClient } from '@/lib/api/client';
+import { apiClient } from '@/lib/api';
+import { useEmbeddingSearch, useContextMemory, useDataPersistence } from './useEmbeddingSearch';
 import type {
   RecruitingFlowRequest,
   RecruitingFlowResponse,
@@ -25,7 +26,6 @@ export const useRecruitingFlow = (): UseRecruitingFlowReturn => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const apiClient = new ApiClient();
   const recruitingApi = new RecruitingApi(apiClient);
 
   const executeFlow = useCallback(async (request: RecruitingFlowRequest): Promise<RecruitingFlowResponse> => {
@@ -123,7 +123,6 @@ export const useRecruitingChat = (sessionId: string): UseChatReturn => {
   const reconnectAttempts = useRef(0);
   const maxReconnectAttempts = 5;
 
-  const apiClient = new ApiClient();
   const recruitingApi = new RecruitingApi(apiClient);
 
   const connect = useCallback(() => {
@@ -253,7 +252,6 @@ export const useRecruitingAnalytics = (dateFrom?: string, dateTo?: string) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const apiClient = new ApiClient();
   const recruitingApi = new RecruitingApi(apiClient);
 
   const fetchAnalytics = useCallback(async () => {
@@ -289,7 +287,6 @@ export const useFlowStatusPolling = (executionId: string | null, pollInterval: n
   const [isPolling, setIsPolling] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const apiClient = new ApiClient();
   const recruitingApi = new RecruitingApi(apiClient);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -353,11 +350,10 @@ export const useFlowStatusPolling = (executionId: string | null, pollInterval: n
 
 // MCP server status hook
 export const useMCPStatus = () => {
-  const [serverStatus, setServerStatus] = useState([]);
+  const [serverStatus, setServerStatus] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const apiClient = new ApiClient();
   const recruitingApi = new RecruitingApi(apiClient);
 
   const fetchStatus = useCallback(async () => {
@@ -366,7 +362,7 @@ export const useMCPStatus = () => {
       setError(null);
 
       const status = await recruitingApi.getServerStatus();
-      setServerStatus(status);
+      setServerStatus(status as any[]);
     } catch (err: any) {
       const errorMessage = err.response?.data?.detail || err.message || 'Failed to fetch server status';
       setError(errorMessage);
@@ -399,5 +395,236 @@ export const useMCPStatus = () => {
     error,
     refetch: fetchStatus,
     restartServer
+  };
+};
+
+// Enhanced recruiting hook with full context integration
+export const useRecruitingWithContext = (sessionId: string) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Core recruiting functionality
+  const recruitingFlow = useRecruitingFlow();
+  const analytics = useRecruitingAnalytics();
+  const mcpStatus = useMCPStatus();
+
+  // Context and embeddings
+  const embeddingSearch = useEmbeddingSearch('recruiting_index');
+  const contextMemory = useContextMemory(sessionId);
+  const dataPersistence = useDataPersistence();
+
+  // Enhanced message sending with context
+  const sendMessageWithContext = useCallback(async (
+    message: string,
+    includeContext = true,
+    contextTypes: string[] = ['conversation', 'prospect', 'document']
+  ) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      let contextualMessage = message;
+
+      if (includeContext) {
+        // Get relevant context from memory and embeddings
+        const [relevantContext, searchResults] = await Promise.all([
+          contextMemory.getRelevantContext(message, 1000),
+          embeddingSearch.search({
+            text: message,
+            topK: 5,
+            threshold: 0.3,
+            filters: { type: contextTypes }
+          })
+        ]);
+
+        // Combine context sources
+        const context = [
+          relevantContext,
+          ...searchResults.map(result => `${result.metadata.source}: ${result.text}`)
+        ].filter(Boolean).join('\n\n');
+
+        if (context) {
+          contextualMessage = `Context:\n${context}\n\nUser Message: ${message}`;
+        }
+      }
+
+      // Send message to recruiting flow
+      const response = await recruitingFlow.executeFlow({
+        prospects: [], // This would be populated based on context
+        flow_config: {
+          enable_sms: true,
+          enable_email: true,
+          enable_calendar: true,
+          max_retry_attempts: 3,
+          delay_between_contacts: 300
+        },
+        user_context: {
+          message: contextualMessage,
+          sessionId,
+          includeContext
+        }
+      });
+
+      // Store the interaction in memory
+      await contextMemory.addMemory(
+        `User: ${message}\nAgent: ${response.message}`,
+        'conversation',
+        {
+          executionId: response.execution_id,
+          timestamp: new Date().toISOString()
+        }
+      );
+
+      // Store in embeddings for future retrieval
+      await embeddingSearch.addVector(
+        `${message} -> ${response.message}`,
+        {
+          type: 'conversation',
+          sessionId,
+          executionId: response.execution_id,
+          timestamp: new Date().toISOString()
+        }
+      );
+
+      return response;
+
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.detail || err.message || 'Failed to send message with context';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [recruitingFlow, embeddingSearch, contextMemory, sessionId]);
+
+  // Enhanced prospect management with context
+  const addProspectWithContext = useCallback(async (prospectData: any) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      // Save prospect to PostgreSQL
+      const { id } = await dataPersistence.saveData('prospects', {
+        ...prospectData,
+        sessionId,
+        createdAt: new Date().toISOString()
+      });
+
+      // Create embedding for semantic search
+      const prospectText = `${prospectData.name} ${prospectData.company || ''} ${prospectData.position || ''} ${prospectData.email} ${prospectData.phone || ''}`;
+      await embeddingSearch.addVector(prospectText, {
+        type: 'prospect',
+        prospectId: id,
+        sessionId,
+        ...prospectData
+      });
+
+      // Add to memory
+      await contextMemory.addMemory(
+        `Added prospect: ${prospectData.name} from ${prospectData.company || 'Unknown Company'}`,
+        'prospect',
+        { prospectId: id, ...prospectData }
+      );
+
+      return { id, ...prospectData };
+
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.detail || err.message || 'Failed to add prospect with context';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dataPersistence, embeddingSearch, contextMemory, sessionId]);
+
+  // Search across all data sources
+  const searchEverything = useCallback(async (query: string) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const [embeddingResults, memoryResults, dbResults] = await Promise.all([
+        embeddingSearch.search({
+          text: query,
+          topK: 10,
+          threshold: 0.2
+        }),
+        contextMemory.searchMemories(query),
+        dataPersistence.queryData('prospects', {
+          search: query
+        }, 'createdAt DESC', 50)
+      ]);
+
+      return {
+        embeddings: embeddingResults,
+        memories: memoryResults,
+        prospects: dbResults
+      };
+
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.detail || err.message || 'Failed to search';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [embeddingSearch, contextMemory, dataPersistence]);
+
+  // Get comprehensive context for a query
+  const getComprehensiveContext = useCallback(async (query: string) => {
+    try {
+      const searchResults = await searchEverything(query);
+
+      const context = {
+        summary: '',
+        relevantProspects: searchResults.prospects.slice(0, 5),
+        pastConversations: searchResults.memories.filter(m => m.type === 'conversation').slice(0, 3),
+        relatedDocuments: searchResults.embeddings.filter(r => r.metadata.type === 'document').slice(0, 3),
+        actionableInsights: []
+      };
+
+      // Generate summary from all sources
+      const allContext = [
+        ...searchResults.embeddings.map(r => r.text),
+        ...searchResults.memories.map(m => m.content),
+        ...searchResults.prospects.map(p => `${p.name} - ${p.company} (${p.position})`)
+      ].join('\n\n');
+
+      context.summary = allContext.substring(0, 500) + (allContext.length > 500 ? '...' : '');
+
+      return context;
+
+    } catch (err: any) {
+      console.error('Failed to get comprehensive context:', err);
+      return {
+        summary: '',
+        relevantProspects: [],
+        pastConversations: [],
+        relatedDocuments: [],
+        actionableInsights: []
+      };
+    }
+  }, [searchEverything]);
+
+  return {
+    // Core recruiting functionality
+    ...recruitingFlow,
+    analytics,
+    mcpStatus,
+
+    // Enhanced context functionality
+    sendMessageWithContext,
+    addProspectWithContext,
+    searchEverything,
+    getComprehensiveContext,
+
+    // Direct access to context tools
+    embeddingSearch,
+    contextMemory,
+    dataPersistence,
+
+    // Combined loading/error states
+    isLoading: isLoading || recruitingFlow.isLoading || analytics.isLoading || mcpStatus.isLoading,
+    error: error || recruitingFlow.error || analytics.error || mcpStatus.error
   };
 };

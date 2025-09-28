@@ -1,0 +1,182 @@
+{
+  "name": "Zoho CRM MCP Server - Langflow Configuration",
+  "description": "Configuration for the Zoho CRM MCP server built at src/zoho_crm_mcp/server.py",
+  "version": "1.0.0",
+  "server_path": "src/zoho_crm_mcp/server.py",
+  "server_type": "MCP",
+  "protocol": "stdio",
+  "command": "python",
+  "args": ["-m", "zoho_crm_mcp.server"],
+  "working_directory": "src",
+  "entry_point": "main()",
+  "startup_command": "mcp.run()",
+  "mcp_tools": [
+    {
+      "name": "get_module_data",
+      "description": "Fetch data from Zoho CRM modules (Leads, Accounts, Contacts, Deals)",
+      "parameters": {
+        "module_name": "string (optional) - Specific module name"
+      }
+    },
+    {
+      "name": "get_available_modules",
+      "description": "Get list of all available modules in Zoho CRM",
+      "parameters": {}
+    },
+    {
+      "name": "search_records",
+      "description": "Search for records in a specific module",
+      "parameters": {
+        "module_name": "string (required) - Module to search in",
+        "search_criteria": "string (required) - Search query"
+      }
+    },
+    {
+      "name": "create_record",
+      "description": "Create a new record in a specific module",
+      "parameters": {
+        "module_name": "string (required) - Module to create record in",
+        "record_data": "object (required) - Record fields and values"
+      }
+    },
+    {
+      "name": "update_record",
+      "description": "Update an existing record in a specific module",
+      "parameters": {
+        "module_name": "string (required) - Module containing the record",
+        "record_id": "string (required) - ID of the record to update",
+        "record_data": "object (required) - Fields to update"
+      }
+    },
+    {
+      "name": "delete_record",
+      "description": "Delete a record from a specific module",
+      "parameters": {
+        "module_name": "string (required) - Module containing the record",
+        "record_id": "string (required) - ID of the record to delete"
+      }
+    },
+    {
+      "name": "bulk_create_records",
+      "description": "Create multiple records in a specific module (max 100 per call)",
+      "parameters": {
+        "module_name": "string (required) - Module to create records in",
+        "records_data": "array (required) - List of record data objects"
+      }
+    },
+    {
+      "name": "get_record_by_id",
+      "description": "Get a specific record by its ID",
+      "parameters": {
+        "module_name": "string (required) - Module containing the record",
+        "record_id": "string (required) - ID of the record to retrieve"
+      }
+    },
+    {
+      "name": "set_refresh_token",
+      "description": "Manually set a long-lived refresh token for autonomous operation",
+      "parameters": {
+        "refresh_token": "string (required) - Valid Zoho refresh token"
+      }
+    },
+    {
+      "name": "get_token_status",
+      "description": "Get the current status of OAuth tokens and authentication",
+      "parameters": {}
+    },
+    {
+      "name": "test_zoho_connection",
+      "description": "Test the connection to Zoho CRM API with current tokens",
+      "parameters": {}
+    },
+    {
+      "name": "get_users",
+      "description": "Get all users in the Zoho CRM organization",
+      "parameters": {
+        "user_type": "string (optional) - Type of users to fetch (AllUsers, ActiveUsers, DeactiveUsers, ConfirmedUsers)"
+      }
+    },
+    {
+      "name": "schedule_appointment",
+      "description": "Schedule an appointment/event for a lead in Zoho CRM",
+      "parameters": {
+        "lead_id": "string (required) - ID of the lead to schedule appointment for",
+        "appointment_data": "object (required) - Appointment details"
+      }
+    },
+    {
+      "name": "qualify_lead",
+      "description": "Update lead qualification status with scoring data",
+      "parameters": {
+        "lead_id": "string (required) - ID of the lead to qualify",
+        "qualification_data": "object (required) - Qualification information"
+      }
+    },
+    {
+      "name": "convert_lead",
+      "description": "Convert a qualified lead to Contact, Account, and Deal",
+      "parameters": {
+        "lead_id": "string (required) - ID of the lead to convert",
+        "conversion_data": "object (optional) - Conversion settings"
+      }
+    },
+    {
+      "name": "create_task",
+      "description": "Create a task in Zoho CRM for follow-up activities",
+      "parameters": {
+        "task_data": "object (required) - Task details"
+      }
+    },
+    {
+      "name": "get_lead_activities",
+      "description": "Get all activities (tasks, events, calls) for a specific lead",
+      "parameters": {
+        "lead_id": "string (required) - ID of the lead to get activities for"
+      }
+    }
+  ],
+  "credentials": {
+    "source": ".env.local",
+    "required": [
+      "ZOHO_CLIENT_ID",
+      "ZOHO_CLIENT_SECRET"
+    ],
+    "optional": [
+      "ZOHO_REFRESH_TOKEN",
+      "ZOHO_ACCESS_TOKEN",
+      "ZOHO_CRM_BASE_URL",
+      "ZOHO_AUTH_URL",
+      "ZOHO_REDIRECT_URL",
+      "ZOHO_ADMIN_EMAIL",
+      "ZOHO_LOGIN_PW"
+    ],
+    "defaults": {
+      "ZOHO_CRM_BASE_URL": "https://www.zohoapis.com/crm/v2",
+      "ZOHO_AUTH_URL": "https://accounts.zoho.com/oauth/v2/token",
+      "ZOHO_REDIRECT_URL": "http://127.0.0.1:8787/oauth"
+    },
+    "actual_values": {
+      "ZOHO_CLIENT_ID": "1000.58LVTQ2HYAP0VW7DB814U5OC2TE55Y",
+      "ZOHO_CLIENT_SECRET": "289c8c0b64f2ee062e93dd6b3e27043fe4575618af",
+      "ZOHO_REFRESH_TOKEN": "1000.6281d839190bc98f9c5c7f5c58caa150.e0b2ea5a06f4cc3de164896330a7ccae",
+      "ZOHO_ACCESS_TOKEN": "1000.8a1a0c1f5e58431a2fd9c957666ca4a3.8a45da0af224e678c59ffce66f6ce543",
+      "ZOHO_ADMIN_EMAIL": "agentservices@impacttampa.com"
+    },
+    "validation": {
+      "startup_check": "Server validates ZOHO_CLIENT_ID and ZOHO_CLIENT_SECRET are present",
+      "error_message": "ERROR: Missing required Zoho credentials. Please ensure ZOHO_CLIENT_ID and ZOHO_CLIENT_SECRET are set in .env.local"
+    }
+  },
+  "status": "ACTIVE - Production Ready",
+  "server_reference": "Actual MCP server implementation (not HTTP endpoints) - use MCP protocol communication",
+  "notes": "Complete configuration matching all MCP tools available in the built Zoho CRM server",
+  "tool_count": 17,
+  "capabilities": [
+    "Full CRUD operations on CRM modules",
+    "Lead qualification and conversion",
+    "Appointment scheduling",
+    "Task creation and activity tracking",
+    "User management",
+    "OAuth token management"
+  ]
+}

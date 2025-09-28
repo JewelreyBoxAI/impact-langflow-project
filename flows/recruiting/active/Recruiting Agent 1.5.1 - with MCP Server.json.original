@@ -3,7 +3,6 @@
     "edges": [
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "ChatInput",
@@ -22,16 +21,15 @@
             "type": "str"
           }
         },
-        "id": "xy-edge__ChatInput-fEqW1{œdataTypeœ:œChatInputœ,œidœ:œChatInput-fEqW1œ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}-LanguageModelComponent-EVsYm{œfieldNameœ:œinput_valueœ,œidœ:œLanguageModelComponent-EVsYmœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "id": "reactflow__edge-ChatInput-fEqW1{œdataTypeœ:œChatInputœ,œidœ:œChatInput-fEqW1œ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}-LanguageModelComponent-EVsYm{œfieldNameœ:œinput_valueœ,œidœ:œLanguageModelComponent-EVsYmœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
         "selected": false,
         "source": "ChatInput-fEqW1",
-        "sourceHandle": "{œdataTypeœ:œChatInputœ,œidœ:œChatInput-fEqW1œ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}",
+        "sourceHandle": "{“dataType“:“ChatInput“,“id“:“ChatInput-fEqW1“,“name“:“message“,“output_types“:[“Message“]}",
         "target": "LanguageModelComponent-EVsYm",
-        "targetHandle": "{œfieldNameœ:œinput_valueœ,œidœ:œLanguageModelComponent-EVsYmœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}"
+        "targetHandle": "{“fieldName“:“input_value“,“id“:“LanguageModelComponent-EVsYm“,“inputTypes“:[“Message“],“type“:“str“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "LanguageModelComponent",
@@ -50,16 +48,15 @@
             "type": "str"
           }
         },
-        "id": "xy-edge__LanguageModelComponent-EVsYm{œdataTypeœ:œLanguageModelComponentœ,œidœ:œLanguageModelComponent-EVsYmœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œMessageœ]}-Prompt Template-PBChY{œfieldNameœ:œllm_responseœ,œidœ:œPrompt Template-PBChYœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "id": "reactflow__edge-LanguageModelComponent-EVsYm{“dataType“:“LanguageModelComponent“,“id“:“LanguageModelComponent-EVsYm“,“name“:“text_output“,“output_types“:[“Message“]}-Prompt Template-PBChY{“fieldName“:“llm_response“,“id“:“Prompt Template-PBChY“,“inputTypes“:[“Message“],“type“:“str“}",
         "selected": false,
         "source": "LanguageModelComponent-EVsYm",
-        "sourceHandle": "{œdataTypeœ:œLanguageModelComponentœ,œidœ:œLanguageModelComponent-EVsYmœ,œnameœ:œtext_outputœ,œoutput_typesœ:[œMessageœ]}",
+        "sourceHandle": "{“dataType“:“LanguageModelComponent“,“id“:“LanguageModelComponent-EVsYm“,“name“:“text_output“,“output_types“:[“Message“]}",
         "target": "Prompt Template-PBChY",
-        "targetHandle": "{œfieldNameœ:œllm_responseœ,œidœ:œPrompt Template-PBChYœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}"
+        "targetHandle": "{“fieldName“:“llm_response“,“id“:“Prompt Template-PBChY“,“inputTypes“:[“Message“],“type“:“str“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "ChatInput",
@@ -78,16 +75,15 @@
             "type": "code"
           }
         },
-        "id": "xy-edge__ChatInput-fEqW1{œdataTypeœ:œChatInputœ,œidœ:œChatInput-fEqW1œ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}-PythonREPLComponent-PHcBG{œfieldNameœ:œpython_codeœ,œidœ:œPythonREPLComponent-PHcBGœ,œinputTypesœ:[œMessageœ],œtypeœ:œcodeœ}",
+        "id": "reactflow__edge-ChatInput-fEqW1{“dataType“:“ChatInput“,“id“:“ChatInput-fEqW1“,“name“:“message“,“output_types“:[“Message“]}-PythonREPLComponent-PHcBG{“fieldName“:“python_code“,“id“:“PythonREPLComponent-PHcBG“,“inputTypes“:[“Message“],“type“:“code“}",
         "selected": false,
         "source": "ChatInput-fEqW1",
-        "sourceHandle": "{œdataTypeœ:œChatInputœ,œidœ:œChatInput-fEqW1œ,œnameœ:œmessageœ,œoutput_typesœ:[œMessageœ]}",
+        "sourceHandle": "{“dataType“:“ChatInput“,“id“:“ChatInput-fEqW1“,“name“:“message“,“output_types“:[“Message“]}",
         "target": "PythonREPLComponent-PHcBG",
-        "targetHandle": "{œfieldNameœ:œpython_codeœ,œidœ:œPythonREPLComponent-PHcBGœ,œinputTypesœ:[œMessageœ],œtypeœ:œcodeœ}"
+        "targetHandle": "{“fieldName“:“python_code“,“id“:“PythonREPLComponent-PHcBG“,“inputTypes“:[“Message“],“type“:“code“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "Prompt Template",
@@ -106,16 +102,15 @@
             "type": "str"
           }
         },
-        "id": "xy-edge__Prompt Template-PBChY{œdataTypeœ:œPrompt Templateœ,œidœ:œPrompt Template-PBChYœ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}-Agent-APzSn{œfieldNameœ:œinput_valueœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "id": "reactflow__edge-Prompt Template-PBChY{“dataType“:“Prompt Template“,“id“:“Prompt Template-PBChY“,“name“:“prompt“,“output_types“:[“Message“]}-Agent-APzSn{“fieldName“:“input_value“,“id“:“Agent-APzSn“,“inputTypes“:[“Message“],“type“:“str“}",
         "selected": false,
         "source": "Prompt Template-PBChY",
-        "sourceHandle": "{œdataTypeœ:œPrompt Templateœ,œidœ:œPrompt Template-PBChYœ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}",
+        "sourceHandle": "{“dataType“:“Prompt Template“,“id“:“Prompt Template-PBChY“,“name“:“prompt“,“output_types“:[“Message“]}",
         "target": "Agent-APzSn",
-        "targetHandle": "{œfieldNameœ:œinput_valueœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}"
+        "targetHandle": "{“fieldName“:“input_value“,“id“:“Agent-APzSn“,“inputTypes“:[“Message“],“type“:“str“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "APIRequest",
@@ -134,16 +129,15 @@
             "type": "other"
           }
         },
-        "id": "xy-edge__APIRequest-ZuACI{œdataTypeœ:œAPIRequestœ,œidœ:œAPIRequest-ZuACIœ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}-Agent-APzSn{œfieldNameœ:œtoolsœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}",
+        "id": "reactflow__edge-APIRequest-ZuACI{“dataType“:“APIRequest“,“id“:“APIRequest-ZuACI“,“name“:“component_as_tool“,“output_types“:[“Tool“]}-Agent-APzSn{“fieldName“:“tools“,“id“:“Agent-APzSn“,“inputTypes“:[“Tool“],“type“:“other“}",
         "selected": false,
         "source": "APIRequest-ZuACI",
-        "sourceHandle": "{œdataTypeœ:œAPIRequestœ,œidœ:œAPIRequest-ZuACIœ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}",
+        "sourceHandle": "{“dataType“:“APIRequest“,“id“:“APIRequest-ZuACI“,“name“:“component_as_tool“,“output_types“:[“Tool“]}",
         "target": "Agent-APzSn",
-        "targetHandle": "{œfieldNameœ:œtoolsœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}"
+        "targetHandle": "{“fieldName“:“tools“,“id“:“Agent-APzSn“,“inputTypes“:[“Tool“],“type“:“other“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "APIRequest",
@@ -162,16 +156,15 @@
             "type": "other"
           }
         },
-        "id": "xy-edge__APIRequest-uhaLo{œdataTypeœ:œAPIRequestœ,œidœ:œAPIRequest-uhaLoœ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}-Agent-APzSn{œfieldNameœ:œtoolsœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}",
+        "id": "reactflow__edge-APIRequest-uhaLo{“dataType“:“APIRequest“,“id“:“APIRequest-uhaLo“,“name“:“component_as_tool“,“output_types“:[“Tool“]}-Agent-APzSn{“fieldName“:“tools“,“id“:“Agent-APzSn“,“inputTypes“:[“Tool“],“type“:“other“}",
         "selected": false,
         "source": "APIRequest-uhaLo",
-        "sourceHandle": "{œdataTypeœ:œAPIRequestœ,œidœ:œAPIRequest-uhaLoœ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}",
+        "sourceHandle": "{“dataType“:“APIRequest“,“id“:“APIRequest-uhaLo“,“name“:“component_as_tool“,“output_types“:[“Tool“]}",
         "target": "Agent-APzSn",
-        "targetHandle": "{œfieldNameœ:œtoolsœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}"
+        "targetHandle": "{“fieldName“:“tools“,“id“:“Agent-APzSn“,“inputTypes“:[“Tool“],“type“:“other“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "APIRequest",
@@ -190,16 +183,15 @@
             "type": "other"
           }
         },
-        "id": "xy-edge__APIRequest-1xOw9{œdataTypeœ:œAPIRequestœ,œidœ:œAPIRequest-1xOw9œ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}-Agent-APzSn{œfieldNameœ:œtoolsœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}",
+        "id": "reactflow__edge-APIRequest-1xOw9{“dataType“:“APIRequest“,“id“:“APIRequest-1xOw9“,“name“:“component_as_tool“,“output_types“:[“Tool“]}-Agent-APzSn{“fieldName“:“tools“,“id“:“Agent-APzSn“,“inputTypes“:[“Tool“],“type“:“other“}",
         "selected": false,
         "source": "APIRequest-1xOw9",
-        "sourceHandle": "{œdataTypeœ:œAPIRequestœ,œidœ:œAPIRequest-1xOw9œ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}",
+        "sourceHandle": "{“dataType“:“APIRequest“,“id“:“APIRequest-1xOw9“,“name“:“component_as_tool“,“output_types“:[“Tool“]}",
         "target": "Agent-APzSn",
-        "targetHandle": "{œfieldNameœ:œtoolsœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}"
+        "targetHandle": "{“fieldName“:“tools“,“id“:“Agent-APzSn“,“inputTypes“:[“Tool“],“type“:“other“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "SQLComponent",
@@ -220,16 +212,15 @@
             "type": "other"
           }
         },
-        "id": "xy-edge__SQLComponent-9O58B{œdataTypeœ:œSQLComponentœ,œidœ:œSQLComponent-9O58Bœ,œnameœ:œrun_sql_queryœ,œoutput_typesœ:[œDataFrameœ]}-ChatOutput-XeVdw{œfieldNameœ:œinput_valueœ,œidœ:œChatOutput-XeVdwœ,œinputTypesœ:[œDataœ,œDataFrameœ,œMessageœ],œtypeœ:œotherœ}",
+        "id": "reactflow__edge-SQLComponent-9O58B{“dataType“:“SQLComponent“,“id“:“SQLComponent-9O58B“,“name“:“run_sql_query“,“output_types“:[“DataFrame“]}-ChatOutput-XeVdw{“fieldName“:“input_value“,“id“:“ChatOutput-XeVdw“,“inputTypes“:[“Data“,“DataFrame“,“Message“],“type“:“other“}",
         "selected": false,
         "source": "SQLComponent-9O58B",
-        "sourceHandle": "{œdataTypeœ:œSQLComponentœ,œidœ:œSQLComponent-9O58Bœ,œnameœ:œrun_sql_queryœ,œoutput_typesœ:[œDataFrameœ]}",
+        "sourceHandle": "{“dataType“:“SQLComponent“,“id“:“SQLComponent-9O58B“,“name“:“run_sql_query“,“output_types“:[“DataFrame“]}",
         "target": "ChatOutput-XeVdw",
-        "targetHandle": "{œfieldNameœ:œinput_valueœ,œidœ:œChatOutput-XeVdwœ,œinputTypesœ:[œDataœ,œDataFrameœ,œMessageœ],œtypeœ:œotherœ}"
+        "targetHandle": "{“fieldName“:“input_value“,“id“:“ChatOutput-XeVdw“,“inputTypes“:[“Data“,“DataFrame“,“Message“],“type“:“other“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "Agent",
@@ -248,16 +239,15 @@
             "type": "str"
           }
         },
-        "id": "xy-edge__Agent-APzSn{œdataTypeœ:œAgentœ,œidœ:œAgent-APzSnœ,œnameœ:œresponseœ,œoutput_typesœ:[œMessageœ]}-Prompt Template-0iiz4{œfieldNameœ:œllm_responseœ,œidœ:œPrompt Template-0iiz4œ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "id": "reactflow__edge-Agent-APzSn{“dataType“:“Agent“,“id“:“Agent-APzSn“,“name“:“response“,“output_types“:[“Message“]}-Prompt Template-0iiz4{“fieldName“:“llm_response“,“id“:“Prompt Template-0iiz4“,“inputTypes“:[“Message“],“type“:“str“}",
         "selected": false,
         "source": "Agent-APzSn",
-        "sourceHandle": "{œdataTypeœ:œAgentœ,œidœ:œAgent-APzSnœ,œnameœ:œresponseœ,œoutput_typesœ:[œMessageœ]}",
+        "sourceHandle": "{“dataType“:“Agent“,“id“:“Agent-APzSn“,“name“:“response“,“output_types“:[“Message“]}",
         "target": "Prompt Template-0iiz4",
-        "targetHandle": "{œfieldNameœ:œllm_responseœ,œidœ:œPrompt Template-0iiz4œ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}"
+        "targetHandle": "{“fieldName“:“llm_response“,“id“:“Prompt Template-0iiz4“,“inputTypes“:[“Message“],“type“:“str“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "Prompt Template",
@@ -276,15 +266,14 @@
             "type": "str"
           }
         },
-        "id": "xy-edge__Prompt Template-0iiz4{œdataTypeœ:œPrompt Templateœ,œidœ:œPrompt Template-0iiz4œ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}-SQLComponent-9O58B{œfieldNameœ:œqueryœ,œidœ:œSQLComponent-9O58Bœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "id": "reactflow__edge-Prompt Template-0iiz4{“dataType“:“Prompt Template“,“id“:“Prompt Template-0iiz4“,“name“:“prompt“,“output_types“:[“Message“]}-SQLComponent-9O58B{“fieldName“:“query“,“id“:“SQLComponent-9O58B“,“inputTypes“:[“Message“],“type“:“str“}",
         "selected": false,
         "source": "Prompt Template-0iiz4",
-        "sourceHandle": "{œdataTypeœ:œPrompt Templateœ,œidœ:œPrompt Template-0iiz4œ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}",
+        "sourceHandle": "{“dataType“:“Prompt Template“,“id“:“Prompt Template-0iiz4“,“name“:“prompt“,“output_types“:[“Message“]}",
         "target": "SQLComponent-9O58B",
-        "targetHandle": "{œfieldNameœ:œqueryœ,œidœ:œSQLComponent-9O58Bœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}"
+        "targetHandle": "{“fieldName“:“query“,“id“:“SQLComponent-9O58B“,“inputTypes“:[“Message“],“type“:“str“}"
       },
       {
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "PythonREPLComponent",
@@ -303,15 +292,14 @@
             "type": "table"
           }
         },
-        "id": "xy-edge__PythonREPLComponent-PHcBG{œdataTypeœ:œPythonREPLComponentœ,œidœ:œPythonREPLComponent-PHcBGœ,œnameœ:œresultsœ,œoutput_typesœ:[œDataœ]}-APIRequest-d9QVh{œfieldNameœ:œbodyœ,œidœ:œAPIRequest-d9QVhœ,œinputTypesœ:[œDataœ],œtypeœ:œtableœ}",
+        "id": "reactflow__edge-PythonREPLComponent-PHcBG{“dataType“:“PythonREPLComponent“,“id“:“PythonREPLComponent-PHcBG“,“name“:“results“,“output_types“:[“Data“]}-APIRequest-d9QVh{“fieldName“:“body“,“id“:“APIRequest-d9QVh“,“inputTypes“:[“Data“],“type“:“table“}",
         "source": "PythonREPLComponent-PHcBG",
-        "sourceHandle": "{œdataTypeœ:œPythonREPLComponentœ,œidœ:œPythonREPLComponent-PHcBGœ,œnameœ:œresultsœ,œoutput_typesœ:[œDataœ]}",
+        "sourceHandle": "{“dataType“:“PythonREPLComponent“,“id“:“PythonREPLComponent-PHcBG“,“name“:“results“,“output_types“:[“Data“]}",
         "target": "APIRequest-d9QVh",
-        "targetHandle": "{œfieldNameœ:œbodyœ,œidœ:œAPIRequest-d9QVhœ,œinputTypesœ:[œDataœ],œtypeœ:œtableœ}"
+        "targetHandle": "{“fieldName“:“body“,“id“:“APIRequest-d9QVh“,“inputTypes“:[“Data“],“type“:“table“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "MCPServer",
@@ -330,16 +318,15 @@
             "type": "other"
           }
         },
-        "id": "xy-edge__MCPServer-ZohoCRM{œdataTypeœ:œMCPServerœ,œidœ:œMCPServer-ZohoCRMœ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}-Agent-APzSn{œfieldNameœ:œtoolsœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}",
+        "id": "reactflow__edge-MCPServer-ZohoCRM{“dataType“:“MCPServer“,“id“:“MCPServer-ZohoCRM“,“name“:“component_as_tool“,“output_types“:[“Tool“]}-Agent-APzSn{“fieldName“:“tools“,“id“:“Agent-APzSn“,“inputTypes“:[“Tool“],“type“:“other“}",
         "selected": false,
         "source": "MCPServer-ZohoCRM",
-        "sourceHandle": "{œdataTypeœ:œMCPServerœ,œidœ:œMCPServer-ZohoCRMœ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}",
+        "sourceHandle": "{“dataType“:“MCPServer“,“id“:“MCPServer-ZohoCRM“,“name“:“component_as_tool“,“output_types“:[“Tool“]}",
         "target": "Agent-APzSn",
-        "targetHandle": "{œfieldNameœ:œtoolsœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}"
+        "targetHandle": "{“fieldName“:“tools“,“id“:“Agent-APzSn“,“inputTypes“:[“Tool“],“type“:“other“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "Prompt Template",
@@ -358,16 +345,15 @@
             "type": "str"
           }
         },
-        "id": "xy-edge__Prompt Template-0ymEU{œdataTypeœ:œPrompt Templateœ,œidœ:œPrompt Template-0ymEUœ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}-Agent-APzSn{œfieldNameœ:œsystem_promptœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}",
+        "id": "reactflow__edge-Prompt Template-0ymEU{“dataType“:“Prompt Template“,“id“:“Prompt Template-0ymEU“,“name“:“prompt“,“output_types“:[“Message“]}-Agent-APzSn{“fieldName“:“system_prompt“,“id“:“Agent-APzSn“,“inputTypes“:[“Message“],“type“:“str“}",
         "selected": false,
         "source": "Prompt Template-0ymEU",
-        "sourceHandle": "{œdataTypeœ:œPrompt Templateœ,œidœ:œPrompt Template-0ymEUœ,œnameœ:œpromptœ,œoutput_typesœ:[œMessageœ]}",
+        "sourceHandle": "{“dataType“:“Prompt Template“,“id“:“Prompt Template-0ymEU“,“name“:“prompt“,“output_types“:[“Message“]}",
         "target": "Agent-APzSn",
-        "targetHandle": "{œfieldNameœ:œsystem_promptœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œMessageœ],œtypeœ:œstrœ}"
+        "targetHandle": "{“fieldName“:“system_prompt“,“id“:“Agent-APzSn“,“inputTypes“:[“Message“],“type“:“str“}"
       },
       {
         "animated": false,
-        "className": "",
         "data": {
           "sourceHandle": {
             "dataType": "APIRequest",
@@ -386,12 +372,68 @@
             "type": "other"
           }
         },
-        "id": "xy-edge__APIRequest-11AqI{œdataTypeœ:œAPIRequestœ,œidœ:œAPIRequest-11AqIœ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}-Agent-APzSn{œfieldNameœ:œtoolsœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}",
+        "id": "reactflow__edge-APIRequest-11AqI{“dataType“:“APIRequest“,“id“:“APIRequest-11AqI“,“name“:“component_as_tool“,“output_types“:[“Tool“]}-Agent-APzSn{“fieldName“:“tools“,“id“:“Agent-APzSn“,“inputTypes“:[“Tool“],“type“:“other“}",
         "selected": false,
         "source": "APIRequest-11AqI",
-        "sourceHandle": "{œdataTypeœ:œAPIRequestœ,œidœ:œAPIRequest-11AqIœ,œnameœ:œcomponent_as_toolœ,œoutput_typesœ:[œToolœ]}",
+        "sourceHandle": "{“dataType“:“APIRequest“,“id“:“APIRequest-11AqI“,“name“:“component_as_tool“,“output_types“:[“Tool“]}",
         "target": "Agent-APzSn",
-        "targetHandle": "{œfieldNameœ:œtoolsœ,œidœ:œAgent-APzSnœ,œinputTypesœ:[œToolœ],œtypeœ:œotherœ}"
+        "targetHandle": "{“fieldName“:“tools“,“id“:“Agent-APzSn“,“inputTypes“:[“Tool“],“type“:“other“}"
+      },
+      {
+        "animated": false,
+        "data": {
+          "sourceHandle": {
+            "dataType": "APIRequest",
+            "id": "APIRequest-d9QVh",
+            "name": "component_as_tool",
+            "output_types": [
+              "Tool"
+            ]
+          },
+          "targetHandle": {
+            "fieldName": "tools",
+            "id": "Agent-APzSn",
+            "inputTypes": [
+              "Tool"
+            ],
+            "type": "other"
+          }
+        },
+        "id": "reactflow__edge-APIRequest-d9QVh-tool-Agent-APzSn",
+        "selected": false,
+        "source": "APIRequest-d9QVh",
+        "sourceHandle": "{\"dataType\":\"APIRequest\",\"id\":\"APIRequest-d9QVh\",\"name\":\"component_as_tool\",\"output_types\":[\"Tool\"]}",
+        "target": "Agent-APzSn",
+        "targetHandle": "{\"fieldName\":\"tools\",\"id\":\"Agent-APzSn\",\"inputTypes\":[\"Tool\"],\"type\":\"other\"}"
+      },
+      {
+        "animated": false,
+        "data": {
+          "sourceHandle": {
+            "dataType": "Agent",
+            "id": "Agent-APzSn",
+            "name": "response",
+            "output_types": [
+              "Message"
+            ]
+          },
+          "targetHandle": {
+            "fieldName": "input_value",
+            "id": "ChatOutput-XeVdw",
+            "inputTypes": [
+              "Data",
+              "DataFrame",
+              "Message"
+            ],
+            "type": "other"
+          }
+        },
+        "id": "reactflow__edge-Agent-APzSn-response-ChatOutput-XeVdw",
+        "selected": false,
+        "source": "Agent-APzSn",
+        "sourceHandle": "{\"dataType\":\"Agent\",\"id\":\"Agent-APzSn\",\"name\":\"response\",\"output_types\":[\"Message\"]}",
+        "target": "ChatOutput-XeVdw",
+        "targetHandle": "{\"fieldName\":\"input_value\",\"id\":\"ChatOutput-XeVdw\",\"inputTypes\":[\"Data\",\"DataFrame\",\"Message\"],\"type\":\"other\"}"
       }
     ],
     "nodes": [
@@ -425,7 +467,7 @@
             "icon": "MessagesSquare",
             "key": "ChatInput",
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {},
             "minimized": true,
             "output_types": [],
@@ -446,7 +488,7 @@
               }
             ],
             "pinned": false,
-            "score": 0.000045030081906763545,
+            "score": 4.5030081906763545e-05,
             "template": {
               "_type": "Component",
               "background_color": {
@@ -462,15 +504,13 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "background_color",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "chat_icon": {
                 "_input_type": "MessageTextInput",
@@ -485,28 +525,23 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "chat_icon",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "code": {
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -543,19 +578,16 @@
                   "bmp",
                   "image"
                 ],
-                "file_path": "",
                 "info": "Files to be sent with the message.",
                 "list": true,
                 "list_add_label": "Add More",
                 "name": "files",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "temp_file": true,
                 "title_case": false,
                 "trace_as_metadata": true,
-                "type": "file",
-                "value": ""
+                "type": "file"
               },
               "input_value": {
                 "_input_type": "MultilineInput",
@@ -570,15 +602,13 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "input_value",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "sender": {
                 "_input_type": "DropdownInput",
@@ -594,7 +624,6 @@
                   "User"
                 ],
                 "options_metadata": [],
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -617,7 +646,6 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "sender_name",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -640,15 +668,13 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "session_id",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "should_store_message": {
                 "_input_type": "BoolInput",
@@ -659,7 +685,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "should_store_message",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -681,15 +706,13 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "text_color",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               }
             },
             "tool_mode": false
@@ -752,11 +775,8 @@
                 "cache": true,
                 "display_name": "API Response",
                 "group_outputs": false,
-                "hidden": null,
                 "method": "make_api_request",
                 "name": "data",
-                "options": null,
-                "required_inputs": null,
                 "selected": "Data",
                 "tool_mode": true,
                 "types": [
@@ -781,7 +801,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "body",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -827,14 +846,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -856,7 +872,6 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "curl_input",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": false,
@@ -864,8 +879,7 @@
                 "tool_mode": true,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "follow_redirects": {
                 "_input_type": "BoolInput",
@@ -876,7 +890,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "follow_redirects",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -897,7 +910,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "headers",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -954,7 +966,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "include_httpx_metadata",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -980,7 +991,6 @@
                   "DELETE"
                 ],
                 "options_metadata": [],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -1002,7 +1012,6 @@
                   "URL",
                   "cURL"
                 ],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -1024,15 +1033,13 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "query_params",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "other",
-                "value": ""
+                "type": "other"
               },
               "save_to_file": {
                 "_input_type": "BoolInput",
@@ -1043,7 +1050,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "save_to_file",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1061,7 +1067,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "timeout",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1083,7 +1088,6 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "url_input",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1097,7 +1101,17 @@
             "tool_mode": false
           },
           "showNode": true,
-          "type": "APIRequest"
+          "type": "APIRequest",
+          "template": {
+            "url": {
+              "type": "str",
+              "value": "http://localhost:8001/zoho/users"
+            },
+            "method": {
+              "type": "str",
+              "value": "GET"
+            }
+          }
         },
         "dragging": false,
         "id": "APIRequest-d9QVh",
@@ -1131,23 +1145,17 @@
             "display_name": "Impact Realty Recruiter Prompt",
             "documentation": "https://docs.langflow.org/components-prompts",
             "edited": false,
-            "error": null,
             "field_order": [
               "template",
               "tool_placeholder"
             ],
             "frozen": false,
-            "full_path": null,
             "icon": "braces",
-            "is_composition": null,
-            "is_input": null,
-            "is_output": null,
             "last_updated": "2025-09-26T11:34:06.260Z",
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {},
             "minimized": false,
-            "name": "",
             "output_types": [],
             "outputs": [
               {
@@ -1155,11 +1163,8 @@
                 "cache": true,
                 "display_name": "Prompt",
                 "group_outputs": false,
-                "hidden": null,
                 "method": "build_prompt",
                 "name": "prompt",
-                "options": null,
-                "required_inputs": null,
                 "selected": "Message",
                 "tool_mode": true,
                 "types": [
@@ -1176,14 +1181,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -1196,8 +1198,6 @@
                 "dynamic": false,
                 "field_type": "str",
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "input_types": [
                   "Message"
                 ],
@@ -1205,12 +1205,10 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "context",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "prospect_data": {
                 "advanced": false,
@@ -1218,8 +1216,6 @@
                 "dynamic": false,
                 "field_type": "str",
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "input_types": [
                   "Message"
                 ],
@@ -1227,7 +1223,6 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "prospect_data",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1239,11 +1234,9 @@
                 "advanced": false,
                 "display_name": "Template",
                 "dynamic": false,
-                "info": "",
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "template",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1265,21 +1258,20 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "tool_placeholder",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": true,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               }
             },
-            "tool_mode": false
+            "tool_mode": false,
+            "key": "PromptTemplate"
           },
           "showNode": true,
-          "type": "Prompt Template"
+          "type": "Prompt"
         },
         "dragging": false,
         "id": "Prompt Template-0ymEU",
@@ -1322,7 +1314,7 @@
             "icon": "brain-circuit",
             "last_updated": "2025-09-26T15:17:04.859Z",
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {
               "keywords": [
                 "model",
@@ -1341,8 +1333,6 @@
                 "group_outputs": false,
                 "method": "text_response",
                 "name": "text_output",
-                "options": null,
-                "required_inputs": null,
                 "selected": "Message",
                 "tool_mode": true,
                 "types": [
@@ -1357,8 +1347,6 @@
                 "group_outputs": false,
                 "method": "build_model",
                 "name": "model_output",
-                "options": null,
-                "required_inputs": null,
                 "selected": "LanguageModel",
                 "tool_mode": true,
                 "types": [
@@ -1381,26 +1369,21 @@
                 "load_from_db": true,
                 "name": "api_key",
                 "password": true,
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
                 "title_case": false,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "code": {
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -1420,15 +1403,13 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "input_value",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "model_name": {
                 "_input_type": "DropdownInput",
@@ -1460,7 +1441,6 @@
                   "o4-mini-high"
                 ],
                 "options_metadata": [],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -1496,7 +1476,6 @@
                     "icon": "GoogleGenerativeAI"
                   }
                 ],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -1516,7 +1495,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "stream",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1540,15 +1518,13 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "system_message",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "temperature": {
                 "_input_type": "SliderInput",
@@ -1556,12 +1532,7 @@
                 "display_name": "Temperature",
                 "dynamic": false,
                 "info": "Controls randomness in responses",
-                "max_label": "",
-                "max_label_icon": "",
-                "min_label": "",
-                "min_label_icon": "",
                 "name": "temperature",
-                "placeholder": "",
                 "range_spec": {
                   "max": 1,
                   "min": 0,
@@ -1579,11 +1550,12 @@
                 "value": 0.1
               }
             },
-            "tool_mode": false
+            "tool_mode": false,
+            "key": "LanguageModelComponent"
           },
           "selected_output": "text_output",
           "showNode": true,
-          "type": "LanguageModelComponent"
+          "type": "OpenAIModel"
         },
         "dragging": false,
         "id": "LanguageModelComponent-EVsYm",
@@ -1616,22 +1588,16 @@
             "display_name": "Outreach Router",
             "documentation": "https://docs.langflow.org/components-prompts",
             "edited": false,
-            "error": null,
             "field_order": [
               "template",
               "tool_placeholder"
             ],
             "frozen": false,
-            "full_path": null,
             "icon": "braces",
-            "is_composition": null,
-            "is_input": null,
-            "is_output": null,
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {},
             "minimized": false,
-            "name": "",
             "output_types": [],
             "outputs": [
               {
@@ -1639,11 +1605,8 @@
                 "cache": true,
                 "display_name": "Prompt",
                 "group_outputs": false,
-                "hidden": null,
                 "method": "build_prompt",
                 "name": "prompt",
-                "options": null,
-                "required_inputs": null,
                 "selected": "Message",
                 "tool_mode": true,
                 "types": [
@@ -1660,14 +1623,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -1680,8 +1640,6 @@
                 "dynamic": false,
                 "field_type": "str",
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "input_types": [
                   "Message"
                 ],
@@ -1689,23 +1647,19 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "llm_response",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "template": {
                 "_input_type": "PromptInput",
                 "advanced": false,
                 "display_name": "Template",
                 "dynamic": false,
-                "info": "",
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "template",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1727,21 +1681,20 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "tool_placeholder",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": true,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               }
             },
-            "tool_mode": false
+            "tool_mode": false,
+            "key": "PromptTemplate"
           },
           "showNode": true,
-          "type": "Prompt Template"
+          "type": "Prompt"
         },
         "dragging": false,
         "id": "Prompt Template-PBChY",
@@ -1789,7 +1742,7 @@
             "key": "APIRequest",
             "last_updated": "2025-09-26T15:17:04.860Z",
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {},
             "minimized": false,
             "output_types": [],
@@ -1799,11 +1752,8 @@
                 "cache": true,
                 "display_name": "Toolset",
                 "group_outputs": false,
-                "hidden": null,
                 "method": "to_toolkit",
                 "name": "component_as_tool",
-                "options": null,
-                "required_inputs": null,
                 "selected": "Tool",
                 "tool_mode": true,
                 "types": [
@@ -1828,7 +1778,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "body",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -1874,14 +1823,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -1903,7 +1849,6 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "curl_input",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": false,
@@ -1911,8 +1856,7 @@
                 "tool_mode": true,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "follow_redirects": {
                 "_input_type": "BoolInput",
@@ -1923,7 +1867,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "follow_redirects",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -1944,7 +1887,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "headers",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2001,7 +1943,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "include_httpx_metadata",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2027,7 +1968,6 @@
                   "DELETE"
                 ],
                 "options_metadata": [],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2049,7 +1989,6 @@
                   "URL",
                   "cURL"
                 ],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2071,15 +2010,13 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "query_params",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "other",
-                "value": ""
+                "type": "other"
               },
               "save_to_file": {
                 "_input_type": "BoolInput",
@@ -2090,7 +2027,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "save_to_file",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2108,7 +2044,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "timeout",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2126,7 +2061,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "tools_metadata",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2138,13 +2072,11 @@
                   {
                     "args": {
                       "curl_input": {
-                        "default": "",
                         "description": "Paste a curl command to populate the fields. This will fill in the dictionary fields for headers and body.",
                         "title": "Curl Input",
                         "type": "string"
                       },
                       "url_input": {
-                        "default": "",
                         "description": "Enter the URL for the request.",
                         "title": "Url Input",
                         "type": "string"
@@ -2175,7 +2107,6 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "url_input",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2189,7 +2120,17 @@
             "tool_mode": true
           },
           "showNode": true,
-          "type": "APIRequest"
+          "type": "APIRequest",
+          "template": {
+            "url": {
+              "type": "str",
+              "value": "http://localhost:8001/zoho/calendar"
+            },
+            "method": {
+              "type": "str",
+              "value": "GET"
+            }
+          }
         },
         "dragging": false,
         "id": "APIRequest-1xOw9",
@@ -2237,7 +2178,7 @@
             "key": "APIRequest",
             "last_updated": "2025-09-26T15:17:04.861Z",
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {},
             "minimized": false,
             "output_types": [],
@@ -2247,11 +2188,8 @@
                 "cache": true,
                 "display_name": "Toolset",
                 "group_outputs": false,
-                "hidden": null,
                 "method": "to_toolkit",
                 "name": "component_as_tool",
-                "options": null,
-                "required_inputs": null,
                 "selected": "Tool",
                 "tool_mode": true,
                 "types": [
@@ -2276,7 +2214,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "body",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2322,14 +2259,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -2351,7 +2285,6 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "curl_input",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": false,
@@ -2359,8 +2292,7 @@
                 "tool_mode": true,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "follow_redirects": {
                 "_input_type": "BoolInput",
@@ -2371,7 +2303,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "follow_redirects",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2392,7 +2323,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "headers",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2449,7 +2379,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "include_httpx_metadata",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2475,7 +2404,6 @@
                   "DELETE"
                 ],
                 "options_metadata": [],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2497,7 +2425,6 @@
                   "URL",
                   "cURL"
                 ],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2519,15 +2446,13 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "query_params",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "other",
-                "value": ""
+                "type": "other"
               },
               "save_to_file": {
                 "_input_type": "BoolInput",
@@ -2538,7 +2463,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "save_to_file",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2556,7 +2480,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "timeout",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2574,7 +2497,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "tools_metadata",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2586,13 +2508,11 @@
                   {
                     "args": {
                       "curl_input": {
-                        "default": "",
                         "description": "Paste a curl command to populate the fields. This will fill in the dictionary fields for headers and body.",
                         "title": "Curl Input",
                         "type": "string"
                       },
                       "url_input": {
-                        "default": "",
                         "description": "Enter the URL for the request.",
                         "title": "Url Input",
                         "type": "string"
@@ -2623,7 +2543,6 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "url_input",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2637,7 +2556,17 @@
             "tool_mode": true
           },
           "showNode": true,
-          "type": "APIRequest"
+          "type": "APIRequest",
+          "template": {
+            "url": {
+              "type": "str",
+              "value": "http://localhost:8001/mcp/tools"
+            },
+            "method": {
+              "type": "str",
+              "value": "GET"
+            }
+          }
         },
         "dragging": false,
         "id": "APIRequest-uhaLo",
@@ -2685,7 +2614,7 @@
             "key": "APIRequest",
             "last_updated": "2025-09-26T15:17:04.862Z",
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {},
             "minimized": false,
             "output_types": [],
@@ -2695,11 +2624,8 @@
                 "cache": true,
                 "display_name": "Toolset",
                 "group_outputs": false,
-                "hidden": null,
                 "method": "to_toolkit",
                 "name": "component_as_tool",
-                "options": null,
-                "required_inputs": null,
                 "selected": "Tool",
                 "tool_mode": true,
                 "types": [
@@ -2724,7 +2650,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "body",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2770,14 +2695,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -2799,7 +2721,6 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "curl_input",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": false,
@@ -2807,8 +2728,7 @@
                 "tool_mode": true,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "follow_redirects": {
                 "_input_type": "BoolInput",
@@ -2819,7 +2739,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "follow_redirects",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2840,7 +2759,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "headers",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2901,7 +2819,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "include_httpx_metadata",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -2927,7 +2844,6 @@
                   "DELETE"
                 ],
                 "options_metadata": [],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2949,7 +2865,6 @@
                   "URL",
                   "cURL"
                 ],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -2971,15 +2886,13 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "query_params",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "other",
-                "value": ""
+                "type": "other"
               },
               "save_to_file": {
                 "_input_type": "BoolInput",
@@ -2990,7 +2903,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "save_to_file",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3008,7 +2920,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "timeout",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3026,7 +2937,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "tools_metadata",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -3038,13 +2948,11 @@
                   {
                     "args": {
                       "curl_input": {
-                        "default": "",
                         "description": "Paste a curl command to populate the fields. This will fill in the dictionary fields for headers and body.",
                         "title": "Curl Input",
                         "type": "string"
                       },
                       "url_input": {
-                        "default": "",
                         "description": "Enter the URL for the request.",
                         "title": "Url Input",
                         "type": "string"
@@ -3075,7 +2983,6 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "url_input",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3089,7 +2996,17 @@
             "tool_mode": true
           },
           "showNode": true,
-          "type": "APIRequest"
+          "type": "APIRequest",
+          "template": {
+            "url": {
+              "type": "str",
+              "value": "http://localhost:8001/zoho/leads"
+            },
+            "method": {
+              "type": "str",
+              "value": "POST"
+            }
+          }
         },
         "dragging": false,
         "id": "APIRequest-ZuACI",
@@ -3171,15 +3088,13 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "background_color",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "chat_icon": {
                 "_input_type": "MessageTextInput",
@@ -3194,15 +3109,13 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "chat_icon",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "clean_data": {
                 "_input_type": "BoolInput",
@@ -3213,7 +3126,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "clean_data",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3226,14 +3138,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -3253,7 +3162,6 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "data_template",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3277,13 +3185,11 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "input_value",
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
                 "trace_as_metadata": true,
-                "type": "other",
-                "value": ""
+                "type": "other"
               },
               "sender": {
                 "_input_type": "DropdownInput",
@@ -3299,7 +3205,6 @@
                   "User"
                 ],
                 "options_metadata": [],
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3322,7 +3227,6 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "sender_name",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3345,15 +3249,13 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "session_id",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "should_store_message": {
                 "_input_type": "BoolInput",
@@ -3364,7 +3266,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "should_store_message",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3386,15 +3287,13 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "text_color",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               }
             },
             "tool_mode": false
@@ -3440,7 +3339,7 @@
             "frozen": false,
             "icon": "database",
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {
               "keywords": [
                 "sql",
@@ -3459,11 +3358,8 @@
                 "cache": true,
                 "display_name": "Result Table",
                 "group_outputs": false,
-                "hidden": null,
                 "method": "run_sql_query",
                 "name": "run_sql_query",
-                "options": null,
-                "required_inputs": null,
                 "selected": "DataFrame",
                 "tool_mode": true,
                 "types": [
@@ -3484,7 +3380,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "add_error",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3497,14 +3392,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -3520,7 +3412,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "commit",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3534,7 +3425,6 @@
                 "advanced": false,
                 "display_name": "Database URL",
                 "dynamic": false,
-                "info": "",
                 "input_types": [
                   "Message"
                 ],
@@ -3542,7 +3432,6 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "database_url",
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -3557,11 +3446,9 @@
                 "advanced": true,
                 "display_name": "Include Columns",
                 "dynamic": false,
-                "info": "",
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "include_columns",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3575,20 +3462,16 @@
                 "advanced": false,
                 "display_name": "Input Data",
                 "dynamic": false,
-                "info": "",
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "input_data",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": true,
                 "trace_as_input": true,
                 "type": "dict",
-                "value": {
-                  "": ""
-                }
+                "value": {}
               },
               "query": {
                 "_input_type": "MultilineInput",
@@ -3596,7 +3479,6 @@
                 "copy_field": false,
                 "display_name": "SQL Query",
                 "dynamic": false,
-                "info": "",
                 "input_types": [
                   "Message"
                 ],
@@ -3605,7 +3487,6 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "query",
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -3616,7 +3497,8 @@
                 "value": "INSERT INTO recruiting_interactions (prospect_name, prospect_email, prospect_phone, channel, message_content, response_status, created_at, updated_at) VALUES (%(name)s, %(email)s, %(phone)s, %(channel)s, %(message)s, 'sent', NOW(), NOW()) ON CONFLICT (prospect_email) DO UPDATE SET message_content = EXCLUDED.message_content, channel = EXCLUDED.channel, updated_at = NOW();"
               }
             },
-            "tool_mode": false
+            "tool_mode": false,
+            "key": "SQLComponent"
           },
           "showNode": true,
           "type": "SQLComponent"
@@ -3657,7 +3539,7 @@
             "icon": "square-terminal",
             "key": "PythonREPLComponent",
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {},
             "minimized": false,
             "output_types": [],
@@ -3685,14 +3567,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -3709,7 +3588,6 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "global_imports",
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -3730,7 +3608,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "python_code",
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -3800,7 +3677,7 @@
             "key": "Agent",
             "last_updated": "2025-09-26T15:17:04.864Z",
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {},
             "minimized": false,
             "output_types": [],
@@ -3812,8 +3689,6 @@
                 "group_outputs": false,
                 "method": "message_response",
                 "name": "response",
-                "options": null,
-                "required_inputs": null,
                 "selected": "Message",
                 "tool_mode": true,
                 "types": [
@@ -3835,7 +3710,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "add_current_date_tool",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3859,7 +3733,6 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "agent_description",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3903,7 +3776,6 @@
                     "icon": "brain"
                   }
                 ],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -3924,26 +3796,21 @@
                 "load_from_db": true,
                 "name": "api_key",
                 "password": true,
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
                 "title_case": false,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "code": {
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -3959,7 +3826,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "handle_parsing_errors",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -3981,15 +3847,13 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "input_value",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": true,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "json_mode": {
                 "_input_type": "BoolInput",
@@ -4000,7 +3864,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "json_mode",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4018,7 +3881,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "max_iterations",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4036,7 +3898,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "max_retries",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4054,7 +3915,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "max_tokens",
-                "placeholder": "",
                 "range_spec": {
                   "max": 128000,
                   "min": 0,
@@ -4066,8 +3926,7 @@
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_metadata": true,
-                "type": "int",
-                "value": ""
+                "type": "int"
               },
               "model_kwargs": {
                 "_input_type": "DictInput",
@@ -4078,7 +3937,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "model_kwargs",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4117,7 +3975,6 @@
                   "o4-mini-high"
                 ],
                 "options_metadata": [],
-                "placeholder": "",
                 "real_time_refresh": false,
                 "required": false,
                 "show": true,
@@ -4137,7 +3994,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "n_messages",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4156,14 +4012,12 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "openai_api_base",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "seed": {
                 "_input_type": "IntInput",
@@ -4174,7 +4028,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "seed",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4198,7 +4051,6 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "system_prompt",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4213,13 +4065,7 @@
                 "advanced": true,
                 "display_name": "Temperature",
                 "dynamic": false,
-                "info": "",
-                "max_label": "",
-                "max_label_icon": "",
-                "min_label": "",
-                "min_label_icon": "",
                 "name": "temperature",
-                "placeholder": "",
                 "range_spec": {
                   "max": 1,
                   "min": 0,
@@ -4245,7 +4091,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "timeout",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4266,24 +4111,20 @@
                 "list": true,
                 "list_add_label": "Add More",
                 "name": "tools",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "trace_as_metadata": true,
-                "type": "other",
-                "value": ""
+                "type": "other"
               },
               "verbose": {
                 "_input_type": "BoolInput",
                 "advanced": true,
                 "display_name": "Verbose",
                 "dynamic": false,
-                "info": "",
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "verbose",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4296,7 +4137,14 @@
             "tool_mode": false
           },
           "showNode": true,
-          "type": "Agent"
+          "type": "Agent",
+          "template": {
+            "instructions": {
+              "type": "str",
+              "value": "You are an advanced recruiting agent for Impact Realty. Use the Zoho CRM tools to manage leads, schedule appointments, and coordinate outreach campaigns. Always verify data through the MCP server before taking actions.",
+              "display_name": "Instructions"
+            }
+          }
         },
         "dragging": false,
         "id": "Agent-APzSn",
@@ -4329,22 +4177,16 @@
             "display_name": "LLM respone to SQL",
             "documentation": "https://docs.langflow.org/components-prompts",
             "edited": false,
-            "error": null,
             "field_order": [
               "template",
               "tool_placeholder"
             ],
             "frozen": false,
-            "full_path": null,
             "icon": "braces",
-            "is_composition": null,
-            "is_input": null,
-            "is_output": null,
             "legacy": false,
-            "lf_version": "1.5.1",
+            "lf_version": "1.0.19.post2",
             "metadata": {},
             "minimized": false,
-            "name": "",
             "output_types": [],
             "outputs": [
               {
@@ -4352,11 +4194,8 @@
                 "cache": true,
                 "display_name": "Prompt",
                 "group_outputs": false,
-                "hidden": null,
                 "method": "build_prompt",
                 "name": "prompt",
-                "options": null,
-                "required_inputs": null,
                 "selected": "Message",
                 "tool_mode": true,
                 "types": [
@@ -4373,14 +4212,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -4393,8 +4229,6 @@
                 "dynamic": false,
                 "field_type": "str",
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "input_types": [
                   "Message"
                 ],
@@ -4402,23 +4236,19 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "llm_response",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "template": {
                 "_input_type": "PromptInput",
                 "advanced": false,
                 "display_name": "Template",
                 "dynamic": false,
-                "info": "",
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "template",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4440,21 +4270,20 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "tool_placeholder",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": true,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               }
             },
-            "tool_mode": false
+            "tool_mode": false,
+            "key": "PromptTemplate"
           },
           "showNode": true,
-          "type": "Prompt Template"
+          "type": "Prompt"
         },
         "dragging": false,
         "id": "Prompt Template-0iiz4",
@@ -4481,7 +4310,7 @@
             "conditional_paths": [],
             "custom_fields": {},
             "description": "Make HTTP requests using URL or cURL commands.",
-            "display_name": "API Request",
+            "display_name": "MCP Health Check",
             "documentation": "https://docs.langflow.org/components-data#api-request",
             "edited": false,
             "field_order": [
@@ -4513,8 +4342,6 @@
                 "group_outputs": false,
                 "method": "make_api_request",
                 "name": "data",
-                "options": null,
-                "required_inputs": null,
                 "selected": "Data",
                 "tool_mode": true,
                 "types": [
@@ -4539,7 +4366,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "body",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -4590,14 +4416,11 @@
                 "advanced": true,
                 "dynamic": true,
                 "fileTypes": [],
-                "file_path": "",
-                "info": "",
                 "list": false,
                 "load_from_db": false,
                 "multiline": true,
                 "name": "code",
                 "password": false,
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -4619,7 +4442,6 @@
                 "load_from_db": false,
                 "multiline": true,
                 "name": "curl_input",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": false,
@@ -4627,8 +4449,7 @@
                 "tool_mode": true,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "str",
-                "value": ""
+                "type": "str"
               },
               "follow_redirects": {
                 "_input_type": "BoolInput",
@@ -4639,7 +4460,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "follow_redirects",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4660,7 +4480,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "headers",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -4717,7 +4536,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "include_httpx_metadata",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4743,7 +4561,6 @@
                   "DELETE"
                 ],
                 "options_metadata": [],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -4765,7 +4582,6 @@
                   "URL",
                   "cURL"
                 ],
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -4787,15 +4603,13 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "query_params",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
                 "tool_mode": false,
                 "trace_as_input": true,
                 "trace_as_metadata": true,
-                "type": "other",
-                "value": ""
+                "type": "other"
               },
               "save_to_file": {
                 "_input_type": "BoolInput",
@@ -4806,7 +4620,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "save_to_file",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4824,7 +4637,6 @@
                 "list": false,
                 "list_add_label": "Add More",
                 "name": "timeout",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4846,7 +4658,6 @@
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "url_input",
-                "placeholder": "",
                 "required": false,
                 "show": true,
                 "title_case": false,
@@ -4860,7 +4671,17 @@
             "tool_mode": false
           },
           "showNode": true,
-          "type": "APIRequest"
+          "type": "APIRequest",
+          "template": {
+            "url": {
+              "type": "str",
+              "value": "http://localhost:8001/health"
+            },
+            "method": {
+              "type": "str",
+              "value": "GET"
+            }
+          }
         },
         "dragging": false,
         "id": "APIRequest-11AqI",
@@ -4879,7 +4700,9 @@
         "data": {
           "id": "MCPServer-ZohoCRM",
           "node": {
-            "base_classes": ["Tool"],
+            "base_classes": [
+              "Tool"
+            ],
             "beta": false,
             "category": "agents",
             "conditional_paths": [],
@@ -4888,24 +4711,19 @@
             "display_name": "Zoho CRM MCP Server",
             "documentation": "https://docs.langflow.org/components-agents#mcp-server",
             "edited": false,
-            "error": null,
             "field_order": [
+              "server_name",
               "server_command",
               "server_args",
               "server_env",
               "tools_metadata"
             ],
             "frozen": false,
-            "full_path": null,
             "icon": "Server",
-            "is_composition": null,
-            "is_input": null,
-            "is_output": null,
             "key": "MCPServer",
             "last_updated": "2025-09-26T15:17:04.857Z",
             "legacy": false,
-            "lf_version": "1.5.1",
-            "license": null,
+            "lf_version": "1.0.19.post2",
             "minimized": false,
             "output_types": [],
             "outputs": [
@@ -4918,7 +4736,9 @@
                 "name": "component_as_tool",
                 "selected": "Tool",
                 "tool_mode": true,
-                "types": ["Tool"],
+                "types": [
+                  "Tool"
+                ],
                 "value": "__UNDEFINED__"
               }
             ],
@@ -4927,18 +4747,41 @@
             "score": 0.5,
             "template": {
               "_type": "Component",
+              "server_name": {
+                "_input_type": "MessageTextInput",
+                "advanced": false,
+                "display_name": "Server Name",
+                "dynamic": false,
+                "info": "Unique name identifier for this MCP server instance",
+                "input_types": [
+                  "Message"
+                ],
+                "list": false,
+                "list_add_label": "Add More",
+                "load_from_db": false,
+                "name": "server_name",
+                "required": true,
+                "show": true,
+                "title_case": false,
+                "tool_mode": false,
+                "trace_as_input": true,
+                "trace_as_metadata": true,
+                "type": "str",
+                "value": "zoho-crm-mcp-server"
+              },
               "server_command": {
                 "_input_type": "MessageTextInput",
                 "advanced": false,
                 "display_name": "Server Command",
                 "dynamic": false,
                 "info": "Command to run the MCP server",
-                "input_types": ["Message"],
+                "input_types": [
+                  "Message"
+                ],
                 "list": false,
                 "list_add_label": "Add More",
                 "load_from_db": false,
                 "name": "server_command",
-                "placeholder": "",
                 "required": true,
                 "show": true,
                 "title_case": false,
@@ -4954,11 +4797,12 @@
                 "display_name": "Server Arguments",
                 "dynamic": false,
                 "info": "Arguments to pass to the MCP server command",
-                "input_types": ["Data"],
+                "input_types": [
+                  "Data"
+                ],
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "server_args",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -4969,15 +4813,7 @@
                 "value": [
                   {
                     "key": "arg1",
-                    "value": "-m"
-                  },
-                  {
-                    "key": "arg2",
-                    "value": "zoho_crm_mcp.server"
-                  },
-                  {
-                    "key": "arg3",
-                    "value": "main"
+                    "value": "MCPServers/consolidated_zoho_mcp_server.py"
                   }
                 ]
               },
@@ -4987,11 +4823,12 @@
                 "display_name": "Environment Variables",
                 "dynamic": false,
                 "info": "Environment variables for the MCP server",
-                "input_types": ["Data"],
+                "input_types": [
+                  "Data"
+                ],
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "server_env",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -5017,12 +4854,48 @@
                     "value": "${ZOHO_ACCESS_TOKEN}"
                   },
                   {
+                    "key": "ZOHO_APP_SPECIFIC_PASSWORD",
+                    "value": "${ZOHO_APP_SPECIFIC_PASSWORD}"
+                  },
+                  {
+                    "key": "ZOHO_USERNAME",
+                    "value": "${ZOHO_USERNAME}"
+                  },
+                  {
+                    "key": "ZOHO_AUTH_MODE",
+                    "value": "${ZOHO_AUTH_MODE:-app_specific_password}"
+                  },
+                  {
+                    "key": "ZOHO_SANDBOX_MODE",
+                    "value": "${ZOHO_SANDBOX_MODE:-false}"
+                  },
+                  {
                     "key": "ZOHO_CRM_BASE_URL",
                     "value": "${ZOHO_CRM_BASE_URL:-https://www.zohoapis.com/crm/v2}"
                   },
                   {
                     "key": "ZOHO_AUTH_URL",
                     "value": "${ZOHO_AUTH_URL:-https://accounts.zoho.com/oauth/v2/token}"
+                  },
+                  {
+                    "key": "ZOHO_SANDBOX_BASE_URL",
+                    "value": "${ZOHO_SANDBOX_BASE_URL:-https://sandbox-www.zohoapis.com/crm/v2}"
+                  },
+                  {
+                    "key": "MCP_API_KEY",
+                    "value": "${MCP_API_KEY:-secure-mcp-key-change-in-production}"
+                  },
+                  {
+                    "key": "ZOHO_TOKEN_RETRY_COUNT",
+                    "value": "${ZOHO_TOKEN_RETRY_COUNT:-3}"
+                  },
+                  {
+                    "key": "ZOHO_CIRCUIT_BREAKER_ENABLED",
+                    "value": "${ZOHO_CIRCUIT_BREAKER_ENABLED:-true}"
+                  },
+                  {
+                    "key": "ZOHO_MAX_RATE_LIMIT_RETRIES",
+                    "value": "${ZOHO_MAX_RATE_LIMIT_RETRIES:-5}"
                   }
                 ]
               },
@@ -5035,7 +4908,6 @@
                 "is_list": true,
                 "list_add_label": "Add More",
                 "name": "tools_metadata",
-                "placeholder": "",
                 "real_time_refresh": true,
                 "required": false,
                 "show": true,
@@ -5047,7 +4919,6 @@
                   {
                     "args": {
                       "module_name": {
-                        "default": "",
                         "description": "Specific module name (e.g., 'Contacts', 'Leads'). If None, fetches from all modules.",
                         "title": "Module Name",
                         "type": "string"
@@ -5059,18 +4930,20 @@
                     "name": "get_module_data",
                     "readonly": false,
                     "status": true,
-                    "tags": ["zoho", "crm", "fetch"]
+                    "tags": [
+                      "zoho",
+                      "crm",
+                      "fetch"
+                    ]
                   },
                   {
                     "args": {
                       "module_name": {
-                        "default": "",
                         "description": "Module to search in (e.g., 'Contacts', 'Leads')",
                         "title": "Module Name",
                         "type": "string"
                       },
                       "search_criteria": {
-                        "default": "",
                         "description": "Search query (e.g., 'email:john@example.com')",
                         "title": "Search Criteria",
                         "type": "string"
@@ -5082,12 +4955,15 @@
                     "name": "search_records",
                     "readonly": false,
                     "status": true,
-                    "tags": ["zoho", "crm", "search"]
+                    "tags": [
+                      "zoho",
+                      "crm",
+                      "search"
+                    ]
                   },
                   {
                     "args": {
                       "module_name": {
-                        "default": "",
                         "description": "Module to create record in (e.g., 'Contacts', 'Leads')",
                         "title": "Module Name",
                         "type": "string"
@@ -5105,18 +4981,20 @@
                     "name": "create_record",
                     "readonly": false,
                     "status": true,
-                    "tags": ["zoho", "crm", "create"]
+                    "tags": [
+                      "zoho",
+                      "crm",
+                      "create"
+                    ]
                   },
                   {
                     "args": {
                       "module_name": {
-                        "default": "",
                         "description": "Module containing the record (e.g., 'Contacts', 'Leads')",
                         "title": "Module Name",
                         "type": "string"
                       },
                       "record_id": {
-                        "default": "",
                         "description": "ID of the record to update",
                         "title": "Record ID",
                         "type": "string"
@@ -5134,7 +5012,11 @@
                     "name": "update_record",
                     "readonly": false,
                     "status": true,
-                    "tags": ["zoho", "crm", "update"]
+                    "tags": [
+                      "zoho",
+                      "crm",
+                      "update"
+                    ]
                   }
                 ]
               }
@@ -5142,7 +5024,28 @@
             "tool_mode": true
           },
           "showNode": true,
-          "type": "MCPServer"
+          "type": "MCPServer",
+          "template": {
+            "server_name": {
+              "type": "str",
+              "value": "zoho-crm-mcp-server",
+              "display_name": "Server Name"
+            },
+            "server_command": {
+              "type": "str",
+              "value": "http://localhost:8001",
+              "display_name": "Server Command"
+            },
+            "env": {
+              "type": "dict",
+              "value": {
+                "MCP_SERVER_URL": "http://localhost:8001",
+                "ZOHO_API_URL": "https://www.zohoapis.com",
+                "MCP_HEALTH_ENDPOINT": "/health"
+              },
+              "display_name": "Environment Variables"
+            }
+          }
         },
         "dragging": false,
         "id": "MCPServer-ZohoCRM",
@@ -5165,7 +5068,6 @@
     }
   },
   "description": "Language Architect at Work!",
-  "endpoint_name": null,
   "id": "f6ebbcba-6ed3-4e9e-86ec-e137afa9cff0",
   "is_component": false,
   "last_tested_version": "1.5.1",

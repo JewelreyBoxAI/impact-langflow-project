@@ -1,0 +1,7 @@
+# MCP Files Snapshot
+# Created: Sat, Sep 27, 2025  1:51:40 PM
+# Git Commit: 6a2f25fdab48c8fda8d16656ca0c3b65d6a39ae4
+# Source: C:\AI_src\ImpactLangFlow
+# Branch: local-dev
+
+

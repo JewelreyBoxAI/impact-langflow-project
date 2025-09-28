@@ -1,0 +1,14 @@
+# VERSION STAMPS FOR MCP SCRIPTS
+# ===============================
+# Snapshot Created: 2025-09-27 13:47:20
+# Git Commit Hash: 6a2f25fdab48c8fda8d16656ca0c3b65d6a39ae4
+# Git Branch: local-dev
+# Source Directory: C:\AI_src\ImpactLangFlow\
+#
+# MCP-related utility scripts:
+# - test_mcp_load.py (Script to test MCP server loading and connectivity)
+# - validate_flows.py (Validation script for flow configurations)
+# - infrastructure_check.py (Infrastructure validation including MCP components)
+#
+# These scripts are used for testing, validation, and maintenance of
+# MCP-related functionality within the ImpactLangFlow system.
