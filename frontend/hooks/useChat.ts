@@ -3,8 +3,26 @@
 import { useState, useCallback } from 'react'
 import { type Message } from '@/components/chat/MessageBubble'
 import { useSession } from '@/context/SessionContext'
-import { useAgent } from '@/context/AgentContext'
-import { apiClient } from '@/lib/api'
+import { useAgent, type AgentType } from '@/context/AgentContext'
+import { apiClient } from '@/app/lib/api'
+
+// Define a proper interface for the Agent object
+interface Agent {
+  id: string;
+  name: string;
+  flow_id: string;
+}
+
+// This configuration maps agent string identifiers to their full object details.
+// Ideally, this would be managed in a central configuration file or the AgentContext.
+const agentConfig: { [key: string]: Agent } = {
+  recruiting: {
+    id: 'recruiting',
+    name: 'Recruiting Agent',
+    // IMPORTANT: Replace this with your actual Langflow flow ID for the recruiting agent
+    flow_id: 'YOUR_RECRUITING_FLOW_ID_HERE',
+  },
+};
 
 interface UseChatOptions {
   sessionId?: string
@@ -14,19 +32,26 @@ interface UseChatOptions {
 export function useChat(options: UseChatOptions = {}) {
   const { sessionId: providedSessionId, onError } = options
   const { currentSession, addMessage, createSession } = useSession()
-  const { currentAgent } = useAgent()
+  const { currentAgent } = useAgent() // This hook returns a string like "recruiting"
+
+  // Look up the full agent object from the configuration using the string identifier
+  const agent = agentConfig[currentAgent as string];
+
   const [isLoading, setIsLoading] = useState(false)
 
   const sessionId = providedSessionId || currentSession?.id
 
   const sendMessage = useCallback(async (content: string) => {
-    if (!content.trim()) return
+    if (!content.trim() || !agent?.flow_id) {
+      console.error("Cannot send message: content is empty or no agent/flow_id is selected.");
+      return;
+    }
 
     let activeSessionId = sessionId
 
     // Create a new session if none exists
     if (!activeSessionId) {
-      activeSessionId = createSession(currentAgent, `Chat with ${currentAgent}`)
+      activeSessionId = createSession(agent.id, `Chat with ${agent.name}`)
     }
 
     const userMessage: Omit<Message, 'id'> = {
@@ -38,24 +63,29 @@ export function useChat(options: UseChatOptions = {}) {
 
     // Add user message immediately
     addMessage(activeSessionId, userMessage)
-
     setIsLoading(true)
 
     try {
-      // Call the API
-      const response = await apiClient.sendMessage(currentAgent, {
+      // Pass a single object to apiClient.sendMessage
+      // Include the required flow_id from the current agent
+      const response = await apiClient.sendMessage({
         message: content.trim(),
+        flow_id: agent.flow_id,
         sessionId: activeSessionId,
-        conversationId: activeSessionId,
-      })
+      });
+
+      // Update response handling to parse Langflow's output
+      // Langflow's final message is often nested. This code safely finds it.
+      const agentResponseContent =
+        response?.result?.outputs?.[0]?.outputs?.[0]?.results?.message ||
+        'I received your message but had trouble responding. Please try again.';
 
       // Add agent response
       const agentMessage: Omit<Message, 'id'> = {
-        content: response.message || 'I received your message but had trouble responding. Please try again.',
+        content: agentResponseContent,
         sender: 'agent',
         timestamp: new Date().toISOString(),
-        senderName: response.agentName || 'Assistant',
-        smsStatus: response.smsStatus || undefined,
+        senderName: agent.name || 'Assistant',
       }
 
       addMessage(activeSessionId, agentMessage)
@@ -78,7 +108,7 @@ export function useChat(options: UseChatOptions = {}) {
     } finally {
       setIsLoading(false)
     }
-  }, [sessionId, currentAgent, addMessage, createSession, onError])
+  }, [sessionId, agent, addMessage, createSession, onError])
 
   const messages = currentSession?.messages || []
 
