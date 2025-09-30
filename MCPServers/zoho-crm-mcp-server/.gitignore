@@ -26,6 +26,7 @@ wheels/
 env/
 venv/
 ENV/
+*mcp_venv/
 
 # IDE
 .idea/

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # FastAPI Backend
   backend:
@@ -34,7 +32,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -51,7 +49,7 @@ services:
 
   # LangFlow
   langflow:
-    image: langflowai/langflow:latest
+    image: langflowai/langflow:1.6.0
     ports:
       - "7860:7860"
     environment:
@@ -98,7 +96,7 @@ services:
   # MCP Server for Zoho
   zoho-mcp:
     build:
-      context: ./backend/integrations/MCPServers
+      context: ./MCPServers/zoho-crm-mcp-server
       dockerfile: Dockerfile
     ports:
       - "3001:3001"

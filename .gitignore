@@ -4,7 +4,7 @@
 !*.env.example
 .env.local
 .env.production
-.env.development
+*env.development
 .env.staging
 .env.impact
 .env.dev
@@ -79,7 +79,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -184,6 +183,7 @@ flows/*/.env*
 *backup*
 *dump*
 *.sql
+!backend/db/init.sql
 *.db
 *.sqlite
 *.sqlite3

@@ -215,18 +215,35 @@ ZOHO_MODULES = [
 ]
 
 @mcp.tool()
-def get_module_data(ctx, module_name: str = None):
+def get_module_data(ctx, module_name: str = None, limit: int = 5):
     """
-    Fetch data from Zoho CRM modules
+    Fetch data from Zoho CRM modules with essential fields only
 
     Args:
-        module_name: Specific module name (e.g., 'Contacts', 'Leads').
-                    If None, fetches from all modules.
+        module_name: Specific module name (e.g., 'Contacts', 'Leads')
+        limit: Number of records to fetch (default 5, max 10)
     """
+    
+    # Strict limit to prevent token explosion
+    limit = min(limit, 10)
+    
+    # Define essential fields per module
+    field_mapping = {
+        "Leads": "id,Full_Name,First_Name,Last_Name,Email,Phone,Lead_Status,Lead_Source,Company,Owner",
+        "Contacts": "id,Full_Name,First_Name,Last_Name,Email,Phone,Account_Name,Owner",
+        "Deals": "id,Deal_Name,Amount,Stage,Closing_Date,Owner",
+        "Accounts": "id,Account_Name,Phone,Website,Annual_Revenue,Owner",
+    }
+    
+    fields = field_mapping.get(module_name, "id,Full_Name,Email,Phone,Owner")
 
     if module_name:
         url = f"{ZOHO_CRM_BASE_URL}/{module_name}"
-        response = make_authenticated_request("GET", url)
+        params = {
+            "fields": fields,
+            "per_page": limit
+        }
+        response = make_authenticated_request("GET", url, params=params)
         
         if response.status_code == 200:
             data = response.json().get("data", [])
@@ -234,6 +251,7 @@ def get_module_data(ctx, module_name: str = None):
                 "status": "success",
                 "module": module_name,
                 "count": len(data),
+                "fields_returned": fields,
                 "data": data
             }
         else:
@@ -244,32 +262,9 @@ def get_module_data(ctx, module_name: str = None):
                 "code": response.status_code
             }
     else:
-        all_data = {}
-        errors = []
-        
-        for module in ZOHO_MODULES:
-            url = f"{ZOHO_CRM_BASE_URL}/{module}"
-            response = make_authenticated_request("GET", url)
-            
-            if response.status_code == 200:
-                data = response.json().get("data", [])
-                all_data[module] = {
-                    "count": len(data),
-                    "data": data
-                }
-            else:
-                errors.append({
-                    "module": module,
-                    "code": response.status_code,
-                    "message": response.text
-                })
-        
         return {
-            "status": "success",
-            "modules_fetched": len(all_data),
-            "total_records": sum(module_data["count"] for module_data in all_data.values()),
-            "data": all_data,
-            "errors": errors if errors else None
+            "status": "error",
+            "message": "module_name is required"
         }
 
 @mcp.tool()
@@ -300,11 +295,36 @@ def search_records(ctx, module_name: str, search_criteria: str):
 
     Args:
         module_name: Module to search in (e.g., 'Contacts', 'Leads')
-        search_criteria: Search query (e.g., 'email:john@example.com')
+        search_criteria: Search query in format '(FieldName:operator:value)'
+                        Operators: equals, starts_with, contains
+                        Example: '(Last_Name:equals:Smith)' or '(Email:contains:gmail.com)'
     """
+    
+    # Auto-wrap criteria if user didn't include parentheses
+    if not search_criteria.startswith('('):
+        # Try to parse and fix common formats
+        if ':' in search_criteria:
+            parts = search_criteria.split(':')
+            if len(parts) == 2:
+                # User sent "Last_Name:Barthel" - add equals operator
+                search_criteria = f"({parts[0]}:equals:{parts[1]})"
+            elif len(parts) == 3:
+                # User sent "Last_Name:equals:Barthel" - just add parentheses
+                search_criteria = f"({search_criteria})"
 
     url = f"{ZOHO_CRM_BASE_URL}/{module_name}/search"
-    params = {"criteria": search_criteria}
+    
+    # Limit fields to essential ones
+    field_mapping = {
+        "Leads": "id,Full_Name,First_Name,Last_Name,Email,Phone,Lead_Status,Owner",
+        "Contacts": "id,Full_Name,First_Name,Last_Name,Email,Phone,Owner",
+    }
+    fields = field_mapping.get(module_name, "id,Full_Name,Email,Phone")
+    
+    params = {
+        "criteria": search_criteria,
+        "fields": fields
+    }
 
     response = make_authenticated_request("GET", url, params=params)
     
@@ -314,6 +334,7 @@ def search_records(ctx, module_name: str, search_criteria: str):
             "status": "success",
             "module": module_name,
             "count": len(data),
+            "search_criteria": search_criteria,
             "data": data
         }
     else:
@@ -321,7 +342,8 @@ def search_records(ctx, module_name: str, search_criteria: str):
             "status": "error",
             "module": module_name,
             "message": response.text,
-            "code": response.status_code
+            "code": response.status_code,
+            "hint": "Use format: (FieldName:equals:Value) or (FieldName:contains:Value)"
         }
 
 @mcp.tool()
@@ -573,16 +595,19 @@ def test_zoho_connection(ctx):
                 "message": "No valid tokens available. Cannot test connection."
             }
 
-        # Try to get user info (lightweight API call)
-        url = f"{ZOHO_CRM_BASE_URL}/settings/users"
-        response = make_authenticated_request("GET", url, params={"type": "current_user"})
+        # Use /users endpoint instead - we have ZohoCRM.users.ALL scope
+        url = f"{ZOHO_CRM_BASE_URL}/users"
+        params = {"type": "ActiveUsers", "per_page": 1}
+        response = make_authenticated_request("GET", url, params=params)
 
         if response.status_code == 200:
             user_data = response.json()
+            users = user_data.get("users", [])
             return {
                 "status": "success",
                 "message": "Successfully connected to Zoho CRM",
-                "user_info": user_data.get("users", [{}])[0] if user_data.get("users") else {},
+                "user_count": len(users),
+                "first_user": users[0].get("full_name") if users else "No users found",
                 "api_base_url": ZOHO_CRM_BASE_URL
             }
         else:

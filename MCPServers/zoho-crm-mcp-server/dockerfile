@@ -1,0 +1,14 @@
+# Dockerfile for the Zoho MCP Tool Server
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copy and install the specific requirements for this tool server
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the server code
+COPY . .
+
+# The command to run the server.py script
+CMD ["python", "src/zoho_crm_mcp/server.py"]

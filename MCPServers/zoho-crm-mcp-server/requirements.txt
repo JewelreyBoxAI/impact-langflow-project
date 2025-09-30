@@ -1,0 +1,4 @@
+# requirements.txt for zoho-mcp-server
+mcp-server
+requests
+python-dotenv
