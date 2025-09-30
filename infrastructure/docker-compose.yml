@@ -70,11 +70,37 @@ services:
       - "7860:7860"
     environment:
       - LANGFLOW_AUTO_LOGIN=false
+      - LANGFLOW_LOG_LEVEL=DEBUG
+      - LANGFLOW_LOG_FILE=/var/log/langflow/langflow.log
+      - LANGFLOW_DATABASE_URL=${POSTGRES_URL}
+      - LANGFLOW_CACHE_TYPE=redis
+      - LANGFLOW_CACHE_URL=${REDIS_URL}
+      - LANGFLOW_SECRET_KEY=${LANGFLOW_API_KEY}
+      - LANGFLOW_SUPERUSER=admin
+      - LANGFLOW_SUPERUSER_PASSWORD=admin123!
+      - LANGFLOW_DEV=true
+      - LANGFLOW_DEBUG=true
+      - LANGFLOW_SAVE_LOGS=true
+    env_file:
+      - ../.env
     volumes:
       - langflow_data:/app/langflow
+      - langflow_logs:/var/log/langflow
+      - ../config/langflow-config.yml:/app/config/config.yml
+      - ../flows:/app/flows
+    depends_on:
+      - postgres
+      - redis
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
 volumes:
   postgres_data:
   redis_data:
   langflow_data:
+  langflow_logs:

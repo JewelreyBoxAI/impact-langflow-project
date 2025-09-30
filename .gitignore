@@ -115,10 +115,14 @@ temp/
 # Claude settings with potential secrets
 .claude/settings.local.json
 
-# Documentation files (except main README)
-docs/
+# Documentation files (except main README and specific architecture docs)
 *.md
 !README.md
+!docs/RECRUITING_AGENT_ARCHITECTURE_v1.5.5.md
+
+# Block all other docs but allow specific files
+docs/*
+!docs/RECRUITING_AGENT_ARCHITECTURE_v1.5.5.md
 
 # MCP Servers - exclude any nested git repos
 MCPServers/*/.git/
