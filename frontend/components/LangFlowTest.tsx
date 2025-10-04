@@ -46,7 +46,6 @@ export default function LangFlowTest() {
         flow_id: 'test-flow',
         input_value: 'Hello from frontend integration test!',
         input_type: 'chat',
-        output_type: 'chat',
         session_id: `test-session-${Date.now()}`,
       })
       setResponse(result)

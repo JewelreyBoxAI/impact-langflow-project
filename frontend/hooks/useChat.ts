@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react'
 import { type Message } from '@/components/chat/MessageBubble'
 import { useSession } from '@/context/SessionContext'
 import { useAgent, type AgentType } from '@/context/AgentContext'
-import { apiClient } from '@/app/lib/api'
+import { apiClient } from '@/lib/api'
 
 // Define a proper interface for the Agent object
 interface Agent {

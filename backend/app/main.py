@@ -8,9 +8,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 from datetime import datetime
 
-from backend.api.routes import health, crm, flows, realty, webhooks, recruiting, mcp
-from backend.app.middleware import audit_middleware
-from backend.app.config import get_settings
+from .api.routes import health, crm, flows, realty, webhooks, recruiting, mcp
+from app.middleware import audit_middleware
+from app.config import get_settings
 
 settings = get_settings()
 

@@ -347,7 +347,7 @@ def search_records(ctx, module_name: str, search_criteria: str):
         }
 
 @mcp.tool()
-def create_record(ctx, module_name: str, record_data: dict):
+def create_record(module_name: str, record_data: dict):
     """
     Create a new record in a specific module
 
@@ -364,7 +364,8 @@ def create_record(ctx, module_name: str, record_data: dict):
         "data": [record_data]
     }
 
-    response = make_authenticated_request("POST", url, data=json.dumps(payload))
+    # FIX: Use json= parameter instead of data=json.dumps()
+    response = make_authenticated_request("POST", url, json=payload)
     
     if response.status_code == 201:
         result = response.json()
@@ -383,7 +384,7 @@ def create_record(ctx, module_name: str, record_data: dict):
         }
 
 @mcp.tool()
-def update_record(ctx, module_name: str, record_id: str, record_data: dict):
+def update_record(module_name: str, record_id: str, record_data: dict):
     """
     Update an existing record in a specific module
 
@@ -404,7 +405,8 @@ def update_record(ctx, module_name: str, record_id: str, record_data: dict):
         "data": [record_data]
     }
 
-    response = make_authenticated_request("PUT", url, data=json.dumps(payload))
+    # FIX: Use json= parameter instead of data=json.dumps()
+    response = make_authenticated_request("PUT", url, json=payload)
     
     if response.status_code == 200:
         result = response.json()
@@ -480,7 +482,8 @@ def bulk_create_records(ctx, module_name: str, records_data: list):
         "data": records_data
     }
 
-    response = make_authenticated_request("POST", url, data=json.dumps(payload))
+    # FIX: Use json= parameter instead of data=json.dumps()
+    response = make_authenticated_request("POST", url, json=payload)
     
     if response.status_code == 201:
         result = response.json()
@@ -830,6 +833,43 @@ def create_task(ctx, task_data: dict):
         return {
             "status": "error",
             "message": f"Error creating task: {str(e)}"
+        }
+
+@mcp.tool()
+def get_module_fields(module_name: str):
+    """Get all fields and their API names for a module"""
+    url = f"{ZOHO_CRM_BASE_URL}/settings/fields"
+    params = {"module": module_name}
+    
+    response = make_authenticated_request("GET", url, params=params)
+    
+    if response.status_code == 200:
+        fields_data = response.json()
+        fields = fields_data.get("fields", [])
+        
+        # Filter to show only name-related fields
+        field_info = []
+        for field in fields:
+            api_name = field.get("api_name", "")
+            if "name" in api_name.lower() or field.get("required"):
+                field_info.append({
+                    "field_label": field.get("field_label"),
+                    "api_name": api_name,
+                    "data_type": field.get("data_type"),
+                    "required": field.get("required", False)
+                })
+        
+        return {
+            "status": "success",
+            "module": module_name,
+            "total_fields": len(fields),
+            "name_and_required_fields": field_info
+        }
+    else:
+        return {
+            "status": "error",
+            "message": response.text,
+            "code": response.status_code
         }
 
 @mcp.tool()

@@ -8,6 +8,7 @@ services:
       - "8000:8000"
     environment:
       - ENVIRONMENT=development
+      - PYTHONPATH=.
       - POSTGRES_URL=postgresql://postgres:password@postgres:5432/impact_realty
       - REDIS_URL=redis://redis:6379
       - OPENAI_API_KEY=${OPENAI_API_KEY}
@@ -33,6 +34,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    command: npm run dev
     ports:
       - "3000:3000"
     environment:
@@ -50,6 +52,7 @@ services:
   # LangFlow
   langflow:
     image: langflowai/langflow:1.6.0
+    user: root
     ports:
       - "7860:7860"
     environment:
@@ -60,6 +63,7 @@ services:
     volumes:
       - ./flows:/app/flows
       - langflow_data:/app/data
+      - ./MCPServers:/app/MCPServers
     depends_on:
       - postgres
     restart: unless-stopped
@@ -68,7 +72,7 @@ services:
 
   # PostgreSQL Database
   postgres:
-    image: postgres:15-alpine
+    image: pgvector/pgvector:pg15
     environment:
       - POSTGRES_DB=impact_realty
       - POSTGRES_USER=postgres
@@ -106,7 +110,7 @@ services:
       - ZOHO_REFRESH_TOKEN=${ZOHO_REFRESH_TOKEN}
       - MCP_SERVER_PORT=3001
     volumes:
-      - ./backend/integrations/MCPServers:/app
+      - ./MCPServers/zoho-crm-mcp-server:/app
     restart: unless-stopped
     networks:
       - impact-network

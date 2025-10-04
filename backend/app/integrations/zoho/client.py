@@ -13,27 +13,23 @@ from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 from urllib.parse import urlencode
 
-from ..azure.keyvault_client import keyvault_client
+# from ..azure.keyvault_client import keyvault_client
 
 logger = logging.getLogger(__name__)
 
 class ZohoClient:
-    """Async Zoho API client with OAuth and retry handling"""
-    
     def __init__(self):
-        # Get credentials from Key Vault with fallback to environment variables
-        zoho_creds = keyvault_client.get_zoho_credentials()
-        
-        self.client_id = zoho_creds.get("client_id") or os.getenv("ZOHO_CLIENT_ID")
-        self.client_secret = zoho_creds.get("client_secret") or os.getenv("ZOHO_CLIENT_SECRET")
-        self.refresh_token = zoho_creds.get("refresh_token") or os.getenv("ZOHO_REFRESH_TOKEN")
-        self.access_token = zoho_creds.get("access_token")  # May be cached in Key Vault
+        self.client_id = os.getenv("ZOHO_CLIENT_ID")
+        self.client_secret = os.getenv("ZOHO_CLIENT_SECRET")
+        self.refresh_token = os.getenv("ZOHO_REFRESH_TOKEN")
+        self.access_token = os.getenv("ZOHO_ACCESS_TOKEN")  # optional cached token
         self.token_expires_at = None
-        
-        logger.info(f"Initialized ZohoClient with credentials from Key Vault")
-        
+
+        logger.info("Initialized ZohoClient with credentials from environment variables")
+
         if not all([self.client_id, self.client_secret, self.refresh_token]):
             logger.warning("Missing Zoho credentials. Some functionality may not work.")
+
             logger.debug(f"client_id: {'✓' if self.client_id else '✗'}")
             logger.debug(f"client_secret: {'✓' if self.client_secret else '✗'}")
             logger.debug(f"refresh_token: {'✓' if self.refresh_token else '✗'}")

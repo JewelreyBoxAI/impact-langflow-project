@@ -162,20 +162,6 @@ Flow:
    - Click on "Mem0 Chat Memory" component
    - Set `mem0_api_key` to: `@Microsoft.KeyVault(SecretUri=https://kv-impact-platform-v2.vault.azure.net/secrets/MEM0-API-KEY/)`
 
-5. **Optional: Neo4j Graph Store**
-   ```json
-   {
-     "graph_store": {
-       "provider": "neo4j",
-       "config": {
-         "url": "neo4j+s://your-neo4j-url",
-         "username": "neo4j",
-         "password": "your-password"
-       }
-     },
-     "version": "v1.1"
-   }
-   ```
 
 ---
 

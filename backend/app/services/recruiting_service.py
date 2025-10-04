@@ -14,7 +14,6 @@ import re
 
 from ..integrations.langflow.client import LangFlowClient
 from ..integrations.zoho.client import ZohoClient
-from ..integrations.MCPClients.zoho_mcp_client import ZohoMCPClient
 from ..schemas.recruiting_schemas import ProspectData, FlowConfig
 
 logger = logging.getLogger(__name__)
@@ -25,7 +24,7 @@ class RecruitingService:
     def __init__(self):
         self.langflow_client = LangFlowClient()
         self.zoho_client = ZohoClient()
-        self.mcp_client = ZohoMCPClient()
+        self.mcp_client = ZohoClient()
         self.execution_cache = {}  # In production, use Redis
         self.outreach_cache = {}   # In production, use database
 

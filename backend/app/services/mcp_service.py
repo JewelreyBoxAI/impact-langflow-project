@@ -10,7 +10,7 @@ from typing import Dict, Any, List, Optional
 import httpx
 
 from ..schemas.mcp_schemas import MCPServerStatus, MCPServerConfig
-from ..integrations.MCPClients.zoho_mcp_client import ZohoMCPClient
+from ..integrations.zoho.client import ZohoClient
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ class MCPService:
     """Service class for MCP server operations"""
 
     def __init__(self):
-        self.zoho_mcp_client = ZohoMCPClient()
+        self.zoho_mcp_client = ZohoClient()
         self.server_configs = self._load_server_configs()
         self.client = httpx.AsyncClient(timeout=30.0)
 

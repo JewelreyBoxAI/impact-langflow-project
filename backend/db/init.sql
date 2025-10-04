@@ -1,3 +1,5 @@
+CREATE DATABASE langflow;
+
 CREATE TABLE IF NOT EXISTS recruiting_interactions (
     id SERIAL PRIMARY KEY,
     prospect_name TEXT,

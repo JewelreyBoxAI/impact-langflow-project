@@ -23,7 +23,7 @@ from ...schemas.recruiting_schemas import (
     OutreachResponse, FlowExecutionStatus, RecruitingAnalytics, ChatMessage
 )
 from ...api.dependencies import get_current_user
-from ...integrations.MCPClients.zoho_mcp_client import ZohoMCPClient
+from ...integrations.zoho.client import ZohoClient
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -64,7 +64,7 @@ def get_zoho_service():
 
 def get_zoho_mcp_client():
     """Dependency to get Zoho MCP client instance"""
-    return ZohoMCPClient()
+    return ZohoClient()
 
 # CATEGORY 1: RECRUITING FLOW EXECUTION
 
@@ -364,7 +364,7 @@ async def get_outreach_status(
 async def zoho_dedupe_mcp(
     request: Dict[str, Any],
     current_user: dict = Depends(get_current_user),
-    mcp_client: ZohoMCPClient = Depends(get_zoho_mcp_client)
+    mcp_client: ZohoClient = Depends(get_zoho_mcp_client)
 ):
     """MCP server for Zoho deduplication"""
     try:
@@ -386,7 +386,7 @@ async def zoho_dedupe_mcp(
 @router.get("/mcp/servers/status")
 async def get_mcp_servers_status(
     current_user: dict = Depends(get_current_user),
-    mcp_client: ZohoMCPClient = Depends(get_zoho_mcp_client)
+    mcp_client: ZohoClient = Depends(get_zoho_mcp_client)
 ):
     """Get MCP server health status"""
     try:
@@ -405,7 +405,7 @@ async def get_mcp_servers_status(
 @router.post("/mcp/servers/restart")
 async def restart_mcp_servers(
     current_user: dict = Depends(get_current_user),
-    mcp_client: ZohoMCPClient = Depends(get_zoho_mcp_client)
+    mcp_client: ZohoClient = Depends(get_zoho_mcp_client)
 ):
     """Restart MCP servers"""
     try:

@@ -6,7 +6,7 @@ System health and status endpoints
 from fastapi import APIRouter
 from datetime import datetime
 
-from ...integrations.azure.keyvault_client import keyvault_client
+# from ...integrations.azure.keyvault_client import keyvault_client
 from ...services.zoho_service import ZohoService
 
 router = APIRouter()
@@ -18,7 +18,7 @@ async def health_check():
     timestamp = datetime.utcnow().isoformat()
 
     # Check Key Vault connectivity
-    kv_health = keyvault_client.health_check()
+    # kv_health = keyvault_client.health_check()
 
     # Check Zoho credentials
     zoho_service = ZohoService()
