@@ -43,11 +43,12 @@ export function ChatInterface({
   }
 
   return (
-    <div className={cn("chat-container", className)}>
+    // FIX: Add flex, flex-col, and h-full to correctly structure the chat layout
+    <div className={cn("flex flex-col h-full", className)}>
       {/* Messages Container */}
       <div
         ref={messagesContainerRef}
-        className="flex-1 overflow-y-auto scroll-smooth"
+        className="flex-1 overflow-y-auto scroll-smooth p-4" // Added padding for better spacing
       >
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
@@ -57,7 +58,7 @@ export function ChatInterface({
             </div>
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-4"> {/* Increased spacing between bubbles */}
             {messages.map((message) => (
               <MessageBubble
                 key={message.id}
@@ -90,14 +91,16 @@ export function ChatInterface({
       </div>
 
       {/* Compose Bar */}
-      <ComposeBar
-        value={inputValue}
-        onChange={setInputValue}
-        onSend={handleSend}
-        onVoiceToggle={handleVoiceToggle}
-        isVoiceActive={isVoiceActive}
-        isLoading={isLoading}
-      />
+      <div className="p-4 border-t"> {/* Added padding and border for separation */}
+        <ComposeBar
+          value={inputValue}
+          onChange={setInputValue}
+          onSend={handleSend}
+          onVoiceToggle={handleVoiceToggle}
+          isVoiceActive={isVoiceActive}
+          isLoading={isLoading}
+        />
+      </div>
     </div>
   )
 }

@@ -347,7 +347,7 @@ def search_records(ctx, module_name: str, search_criteria: str):
         }
 
 @mcp.tool()
-def create_record(module_name: str, record_data: dict):
+def create_record(ctx, module_name: str, record_data: dict):
     """
     Create a new record in a specific module
 
@@ -384,7 +384,7 @@ def create_record(module_name: str, record_data: dict):
         }
 
 @mcp.tool()
-def update_record(module_name: str, record_id: str, record_data: dict):
+def update_record(ctx, module_name: str, record_id: str, record_data: dict):
     """
     Update an existing record in a specific module
 
@@ -836,7 +836,7 @@ def create_task(ctx, task_data: dict):
         }
 
 @mcp.tool()
-def get_module_fields(module_name: str):
+def get_module_fields(ctx, module_name: str):
     """Get all fields and their API names for a module"""
     url = f"{ZOHO_CRM_BASE_URL}/settings/fields"
     params = {"module": module_name}
@@ -871,6 +871,37 @@ def get_module_fields(module_name: str):
             "message": response.text,
             "code": response.status_code
         }
+    
+@mcp.tool()
+def debug_create_lead(ctx, first_name: str, last_name: str, company: str = "Unknown"):
+    """
+    Debug version of create_record that logs everything
+    """
+    if not ensure_valid_token():
+        return {"error": "No tokens"}
+    
+    # Build the exact same payload as create_record
+    record_data = {
+        "First_Name": first_name,
+        "Last_Name": last_name,
+        "Company": company
+    }
+    
+    payload = {"data": [record_data]}
+    
+    # Log what we're sending
+    import json
+    payload_str = json.dumps(payload, indent=2)
+    
+    url = f"{ZOHO_CRM_BASE_URL}/Leads"
+    response = make_authenticated_request("POST", url, json=payload)
+    
+    return {
+        "url_sent_to": url,
+        "payload_sent": payload_str,
+        "status_code": response.status_code,
+        "response_text": response.text
+    }    
 
 @mcp.tool()
 def get_lead_activities(ctx, lead_id: str):

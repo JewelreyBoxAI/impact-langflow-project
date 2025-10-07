@@ -152,8 +152,8 @@ export function RecruitingSidebar({
 
   return (
     <div className={cn("flex flex-col h-full bg-background border-r", className)}>
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b">
+      {/* Header - FIX: Add shrink-0 */}
+      <div className="flex items-center justify-between p-4 border-b shrink-0">
         <h2 className="font-semibold text-foreground">Recruiting</h2>
         <Button
           size="icon"
@@ -165,8 +165,8 @@ export function RecruitingSidebar({
         </Button>
       </div>
 
-      {/* Search */}
-      <div className="p-4 border-b">
+      {/* Search - FIX: Add shrink-0 */}
+      <div className="p-4 border-b shrink-0">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
@@ -179,8 +179,8 @@ export function RecruitingSidebar({
         </div>
       </div>
 
-      {/* Section Tabs */}
-      <div className="flex border-b">
+      {/* Section Tabs - FIX: Add shrink-0 */}
+      <div className="flex border-b shrink-0">
         <button
           onClick={() => setActiveSection('conversations')}
           className={cn(
@@ -227,8 +227,8 @@ export function RecruitingSidebar({
         </button>
       </div>
 
-      {/* Content Area */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Content Area - FIX: min-h-0 allows this flex child to shrink and grow correctly */}
+      <div className="flex-1 overflow-y-auto min-h-0">
         {/* Past Conversations (Top) */}
         {activeSection === 'conversations' && (
           <div className="space-y-1 p-2">
@@ -470,3 +470,4 @@ export function RecruitingSidebar({
     </div>
   )
 }
+

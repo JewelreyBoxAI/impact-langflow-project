@@ -23,7 +23,7 @@ def get_langflow_service():
 @router.post("/run", response_model=FlowRunResponse)
 async def run_flow(
     request: FlowRunRequest,
-    current_user: dict = Depends(get_current_user),
+    # current_user: dict = Depends(get_current_user),
     langflow_service: LangFlowService = Depends(get_langflow_service)
 ):
     """Execute a LangFlow with given parameters"""
@@ -51,7 +51,7 @@ async def run_flow(
 @router.get("/status/{execution_id}", response_model=FlowStatusResponse)
 async def get_flow_status(
     execution_id: str,
-    current_user: dict = Depends(get_current_user),
+    # current_user: dict = Depends(get_current_user),
     langflow_service: LangFlowService = Depends(get_langflow_service)
 ):
     """Get status of a running LangFlow execution"""

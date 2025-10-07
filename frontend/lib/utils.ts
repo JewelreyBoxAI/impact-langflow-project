@@ -21,9 +21,18 @@ export function formatTimestamp(timestamp: string | Date): string {
 }
 
 // And add this function
-export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) {
-    return text;
+export function truncateText(text: any, maxLength: number = 50): string {
+  // Handle non-string values
+  if (!text) {
+    return '';
   }
-  return text.substring(0, maxLength) + '...';
+  
+  // Convert to string if it's not already
+  const textStr = typeof text === 'string' ? text : String(text);
+  
+  if (textStr.length <= maxLength) {
+    return textStr;
+  }
+  
+  return textStr.substring(0, maxLength) + '...';
 }

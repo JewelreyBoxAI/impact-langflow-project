@@ -14,7 +14,7 @@ export const AGENT_CONFIGS: { [key: string]: Agent } = {
     id: "recruiting",
     name: "Katelyn (Recruiting)",
     // IMPORTANT: Replace this with your actual Langflow flow ID for the recruiting agent
-    flow_id: 'YOUR_RECRUITING_FLOW_ID_HERE',
+    flow_id: '109ab46f-12fa-4865-8b26-37cf540ad101',
     description: "Agent for managing recruiting leads and outreach.",
     initialMessage: "Hello! I'm Katelyn, your recruiting assistant. How can I help you today?",
     features: ["CSV Import", "Zoho CRM Sync", "SMS Outreach", "Calendar Integration"],

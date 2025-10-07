@@ -3,7 +3,7 @@
  * Manages recruiting flow state and API interactions
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react'; // FIX: Import useMemo
 import { RecruitingApi } from '@/lib/api/recruiting';
 import { apiClient } from '@/lib/api';
 import { useEmbeddingSearch, useContextMemory, useDataPersistence } from './useEmbeddingSearch';
@@ -26,7 +26,8 @@ export const useRecruitingFlow = (): UseRecruitingFlowReturn => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const recruitingApi = new RecruitingApi(apiClient);
+  // FIX: Memoize the recruitingApi instance to prevent re-creation on every render
+  const recruitingApi = useMemo(() => new RecruitingApi(apiClient), []);
 
   const executeFlow = useCallback(async (request: RecruitingFlowRequest): Promise<RecruitingFlowResponse> => {
     try {
@@ -123,7 +124,8 @@ export const useRecruitingChat = (sessionId: string): UseChatReturn => {
   const reconnectAttempts = useRef(0);
   const maxReconnectAttempts = 5;
 
-  const recruitingApi = new RecruitingApi(apiClient);
+  // FIX: Memoize the recruitingApi instance
+  const recruitingApi = useMemo(() => new RecruitingApi(apiClient), []);
 
   const connect = useCallback(() => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
@@ -252,7 +254,8 @@ export const useRecruitingAnalytics = (dateFrom?: string, dateTo?: string) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const recruitingApi = new RecruitingApi(apiClient);
+  // FIX: Memoize the recruitingApi instance
+  const recruitingApi = useMemo(() => new RecruitingApi(apiClient), []);
 
   const fetchAnalytics = useCallback(async () => {
     try {
@@ -287,7 +290,8 @@ export const useFlowStatusPolling = (executionId: string | null, pollInterval: n
   const [isPolling, setIsPolling] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const recruitingApi = new RecruitingApi(apiClient);
+  // FIX: Memoize the recruitingApi instance
+  const recruitingApi = useMemo(() => new RecruitingApi(apiClient), []);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startPolling = useCallback(() => {
@@ -354,7 +358,8 @@ export const useMCPStatus = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const recruitingApi = new RecruitingApi(apiClient);
+  // FIX: Memoize the recruitingApi instance
+  const recruitingApi = useMemo(() => new RecruitingApi(apiClient), []);
 
   const fetchStatus = useCallback(async () => {
     try {
@@ -628,3 +633,4 @@ export const useRecruitingWithContext = (sessionId: string) => {
     error: error || recruitingFlow.error || analytics.error || mcpStatus.error
   };
 };
+

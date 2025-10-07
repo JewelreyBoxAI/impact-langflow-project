@@ -231,7 +231,7 @@ export default function RecruitingPage() {
     : null
 
   return (
-    <div className="h-screen flex bg-background overflow-hidden">
+    <div className="h-full flex bg-background overflow-hidden">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div
