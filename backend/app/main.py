@@ -8,7 +8,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 from datetime import datetime
 
-from .api.routes import health, crm, flows, realty, webhooks, recruiting, mcp
+# Add 'messaging' to this import list
+from .api.routes import health, crm, flows, realty, webhooks, recruiting, mcp, messaging
 from app.middleware import audit_middleware
 from app.config import get_settings
 
@@ -45,6 +46,9 @@ def create_app() -> FastAPI:
     app.include_router(webhooks.router, prefix="/api/webhooks", tags=["Webhooks"])
     app.include_router(recruiting.router, prefix="/api/recruiting", tags=["Recruiting"])
     app.include_router(mcp.router, prefix="/api/mcp", tags=["MCP"])
+    
+    # Add this line to activate your new endpoint
+    app.include_router(messaging.router, prefix="/api/messaging", tags=["Messaging"])
 
     @app.on_event("startup")
     async def startup_event():

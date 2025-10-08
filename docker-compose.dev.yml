@@ -15,7 +15,11 @@ services:
       - ZOHO_CLIENT_ID=${ZOHO_CLIENT_ID}
       - ZOHO_CLIENT_SECRET=${ZOHO_CLIENT_SECRET}
       - ZOHO_REFRESH_TOKEN=${ZOHO_REFRESH_TOKEN}
-      - SALESMSG_API_TOKEN=${SALESMSG_API_TOKEN}
+      - SALESMSG_CLIENT_ID=${SALESMSG_CLIENT_ID}
+      - SALESMSG_CLIENT_SECRET=${SALESMSG_CLIENT_SECRET}
+      - SALESMSG_REFRESH_TOKEN=${SALESMSG_REFRESH_TOKEN}
+      - SALESMSG_TEAM_ID=${SALESMSG_TEAM_ID}
+      - SALESMSG_BASE_URL=${SALESMSG_BASE_URL}
       - LANGFLOW_BASE_URL=${LANGFLOW_BASE_URL:-http://langflow:7860}
       - LANGFLOW_API_KEY=${LANGFLOW_API_KEY}
     volumes:
@@ -24,7 +28,6 @@ services:
     depends_on:
       - postgres
       - redis
-      - langflow
     restart: unless-stopped
     networks:
       - impact-network
@@ -63,12 +66,15 @@ services:
       - LANGFLOW_SKIP_AUTH_AUTO_LOGIN=true
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - TAVILY_API_KEY=${TAVILY_API_KEY}
-      - SALESMSG_API_TOKEN=${SALESMSG_API_TOKEN}
+      - MEM0_API_KEY=${MEM0_API_KEY}
+      - BACKEND_URL=http://backend:8000 
+      - SMS_ENDPOINT=http://backend:8000/api/messaging/send-sms/  
     volumes:
       - ./flows:/app/flows
       - langflow_data:/app/data
       - ./MCPServers:/app/MCPServers
     depends_on:
+      - backend
       - postgres
     restart: unless-stopped
     networks:
