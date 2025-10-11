@@ -60,9 +60,13 @@ class ZohoService:
         duplicate_check_fields: Optional[List[str]] = None
     ) -> Dict[str, Any]:
         """Upsert CRM record with business validation"""
-        # Add audit fields
-        record_data['Modified_By'] = 'Impact AI Platform'
-
+        # DO NOT add Modified_By - Zoho manages this automatically
+        # Remove any system-managed fields
+        system_fields = ['Modified_By', 'Modified_Time', 'Created_By', 'Created_Time', 'Owner']
+        
+        # Create a clean copy without system fields
+        clean_data = {k: v for k, v in record_data.items() if k not in system_fields}
+        
         return await self.client.upsert_crm_record(module, record_data, duplicate_check_fields)
 
     async def get_crm_record(
@@ -93,8 +97,13 @@ class ZohoService:
         record_data: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Update existing CRM record"""
-        # Add audit fields
-        record_data['Modified_By'] = 'Impact AI Platform'
+        
+        # DO NOT add Modified_By - Zoho manages this automatically
+        # Remove any system-managed fields
+        system_fields = ['Modified_By', 'Modified_Time', 'Created_By', 'Created_Time', 'Owner']
+    
+        # Create a clean copy without system fields
+        clean_data = {k: v for k, v in record_data.items() if k not in system_fields}
 
         return await self.client.update_crm_record(module, record_id, record_data)
 
