@@ -64,9 +64,23 @@ class NotesCreateResponse(BaseModel):
 
 # Tasks schemas
 class TasksCreateRequest(BaseModel):
-    task_data: Dict[str, Any] = Field(..., description="Task details")
-    related_module: Optional[str] = Field(None, description="Related record module")
-    related_record_id: Optional[str] = Field(None, description="Related record ID")
+    task_data: Dict[str, Any] = Field(..., description="Task details (Subject, Due_Date, Priority, etc.)")
+    related_module: str = Field(..., description="Related record module (Leads, Contacts, Accounts, Deals)")
+    related_record_id: str = Field(..., description="Related record ID")
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "task_data": {
+                    "Subject": "Follow up with lead",
+                    "Due_Date": "2025-10-17",
+                    "Priority": "High",
+                    "Status": "Not Started"
+                },
+                "related_module": "Leads",
+                "related_record_id": "3992795000153162001"
+            }
+        }
 
 class TasksCreateResponse(BaseModel):
     task_id: Optional[str] = None
@@ -113,9 +127,7 @@ class CRMRecordsListRequest(BaseModel):
     sort_order: str = Field("asc", description="Sort order (asc/desc)")
 
 class CRMRecordUpdateRequest(BaseModel):
-    module: str = Field(..., description="CRM module name")
-    record_id: str = Field(..., description="Record ID")
-    record_data: Dict[str, Any] = Field(..., description="Updated record data")
+     record_data: Dict[str, Any] = Field(..., description="Updated record data")
 
 class CRMRecordDeleteRequest(BaseModel):
     module: str = Field(..., description="CRM module name")

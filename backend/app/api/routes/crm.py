@@ -218,7 +218,8 @@ async def create_crm_task(
 ):
     """Create a task in CRM"""
     try:
-        logger.info(f"Creating task for record {request.related_record_id}")
+        logger.info(f"API: Creating task for {request.related_module}/{request.related_record_id}")
+        logger.debug(f"API: Request data = {request.dict()}")
 
         result = await zoho_service.create_crm_task(
             task_data=request.task_data,
@@ -226,14 +227,23 @@ async def create_crm_task(
             related_record_id=request.related_record_id
         )
 
+        task_id = result.get("data", [{}])[0].get("details", {}).get("id")
+        
+        logger.info(f"API: Task created with ID {task_id}")
+
         return TasksCreateResponse(
-            task_id=result.get("data", [{}])[0].get("details", {}).get("id"),
+            task_id=task_id,
             related_record_id=request.related_record_id,
             related_module=request.related_module
         )
 
+    except ValueError as ve:
+        # Validation errors (400)
+        logger.error(f"API: Validation error - {str(ve)}")
+        raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
-        logger.error(f"Error creating CRM task: {str(e)}")
+        # Other errors (500)
+        logger.error(f"API: Error creating task - {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

@@ -128,11 +128,57 @@ class ZohoService:
         related_record_id: str
     ) -> Dict[str, Any]:
         """Create CRM task with business validation"""
-        # Add default task properties for Impact Realty
-        task_data['Owner'] = task_data.get('Owner', 'Impact AI System')
-        task_data['Status'] = task_data.get('Status', 'Not Started')
-
-        return await self.client.create_crm_task(task_data, related_module, related_record_id)
+        
+        # Log incoming parameters
+        logger.info(f"Service: Creating task for {related_module}/{related_record_id}")
+        logger.debug(f"Service: Incoming task_data: {task_data}")
+        
+        # Validate required parameters
+        if not related_record_id:
+            raise ValueError("related_record_id is required and cannot be empty")
+        
+        if not related_module:
+            raise ValueError("related_module is required and cannot be empty")
+        
+        # Validate related_record_id format
+        if not str(related_record_id).isdigit():
+            logger.error(f"Invalid record ID format: {related_record_id}")
+            raise ValueError(f"Invalid record ID format: {related_record_id}. Must be numeric.")
+        
+        # Validate related_module
+        valid_modules = ['Leads', 'Contacts', 'Accounts', 'Deals']
+        if related_module not in valid_modules:
+            raise ValueError(f"Invalid related_module: {related_module}. Must be one of {valid_modules}")
+        
+        # Create a copy to avoid mutating the input
+        task_data_copy = task_data.copy()
+        
+        # Add default Owner if not present (must be in object format)
+        if 'Owner' not in task_data_copy:
+            task_data_copy['Owner'] = {"id": "3992795000000211013"}
+            logger.debug("Service: Added default Owner")
+        elif isinstance(task_data_copy.get('Owner'), str):
+            # Convert string Owner to object format
+            task_data_copy['Owner'] = {"id": task_data_copy['Owner']}
+            logger.debug("Service: Converted Owner from string to object")
+        
+        # Set default status if not present
+        task_data_copy.setdefault('Status', 'Not Started')
+        
+        # Log final task data before sending to client
+        logger.debug(f"Service: Final task_data: {task_data_copy}")
+        
+        try:
+            result = await self.client.create_crm_task(
+                task_data_copy, 
+                related_module, 
+                related_record_id
+            )
+            logger.info("Service: Task created successfully")
+            return result
+        except Exception as e:
+            logger.error(f"Service: Failed to create task - {str(e)}")
+            raise
 
     async def create_activity(
         self,

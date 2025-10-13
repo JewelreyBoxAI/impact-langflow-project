@@ -192,6 +192,7 @@ class ZohoClient:
         
         return await self._make_request("POST", url, json=data)
     
+
     async def create_crm_task(
         self,
         task_data: Dict[str, Any],
@@ -201,11 +202,51 @@ class ZohoClient:
         """Create a task in CRM"""
         url = f"{self.crm_base_url}/Tasks"
         
-        if related_module and related_record_id:
-            task_data["What_Id"] = related_record_id
+        logger.info(f"Client: Creating task (module={related_module}, record_id={related_record_id})")
+        logger.debug(f"Client: Input task_data: {task_data}")
         
-        data = {"data": [task_data]}
-        return await self._make_request("POST", url, json=data)
+        # Create a copy to avoid mutating the input
+        task_data_copy = task_data.copy()
+        
+        # Link the task to the parent record if provided
+        if related_module and related_record_id:
+            # Ensure record_id is a string
+            record_id_str = str(related_record_id)
+            
+            if related_module and related_record_id:
+                record_id_str = str(related_record_id)
+                # Send both Who_Id and What_Id, let Zoho use what it needs
+                task_data_copy['$se_module'] = related_module
+                task_data_copy['What_Id'] = {"id": record_id_str}
+                logger.debug(f"Client: Set Who_Id = {{'id': '{record_id_str}'}}")
+            elif related_module in ['Accounts', 'Deals']:
+                # For Accounts and Deals, use What_Id
+                task_data_copy['What_Id'] = {"id": record_id_str}
+                logger.debug(f"Client: Set What_Id = {{'id': '{record_id_str}'}}")
+            else:
+                logger.warning(f"Client: Unknown module type '{related_module}', using Who_Id")
+                task_data_copy['Who_Id'] = {"id": record_id_str}
+            
+            # Add the module reference
+            task_data_copy['$se_module'] = related_module
+            logger.debug(f"Client: Set $se_module = '{related_module}'")
+        
+        # Prepare the API payload
+        data = {"data": [task_data_copy]}
+        
+        logger.info(f"Client: POST {url}")
+        logger.debug(f"Client: Payload = {json.dumps(data, indent=2)}")
+        
+        try:
+            result = await self._make_request("POST", url, json=data)
+            logger.info("Client: Task created successfully")
+            logger.debug(f"Client: Response = {result}")
+            return result
+        except Exception as e:
+            logger.error(f"Client: Task creation failed - {str(e)}")
+            # Log the exact payload that failed
+            logger.error(f"Client: Failed payload was: {json.dumps(data, indent=2)}")
+            raise
     
     async def transition_blueprint(
         self,
