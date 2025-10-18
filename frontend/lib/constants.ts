@@ -12,12 +12,12 @@ export interface Agent {
 export const AGENT_CONFIGS: { [key: string]: Agent } = {
   recruiting: {
     id: "recruiting",
-    name: "Katelyn (Recruiting)",
+    name: "Impact-Realty-Agent",
     // IMPORTANT: Replace this with your actual Langflow flow ID for the recruiting agent
-    flow_id: '109ab46f-12fa-4865-8b26-37cf540ad101',
+    flow_id: '89d4ca09-b973-4358-8934-9829486d2e03',
     description: "Agent for managing recruiting leads and outreach.",
-    initialMessage: "Hello! I'm Katelyn, your recruiting assistant. How can I help you today?",
-    features: ["CSV Import", "Zoho CRM Sync", "SMS Outreach"],
+    initialMessage: "Hello! I'm the Impact-Realty AI Recruiting Agent, your recruiting assistant. How can I help you today?",
+    features: ["Conversational Document Q&A (RAG)", "Zoho CRM Sync", "SMS Outreach","Calendar Scheduling"],
   },
   // NOTE: Configurations for other agents like "Karen" would be added here later.
 };

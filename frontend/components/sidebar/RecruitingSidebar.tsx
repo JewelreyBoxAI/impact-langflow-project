@@ -180,7 +180,7 @@ export function RecruitingSidebar({
       </div>
 
       {/* Section Tabs - FIX: Add shrink-0 */}
-      <div className="flex border-b shrink-0">
+      <div className="flex flex-wrap border-b shrink-0">
         <button
           onClick={() => setActiveSection('conversations')}
           className={cn(
@@ -192,7 +192,7 @@ export function RecruitingSidebar({
         >
           <div className="flex items-center justify-center gap-2">
             <MessageSquare className="h-4 w-4" />
-            <span className="hidden sm:inline">Conversations</span>
+            <span className="hidden sm:inline">Chats</span>
           </div>
         </button>
 

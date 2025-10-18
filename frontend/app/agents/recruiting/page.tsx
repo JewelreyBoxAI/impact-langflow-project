@@ -292,7 +292,7 @@ export default function RecruitingPage() {
 
             {/* Features */}
             <div className="hidden xl:flex items-center gap-2 shrink-0">
-              {agentConfig.features.slice(0, 3).map((feature) => (
+              {agentConfig.features.slice(0, 4).map((feature) => (
                 <Badge key={feature} variant="secondary" className="text-xs">
                   {feature}
                 </Badge>
