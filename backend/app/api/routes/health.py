@@ -5,8 +5,6 @@ System health and status endpoints
 
 from fastapi import APIRouter
 from datetime import datetime
-
-# from ...integrations.azure.keyvault_client import keyvault_client
 from ...services.zoho_service import ZohoService
 
 router = APIRouter()
@@ -17,21 +15,24 @@ async def health_check():
     """Comprehensive health check endpoint"""
     timestamp = datetime.utcnow().isoformat()
 
-    # Check Key Vault connectivity
-    # kv_health = keyvault_client.health_check()
+    # Key Vault check disabled (using .env instead)
+    kv_health = {"status": "healthy", "message": "Using .env configuration"}
 
     # Check Zoho credentials
-    zoho_service = ZohoService()
-    zoho_health = {
-        "client_id": bool(zoho_service.client_id),
-        "client_secret": bool(zoho_service.client_secret),
-        "refresh_token": bool(zoho_service.refresh_token)
-    }
+    try:
+        zoho_service = ZohoService()
+        zoho_health = {
+            "client_id": bool(zoho_service.client_id),
+            "client_secret": bool(zoho_service.client_secret),
+            "refresh_token": bool(zoho_service.refresh_token)
+        }
+    except Exception as e:
+        zoho_health = {"error": str(e)}
 
     # Determine overall health
     overall_status = "healthy" if (
         kv_health["status"] == "healthy" and
-        all(zoho_health.values())
+        all(zoho_health.values()) if isinstance(zoho_health, dict) and "error" not in zoho_health else False
     ) else "degraded"
 
     return {
