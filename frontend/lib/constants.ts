@@ -13,8 +13,8 @@ export const AGENT_CONFIGS: { [key: string]: Agent } = {
   recruiting: {
     id: "recruiting",
     name: "Impact-Realty-Agent",
-    // IMPORTANT: Replace this with your actual Langflow flow ID for the recruiting agent
-    flow_id: '89d4ca09-b973-4358-8934-9829486d2e03',
+    // Use environment variable for production, fallback to dev Flow ID
+    flow_id: process.env.NEXT_PUBLIC_RECRUITING_FLOW_ID || '89d4ca09-b973-4358-8934-9829486d2e03',
     description: "Agent for managing recruiting leads and outreach.",
     initialMessage: "Hello! I'm the Impact-Realty AI Recruiting Agent, your recruiting assistant. How can I help you today?",
     features: ["Conversational Document Q&A (RAG)", "Zoho CRM Sync", "SMS Outreach","Calendar Scheduling"],

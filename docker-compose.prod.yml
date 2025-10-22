@@ -39,6 +39,7 @@ services:
     environment:
       - NEXT_PUBLIC_API_BASE_URL=http://4.236.160.148:8000
       - NEXT_PUBLIC_WS_BASE_URL=ws://4.236.160.148:8000
+      - NEXT_PUBLIC_RECRUITING_FLOW_ID=91a7b05f-8b18-4369-b2df-316ebb9a844a
     volumes:
       - ./frontend:/app
       - /app/node_modules
