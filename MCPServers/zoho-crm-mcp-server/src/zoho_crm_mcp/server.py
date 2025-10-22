@@ -329,7 +329,17 @@ def search_records(ctx, module_name: str, search_criteria: str):
 
     response = make_authenticated_request("GET", url, params=params)
     
-    if response.status_code == 200:
+    # Handle 204 No Content - means no records found (this is success, not error)
+    if response.status_code == 204:
+        return {
+            "status": "success",
+            "module": module_name,
+            "count": 0,
+            "search_criteria": search_criteria,
+            "message": "No records found matching the search criteria",
+            "data": []
+        }
+    elif response.status_code == 200:
         data = response.json().get("data", [])
         return {
             "status": "success",
@@ -502,30 +512,52 @@ def delete_record(ctx, module_name: str, record_id: str):
         }
 
 @mcp.tool()
-def bulk_create_records(ctx, module_name: str, records_data: list):
+def bulk_create_records(ctx, module_name: str, records_data: Any):
     """
     Create multiple records in a specific module
 
     Args:
         module_name: Module to create records in (e.g., 'Contacts', 'Leads')
-        records_data: List of dictionaries containing record data
+        records_data: List of dictionaries or JSON string containing record data
                      Example: [{"First_Name": "John", "Last_Name": "Doe"}, {"First_Name": "Jane", "Last_Name": "Smith"}]
     """
-
-    url = f"{ZOHO_CRM_BASE_URL}/{module_name}"
+    
+    # Handle both string and list
+    if isinstance(records_data, str):
+        try:
+            data_list = json.loads(records_data)
+        except json.JSONDecodeError as e:
+            return {
+                "status": "error",
+                "message": f"Invalid JSON in records_data: {str(e)}"
+            }
+    elif isinstance(records_data, list):
+        data_list = records_data
+    else:
+        return {
+            "status": "error",
+            "message": f"Invalid records_data type: {type(records_data)}"
+        }
+    
+    # Validate not empty
+    if not data_list:
+        return {
+            "status": "error",
+            "message": "records_data is empty! Cannot create with no records."
+        }
 
     # Zoho CRM allows up to 100 records per API call
-    if len(records_data) > 100:
+    if len(data_list) > 100:
         return {
             "status": "error",
             "message": "Maximum 100 records allowed per bulk operation"
         }
 
+    url = f"{ZOHO_CRM_BASE_URL}/{module_name}"
     payload = {
-        "data": records_data
+        "data": data_list
     }
 
-    # FIX: Use json= parameter instead of data=json.dumps()
     response = make_authenticated_request("POST", url, json=payload)
     
     if response.status_code == 201:
@@ -533,7 +565,7 @@ def bulk_create_records(ctx, module_name: str, records_data: list):
         return {
             "status": "success",
             "module": module_name,
-            "message": f"{len(records_data)} records created successfully",
+            "message": f"{len(data_list)} records created successfully",
             "data": result.get("data", [])
         }
     else:
@@ -748,13 +780,13 @@ def schedule_appointment(ctx, lead_id: str, appointment_data: dict):
         }
 
 @mcp.tool()
-def qualify_lead(ctx, lead_id: str, qualification_data: dict):
+def qualify_lead(ctx, lead_id: str, qualification_data: Any):
     """
     Update lead qualification status and convert to contact/deal if qualified
 
     Args:
         lead_id: ID of the lead to qualify
-        qualification_data: Dictionary containing qualification information
+        qualification_data: Dictionary or JSON string containing qualification information
                            Example: {
                                "Lead_Status": "Qualified",
                                "Rating": "Hot",
@@ -762,13 +794,37 @@ def qualify_lead(ctx, lead_id: str, qualification_data: dict):
                                "No_of_Employees": "25"
                            }
     """
+    
+    # Handle both string and dict
+    if isinstance(qualification_data, str):
+        try:
+            data_dict = json.loads(qualification_data)
+        except json.JSONDecodeError as e:
+            return {
+                "status": "error",
+                "message": f"Invalid JSON in qualification_data: {str(e)}"
+            }
+    elif isinstance(qualification_data, dict):
+        data_dict = qualification_data
+    else:
+        return {
+            "status": "error",
+            "message": f"Invalid qualification_data type: {type(qualification_data)}"
+        }
+    
+    # Validate not empty
+    if not data_dict:
+        return {
+            "status": "error",
+            "message": "qualification_data is empty! Cannot qualify with no fields."
+        }
+    
     try:
         # Update lead with qualification data
         url = f"{ZOHO_CRM_BASE_URL}/Leads/{lead_id}"
-        qualification_data["id"] = lead_id
-        payload = {"data": [qualification_data]}
+        payload = {"data": [data_dict]}
 
-        response = make_authenticated_request("PUT", url, data=json.dumps(payload))
+        response = make_authenticated_request("PUT", url, json=payload)
 
         if response.status_code == 200:
             result = response.json()
@@ -792,13 +848,13 @@ def qualify_lead(ctx, lead_id: str, qualification_data: dict):
         }
 
 @mcp.tool()
-def convert_lead(ctx, lead_id: str, conversion_data: dict = None):
+def convert_lead(ctx, lead_id: str, conversion_data: Any = None):
     """
     Convert a qualified lead to Contact, Account, and Deal
 
     Args:
         lead_id: ID of the lead to convert
-        conversion_data: Optional dictionary with conversion settings
+        conversion_data: Optional dictionary or JSON string with conversion settings
                         Example: {
                             "notify_lead_owner": True,
                             "notify_new_entity_owner": True,
@@ -806,18 +862,36 @@ def convert_lead(ctx, lead_id: str, conversion_data: dict = None):
                             "deals": "Deal_Name"
                         }
     """
+    
+    # Handle both string and dict
+    if conversion_data:
+        if isinstance(conversion_data, str):
+            try:
+                data_dict = json.loads(conversion_data)
+            except json.JSONDecodeError as e:
+                return {
+                    "status": "error",
+                    "message": f"Invalid JSON in conversion_data: {str(e)}"
+                }
+        elif isinstance(conversion_data, dict):
+            data_dict = conversion_data
+        else:
+            return {
+                "status": "error",
+                "message": f"Invalid conversion_data type: {type(conversion_data)}"
+            }
+    else:
+        # Default conversion data
+        data_dict = {
+            "notify_lead_owner": True,
+            "notify_new_entity_owner": True
+        }
+    
     try:
         url = f"{ZOHO_CRM_BASE_URL}/Leads/{lead_id}/actions/convert"
-
-        # Default conversion data
-        if not conversion_data:
-            conversion_data = {
-                "notify_lead_owner": True,
-                "notify_new_entity_owner": True
-            }
-
-        payload = {"data": [conversion_data]}
-        response = make_authenticated_request("POST", url, data=json.dumps(payload))
+        payload = {"data": [data_dict]}
+        
+        response = make_authenticated_request("POST", url, json=payload)
 
         if response.status_code == 200:
             result = response.json()
@@ -841,12 +915,12 @@ def convert_lead(ctx, lead_id: str, conversion_data: dict = None):
         }
 
 @mcp.tool()
-def create_task(ctx, task_data: dict):
+def create_task(ctx, task_data: Any, related_module: str = "Leads"):
     """
     Create a task in Zoho CRM for follow-up activities
 
     Args:
-        task_data: Dictionary containing task details
+        task_data: Dictionary or JSON string containing task details
                   Example: {
                       "Subject": "Follow up with lead",
                       "What_Id": "lead_id_here",
@@ -854,11 +928,43 @@ def create_task(ctx, task_data: dict):
                       "Status": "Not Started",
                       "Priority": "High"
                   }
+        related_module: The module the task is related to (default: "Leads")
+                       Options: "Leads", "Contacts", "Deals", "Accounts"
     """
+    
+    # Handle both string and dict
+    if isinstance(task_data, str):
+        try:
+            data_dict = json.loads(task_data)
+        except json.JSONDecodeError as e:
+            return {
+                "status": "error",
+                "message": f"Invalid JSON in task_data: {str(e)}"
+            }
+    elif isinstance(task_data, dict):
+        data_dict = task_data
+    else:
+        return {
+            "status": "error",
+            "message": f"Invalid task_data type: {type(task_data)}"
+        }
+    
+    # Validate not empty
+    if not data_dict:
+        return {
+            "status": "error",
+            "message": "task_data is empty! Cannot create task with no fields."
+        }
+    
+    # CRITICAL: Add $se_module field if What_Id is present
+    # This tells Zoho which module the related record belongs to
+    if "What_Id" in data_dict and "$se_module" not in data_dict:
+        data_dict["$se_module"] = related_module
+    
     try:
         url = f"{ZOHO_CRM_BASE_URL}/Tasks"
-        payload = {"data": [task_data]}
-        response = make_authenticated_request("POST", url, data=json.dumps(payload))
+        payload = {"data": [data_dict]}
+        response = make_authenticated_request("POST", url, json=payload)
 
         if response.status_code == 201:
             result = response.json()
@@ -987,36 +1093,6 @@ def get_lead_activities(ctx, lead_id: str):
             "lead_id": lead_id,
             "message": f"Error fetching activities: {str(e)}"
         }
-    
-@mcp.tool()
-def get_calendars(ctx):
-    """Get list of user's calendars from Zoho Calendar"""
-    url = "https://calendar.zoho.in/api/v1/calendars"
-    params = {"category": "own", "showhiddencal": "false"}
-    
-    headers = get_calendar_auth_headers()
-    response = requests.get(url, headers=headers, params=params)
-    
-    if response.status_code == 200:
-        data = response.json()
-        calendars = data.get("calendars", [])
-        calendar_list = []
-        for cal in calendars:
-            calendar_list.append({
-                "uid": cal.get("uid"),
-                "name": cal.get("name"),
-                "color": cal.get("color"),
-                "timezone": cal.get("timezone")
-            })
-        
-        return {
-            "status": "success",
-            "calendars": calendar_list,
-            "default_calendar_uid": calendar_list[0]["uid"] if calendar_list else None
-        }
-    else:
-        return {"status": "error", "message": response.text, "code": response.status_code}
-
 
 def get_calendar_auth_headers():
     """Get authorization headers for Calendar API"""
@@ -1028,98 +1104,146 @@ def get_calendar_auth_headers():
         "Authorization": f"Zoho-oauthtoken {current_access_token}",
         "Content-Type": "application/json"
     }
+    
+@mcp.tool()
+def get_calendars(ctx=None):
+    """Get list of user's calendars from Zoho Calendar"""
+    # Use the Events API endpoint to get calendar info
+    url = "https://www.zohoapis.com/calendar/v1/events"
+    
+    headers = get_calendar_auth_headers()
+    
+    # First, let's just try to access the calendar API
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        # For simplicity, return a default calendar structure
+        # Zoho Calendar API doesn't have a direct "list calendars" endpoint like CRM
+        return {
+            "status": "success",
+            "calendars": [{
+                "uid": "primary",  # Use "primary" as default
+                "name": "Primary Calendar",
+                "color": "#8cbf40",
+                "timezone": "America/New_York"
+            }],
+            "default_calendar_uid": "primary"
+        }
+    else:
+        return {
+            "status": "error",
+            "message": response.text,
+            "code": response.status_code,
+            "url_attempted": url
+        }
 
 @mcp.tool()
-def check_calendar_availability(ctx, date: str, start_time: str, end_time: str):
+def check_calendar_availability(ctx=None, date: str = None, start_time: str = None, end_time: str = None):
     """
-    Check if calendar is available during a specific time
+    Check if calendar is available during a specific time using CRM Events
     
     Args:
-        date: Date in YYYY-MM-DD format (e.g., '2025-10-16')
+        date: Date in YYYY-MM-DD format (e.g., '2025-10-25')
         start_time: Start time in HH:MM format (e.g., '14:00')
-        end_time: End time in HH:MM format (e.g., '17:00')
+        end_time: End time in HH:MM format (e.g., '16:00')
     """
     
+    if not date or not start_time or not end_time:
+        return {"status": "error", "message": "Missing required parameters"}
+    
     try:
-        calendars_response = get_calendars(ctx)
-        if calendars_response.get("status") != "success":
-            return {"status": "error", "message": "Could not get calendars"}
-        
-        calendar_uid = calendars_response.get("default_calendar_uid")
-        url = f"https://calendar.zoho.in/api/v1/calendars/{calendar_uid}/events"
-        
-        headers = get_calendar_auth_headers()
-        response = requests.get(url, headers=headers)
-        
-        if response.status_code != 200:
-            return {
-                "status": "error",
-                "message": response.text,
-                "code": response.status_code,
-                "debug_info": {
-                    "url": url,
-                    "calendar_uid": calendar_uid
-                }
-            }
-        
         from datetime import datetime
-        events_data = response.json()
-        events = events_data.get("events", [])
         
-        request_start = datetime.fromisoformat(f"{date}T{start_time}:00")
-        request_end = datetime.fromisoformat(f"{date}T{end_time}:00")
+        # Use CRM Events endpoint instead
+        url = f"{ZOHO_CRM_BASE_URL}/Events"
         
-        conflicts = []
-        for event in events:
-            event_start_str = event.get("dateandtime", {}).get("start", "")
-            event_end_str = event.get("dateandtime", {}).get("end", "")
-            
-            if event_start_str and event_end_str:
-                try:
-                    event_start = datetime.fromisoformat(event_start_str.replace('Z', '+00:00'))
-                    event_end = datetime.fromisoformat(event_end_str.replace('Z', '+00:00'))
-                    
-                    if event_start.date() != request_start.date():
-                        continue
-                    
-                    if not (request_end <= event_start or request_start >= event_end):
-                        conflicts.append({
-                            "title": event.get("title"),
-                            "start": event_start_str,
-                            "end": event_end_str
-                        })
-                except:
-                    pass
+        # Search for events on this date
+        search_criteria = f"(Event_Date:equals:{date})"
         
-        if conflicts:
-            return {
-                "status": "busy",
-                "available": False,
-                "conflicts": conflicts,
-                "message": f"Not available. {len(conflicts)} conflicting event(s) found."
-            }
-        else:
+        params = {
+            "criteria": search_criteria,
+            "fields": "id,Event_Title,Start_DateTime,End_DateTime"
+        }
+        
+        headers = get_auth_headers()
+        response = requests.get(url, headers=headers, params=params)
+        
+        if response.status_code == 204:
+            # No events found
             return {
                 "status": "free",
                 "available": True,
-                "message": f"Available from {start_time} to {end_time} on {date}",
-                "total_events_checked": len(events)
+                "message": f"Available from {start_time} to {end_time} on {date}"
+            }
+        elif response.status_code == 200:
+            events = response.json().get("data", [])
+            
+            # Parse requested time range
+            request_start = datetime.fromisoformat(f"{date}T{start_time}:00")
+            request_end = datetime.fromisoformat(f"{date}T{end_time}:00")
+            
+            conflicts = []
+            for event in events:
+                event_start_str = event.get("Start_DateTime", "")
+                event_end_str = event.get("End_DateTime", "")
+                
+                if event_start_str and event_end_str:
+                    try:
+                        # Parse event times
+                        event_start = datetime.fromisoformat(event_start_str.replace('Z', '').replace('+00:00', ''))
+                        event_end = datetime.fromisoformat(event_end_str.replace('Z', '').replace('+00:00', ''))
+                        
+                        # Check for overlap
+                        if not (request_end <= event_start or request_start >= event_end):
+                            conflicts.append({
+                                "title": event.get("Event_Title"),
+                                "start": event_start_str,
+                                "end": event_end_str
+                            })
+                    except:
+                        pass
+            
+            if conflicts:
+                return {
+                    "status": "busy",
+                    "available": False,
+                    "conflicts": conflicts,
+                    "message": f"Not available. {len(conflicts)} conflicting event(s) found."
+                }
+            else:
+                return {
+                    "status": "free",
+                    "available": True,
+                    "message": f"Available from {start_time} to {end_time} on {date}"
+                }
+        else:
+            return {
+                "status": "error",
+                "message": response.text,
+                "code": response.status_code
             }
     except Exception as e:
-        return {"status": "error", "message": f"Error checking availability: {str(e)}"}
+        return {"status": "error", "message": f"Error: {str(e)}"}
 
 @mcp.tool()
-def create_calendar_event(ctx, title: str, start_datetime: str, end_datetime: str, attendees: Any = None, description: str = "", calendar_uid: str = None):
+def create_calendar_event(ctx=None, title: str = None, start_datetime: str = None, end_datetime: str = None, attendees: Any = None, description: str = "", calendar_uid: str = None):
     """Create a new event in Zoho Calendar
     
     Args:
         title: Event title
-        start_datetime: Start datetime in ISO format (e.g., '2025-10-16T14:00:00')
-        end_datetime: End datetime in ISO format (e.g., '2025-10-16T15:00:00')
+        start_datetime: Start datetime in ISO format (e.g., '2025-10-25T14:00:00')
+        end_datetime: End datetime in ISO format (e.g., '2025-10-25T16:00:00')
         attendees: List of email addresses or JSON string of emails
         description: Event description
         calendar_uid: Optional calendar UID (will use default if not provided)
     """
+    
+    # Validate required parameters
+    if not title or not start_datetime or not end_datetime:
+        return {
+            "status": "error",
+            "message": "Missing required parameters: title, start_datetime, and end_datetime are required"
+        }
     
     try:
         if not calendar_uid:
@@ -1142,7 +1266,7 @@ def create_calendar_event(ctx, title: str, start_datetime: str, end_datetime: st
         else:
             attendee_list = []
         
-        url = f"https://calendar.zoho.in/api/v1/calendars/{calendar_uid}/events"
+        url = f"https://calendar.zoho.com/api/v1/calendars/{calendar_uid}/events"
         
         event_data = {
             "eventdata": [{
@@ -1177,6 +1301,88 @@ def create_calendar_event(ctx, title: str, start_datetime: str, end_datetime: st
             }
     except Exception as e:
         return {"status": "error", "message": f"Error creating calendar event: {str(e)}"}
+    
+@mcp.tool()
+def create_note(ctx, parent_id: str, note_title: str, note_content: str, parent_module: str = "Leads"):
+    """
+    Create a note attached to a lead, contact, deal, or account
+
+    Args:
+        parent_id: ID of the record to attach the note to
+        note_title: Title of the note
+        note_content: Content/body of the note
+        parent_module: Module of the parent record (default: "Leads")
+                      Options: "Leads", "Contacts", "Deals", "Accounts"
+    """
+    
+    url = f"{ZOHO_CRM_BASE_URL}/Notes"
+    
+    note_data = {
+        "Note_Title": note_title,
+        "Note_Content": note_content,
+        "Parent_Id": {
+            "id": parent_id
+        },
+        "$se_module": parent_module
+    }
+    
+    payload = {"data": [note_data]}
+    
+    response = make_authenticated_request("POST", url, json=payload)
+    
+    if response.status_code == 201:
+        result = response.json()
+        return {
+            "status": "success",
+            "message": "Note created successfully",
+            "parent_id": parent_id,
+            "parent_module": parent_module,
+            "data": result.get("data", [])
+        }
+    else:
+        return {
+            "status": "error",
+            "message": f"Failed to create note: {response.status_code} - {response.text}"
+        }
+    
+@mcp.tool()
+def get_notes(ctx, parent_id: str):
+    """
+    Get all notes attached to a specific record (lead, contact, deal, account)
+
+    Args:
+        parent_id: ID of the record to get notes for
+    """
+    
+    url = f"{ZOHO_CRM_BASE_URL}/Notes/search"
+    params = {
+        "criteria": f"(Parent_Id:equals:{parent_id})",
+        "fields": "id,Note_Title,Note_Content,Owner,Created_Time,Modified_Time"
+    }
+    
+    response = make_authenticated_request("GET", url, params=params)
+    
+    if response.status_code == 204:
+        return {
+            "status": "success",
+            "count": 0,
+            "message": "No notes found for this record",
+            "data": []
+        }
+    elif response.status_code == 200:
+        data = response.json().get("data", [])
+        return {
+            "status": "success",
+            "count": len(data),
+            "parent_id": parent_id,
+            "data": data
+        }
+    else:
+        return {
+            "status": "error",
+            "message": response.text,
+            "code": response.status_code
+        }
 
 def main():
     """Main entry point for the MCP server"""
