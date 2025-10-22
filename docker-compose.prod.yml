@@ -20,7 +20,7 @@ services:
       - SALESMSG_TEAM_ID=${SALESMSG_TEAM_ID}
       - SALESMSG_BASE_URL=${SALESMSG_BASE_URL}
       - LANGFLOW_BASE_URL=${LANGFLOW_BASE_URL:-http://langflow:7860}
-      - LANGFLOW_API_KEY=${LANGFLOW_API_KEY}
+      - LANGFLOW_API_KEY=${LANGFLOW_API_KEY_PROD}
     volumes:
       - ./backend:/app
       - ./flows:/app/flows
