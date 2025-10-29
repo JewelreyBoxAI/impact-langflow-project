@@ -733,51 +733,6 @@ def get_users(ctx, user_type: str = "AllUsers"):
             "message": f"Error fetching users: {str(e)}"
         }
 
-@mcp.tool()
-def schedule_appointment(ctx, lead_id: str, appointment_data: dict):
-    """
-    Schedule an appointment/event for a lead in Zoho CRM
-
-    Args:
-        lead_id: ID of the lead to schedule appointment for
-        appointment_data: Dictionary containing appointment details
-                         Example: {
-                             "Event_Title": "Initial Consultation",
-                             "Start_DateTime": "2024-01-15T10:00:00-05:00",
-                             "End_DateTime": "2024-01-15T11:00:00-05:00",
-                             "Description": "Meet with potential client"
-                         }
-    """
-    try:
-        # Add the lead as a participant
-        appointment_data["What_Id"] = lead_id
-        appointment_data["Participants"] = [{
-            "type": "lead",
-            "participant": lead_id
-        }]
-
-        # Create event
-        url = f"{ZOHO_CRM_BASE_URL}/Events"
-        payload = {"data": [appointment_data]}
-        response = make_authenticated_request("POST", url, data=json.dumps(payload))
-
-        if response.status_code == 201:
-            result = response.json()
-            return {
-                "status": "success",
-                "message": "Appointment scheduled successfully",
-                "data": result.get("data", [])
-            }
-        else:
-            return {
-                "status": "error",
-                "message": f"Failed to schedule appointment: {response.status_code} - {response.text}"
-            }
-    except Exception as e:
-        return {
-            "status": "error",
-            "message": f"Error scheduling appointment: {str(e)}"
-        }
 
 @mcp.tool()
 def qualify_lead(ctx, lead_id: str, qualification_data: Any):
@@ -1093,6 +1048,7 @@ def get_lead_activities(ctx, lead_id: str):
             "lead_id": lead_id,
             "message": f"Error fetching activities: {str(e)}"
         }
+    
 
 def get_calendar_auth_headers():
     """Get authorization headers for Calendar API"""
@@ -1105,38 +1061,6 @@ def get_calendar_auth_headers():
         "Content-Type": "application/json"
     }
     
-@mcp.tool()
-def get_calendars(ctx=None):
-    """Get list of user's calendars from Zoho Calendar"""
-    # Use the Events API endpoint to get calendar info
-    url = "https://www.zohoapis.com/calendar/v1/events"
-    
-    headers = get_calendar_auth_headers()
-    
-    # First, let's just try to access the calendar API
-    response = requests.get(url, headers=headers)
-    
-    if response.status_code == 200:
-        # For simplicity, return a default calendar structure
-        # Zoho Calendar API doesn't have a direct "list calendars" endpoint like CRM
-        return {
-            "status": "success",
-            "calendars": [{
-                "uid": "primary",  # Use "primary" as default
-                "name": "Primary Calendar",
-                "color": "#8cbf40",
-                "timezone": "America/New_York"
-            }],
-            "default_calendar_uid": "primary"
-        }
-    else:
-        return {
-            "status": "error",
-            "message": response.text,
-            "code": response.status_code,
-            "url_attempted": url
-        }
-
 @mcp.tool()
 def check_calendar_availability(ctx=None, date: str = None, start_time: str = None, end_time: str = None):
     """
@@ -1154,54 +1078,61 @@ def check_calendar_availability(ctx=None, date: str = None, start_time: str = No
     try:
         from datetime import datetime
         
-        # Use CRM Events endpoint instead
+        # Get all events without search criteria first
         url = f"{ZOHO_CRM_BASE_URL}/Events"
         
-        # Search for events on this date
-        search_criteria = f"(Event_Date:equals:{date})"
-        
         params = {
-            "criteria": search_criteria,
-            "fields": "id,Event_Title,Start_DateTime,End_DateTime"
+            "fields": "id,Event_Title,Start_DateTime,End_DateTime",
+            "per_page": 200  # Get more events to check
         }
         
         headers = get_auth_headers()
-        response = requests.get(url, headers=headers, params=params)
+        response = make_authenticated_request("GET", url, params=params)
         
         if response.status_code == 204:
-            # No events found
+            # No events at all - available
             return {
                 "status": "free",
                 "available": True,
                 "message": f"Available from {start_time} to {end_time} on {date}"
             }
         elif response.status_code == 200:
-            events = response.json().get("data", [])
+            all_events = response.json().get("data", [])
             
             # Parse requested time range
             request_start = datetime.fromisoformat(f"{date}T{start_time}:00")
             request_end = datetime.fromisoformat(f"{date}T{end_time}:00")
+            request_date = datetime.fromisoformat(date).date()
             
             conflicts = []
-            for event in events:
+            for event in all_events:
                 event_start_str = event.get("Start_DateTime", "")
                 event_end_str = event.get("End_DateTime", "")
                 
                 if event_start_str and event_end_str:
                     try:
-                        # Parse event times
-                        event_start = datetime.fromisoformat(event_start_str.replace('Z', '').replace('+00:00', ''))
-                        event_end = datetime.fromisoformat(event_end_str.replace('Z', '').replace('+00:00', ''))
+                        # Parse event times and strip timezone
+                        event_start = datetime.fromisoformat(
+                            event_start_str.split('+')[0].split('-05:')[0].split('Z')[0]
+                        )
+                        event_end = datetime.fromisoformat(
+                            event_end_str.split('+')[0].split('-05:')[0].split('Z')[0]
+                        )
                         
-                        # Check for overlap
+                        # Only check events on the requested date
+                        if event_start.date() != request_date:
+                            continue
+                        
+                        # Check for time overlap
                         if not (request_end <= event_start or request_start >= event_end):
                             conflicts.append({
                                 "title": event.get("Event_Title"),
                                 "start": event_start_str,
                                 "end": event_end_str
                             })
-                    except:
-                        pass
+                    except Exception as e:
+                        # Skip events with parsing issues
+                        continue
             
             if conflicts:
                 return {
@@ -1214,7 +1145,8 @@ def check_calendar_availability(ctx=None, date: str = None, start_time: str = No
                 return {
                     "status": "free",
                     "available": True,
-                    "message": f"Available from {start_time} to {end_time} on {date}"
+                    "message": f"Available from {start_time} to {end_time} on {date}",
+                    "total_events_checked": len(all_events)
                 }
         else:
             return {
@@ -1223,84 +1155,99 @@ def check_calendar_availability(ctx=None, date: str = None, start_time: str = No
                 "code": response.status_code
             }
     except Exception as e:
-        return {"status": "error", "message": f"Error: {str(e)}"}
-
+        return {"status": "error", "message": f"Error checking availability: {str(e)}"}
+    
 @mcp.tool()
-def create_calendar_event(ctx=None, title: str = None, start_datetime: str = None, end_datetime: str = None, attendees: Any = None, description: str = "", calendar_uid: str = None):
-    """Create a new event in Zoho Calendar
+def book_meeting(attendee_email: str = None, date: str = None, start_time: str = None, 
+                 end_time: str = None, title: str = None, description: str = "", lead_id = None):
+    """
+    Book a meeting with automatic availability check and email invitation
     
     Args:
-        title: Event title
-        start_datetime: Start datetime in ISO format (e.g., '2025-10-25T14:00:00')
-        end_datetime: End datetime in ISO format (e.g., '2025-10-25T16:00:00')
-        attendees: List of email addresses or JSON string of emails
-        description: Event description
-        calendar_uid: Optional calendar UID (will use default if not provided)
+        attendee_email: Email address of the person to meet with
+        date: Date in YYYY-MM-DD format (e.g., '2025-10-25')
+        start_time: Start time in HH:MM format (e.g., '14:00')
+        end_time: End time in HH:MM format (e.g., '16:00')
+        title: Meeting title/subject
+        description: Meeting description/agenda
+        lead_id: Optional - Link event to a specific lead/contact
     """
     
-    # Validate required parameters
-    if not title or not start_datetime or not end_datetime:
+    if not all([attendee_email, date, start_time, end_time, title]):
         return {
             "status": "error",
-            "message": "Missing required parameters: title, start_datetime, and end_datetime are required"
+            "message": "Missing required parameters"
         }
     
     try:
-        if not calendar_uid:
-            calendars_response = get_calendars(ctx)
-            if calendars_response.get("status") == "success":
-                calendar_uid = calendars_response.get("default_calendar_uid")
-            else:
-                return {"status": "error", "message": "Could not get calendar UID"}
+        # Check availability first
+        availability = check_calendar_availability(None, date, start_time, end_time)
         
-        if attendees:
-            if isinstance(attendees, str):
-                try:
-                    attendee_list = json.loads(attendees)
-                except json.JSONDecodeError:
-                    attendee_list = [attendees]
-            elif isinstance(attendees, list):
-                attendee_list = attendees
-            else:
-                attendee_list = []
-        else:
-            attendee_list = []
+        if availability.get("status") == "busy":
+            return {
+                "status": "unavailable",
+                "message": f"Time slot not available",
+                "conflicts": availability.get("conflicts")
+            }
         
-        url = f"https://calendar.zoho.com/api/v1/calendars/{calendar_uid}/events"
+        # Create event with AI_Booking tag
+        start_datetime = f"{date}T{start_time}:00"
+        end_datetime = f"{date}T{end_time}:00"
+        
+        url = f"{ZOHO_CRM_BASE_URL}/Events"
         
         event_data = {
-            "eventdata": [{
-                "title": title,
-                "dateandtime": {
-                    "start": start_datetime,
-                    "end": end_datetime,
-                    "timezone": "Asia/Calcutta"
-                },
-                "description": description,
-                "attendees": [{"email": email} for email in attendee_list] if attendee_list else []
-            }]
+            "Event_Title": title,
+            "Start_DateTime": start_datetime,
+            "End_DateTime": end_datetime,
+            "Description": description,
+            "Tag": ["AI_Booking"],  # Special tag to identify AI-created events
+            "Participants": [
+                {
+                    "participant": attendee_email,
+                    "type": "email"
+                }
+            ]
         }
         
-        headers = get_calendar_auth_headers()
-        response = requests.post(url, headers=headers, json=event_data)
+        # Link to lead if provided
+        if lead_id:
+            event_data["What_Id"] = lead_id
+            event_data["$se_module"] = "Leads"
         
-        if response.status_code in [200, 201]:
+        payload = {"data": [event_data]}
+        
+        response = make_authenticated_request("POST", url, json=payload)
+        
+        if response.status_code == 201:
+            result = response.json()
+            
             return {
                 "status": "success",
-                "message": "Event created successfully",
-                "event": response.json(),
-                "calendar_uid": calendar_uid
+                "message": f"Meeting booked! Email invitation will be sent to {attendee_email}",
+                "meeting_details": {
+                    "title": title,
+                    "date": date,
+                    "start_time": start_time,
+                    "end_time": end_time,
+                    "attendee": attendee_email,
+                    "description": description
+                },
+                "event_data": result.get("data", [])
             }
         else:
             return {
                 "status": "error",
-                "message": response.text,
-                "code": response.status_code,
-                "url": url,
-                "payload": event_data
+                "message": f"Failed: {response.text}",
+                "code": response.status_code
             }
+            
     except Exception as e:
-        return {"status": "error", "message": f"Error creating calendar event: {str(e)}"}
+        return {
+            "status": "error",
+            "message": f"Error: {str(e)}"
+        }
+
     
 @mcp.tool()
 def create_note(ctx, parent_id: str, note_title: str, note_content: str, parent_module: str = "Leads"):

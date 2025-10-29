@@ -213,3 +213,5 @@ test_*.env
 *.pid
 *.seed
 *.pid.lock
+
+**/salesmsg_*_cache.json
