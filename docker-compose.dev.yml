@@ -10,14 +10,16 @@ services:
       - ENVIRONMENT=development
       - PYTHONPATH=.
       - POSTGRES_URL=postgresql://postgres:password@postgres:5432/impact_realty
-      # - REDIS_URL=redis://redis:6379
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ZOHO_CLIENT_ID=${ZOHO_CLIENT_ID}
       - ZOHO_CLIENT_SECRET=${ZOHO_CLIENT_SECRET}
       - ZOHO_REFRESH_TOKEN=${ZOHO_REFRESH_TOKEN}
-      - SALESMSG_CLIENT_ID=${SALESMSG_CLIENT_ID}
-      - SALESMSG_CLIENT_SECRET=${SALESMSG_CLIENT_SECRET}
-      - SALESMSG_REFRESH_TOKEN=${SALESMSG_REFRESH_TOKEN}
+      # Remove old OAuth variables
+      # - SALESMSG_CLIENT_ID=${SALESMSG_CLIENT_ID}
+      # - SALESMSG_CLIENT_SECRET=${SALESMSG_CLIENT_SECRET}
+      # - SALESMSG_REFRESH_TOKEN=${SALESMSG_REFRESH_TOKEN}
+      # Add PAT variables
+      - SALESMSG_PAT=${SALESMSG_PAT}
       - SALESMSG_TEAM_ID=${SALESMSG_TEAM_ID}
       - SALESMSG_BASE_URL=${SALESMSG_BASE_URL}
       - LANGFLOW_BASE_URL=${LANGFLOW_BASE_URL:-http://langflow:7860}
@@ -27,7 +29,6 @@ services:
       - ./flows:/app/flows
     depends_on:
       - postgres
-      # - redis
     restart: unless-stopped
     networks:
       - impact-network
