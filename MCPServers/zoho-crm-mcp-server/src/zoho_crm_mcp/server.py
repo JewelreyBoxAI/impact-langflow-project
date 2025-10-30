@@ -1159,9 +1159,10 @@ def check_calendar_availability(ctx=None, date: str = None, start_time: str = No
     
 @mcp.tool()
 def book_meeting(attendee_email: str = None, date: str = None, start_time: str = None, 
-                 end_time: str = None, title: str = None, description: str = "", lead_id = None):
+                 end_time: str = None, title: str = None, description: str = "", 
+                 meeting_link: str = "", lead_id = None):
     """
-    Book a meeting with automatic availability check and email invitation
+    Book a meeting with calendar invite sent to attendee
     
     Args:
         attendee_email: Email address of the person to meet with
@@ -1170,6 +1171,7 @@ def book_meeting(attendee_email: str = None, date: str = None, start_time: str =
         end_time: End time in HH:MM format (e.g., '16:00')
         title: Meeting title/subject
         description: Meeting description/agenda
+        meeting_link: Optional - Zoom/Google Meet link
         lead_id: Optional - Link event to a specific lead/contact
     """
     
@@ -1180,7 +1182,7 @@ def book_meeting(attendee_email: str = None, date: str = None, start_time: str =
         }
     
     try:
-        # Check availability first
+        # Step 1: Check availability
         availability = check_calendar_availability(None, date, start_time, end_time)
         
         if availability.get("status") == "busy":
@@ -1190,64 +1192,174 @@ def book_meeting(attendee_email: str = None, date: str = None, start_time: str =
                 "conflicts": availability.get("conflicts")
             }
         
-        # Create event with AI_Booking tag
+        # Prepare datetime strings
         start_datetime = f"{date}T{start_time}:00"
         end_datetime = f"{date}T{end_time}:00"
         
+        # Add meeting link to description if provided
+        full_description = description
+        if meeting_link:
+            full_description = f"{description}\n\nJoin Meeting: {meeting_link}"
+        
+        # Step 2: Create event in CRM (for tracking and workflow trigger)
         url = f"{ZOHO_CRM_BASE_URL}/Events"
         
         event_data = {
             "Event_Title": title,
             "Start_DateTime": start_datetime,
             "End_DateTime": end_datetime,
-            "Description": description,
-            "Tag": ["AI_Booking"],  # Special tag to identify AI-created events
-            "Participants": [
-                {
-                    "participant": attendee_email,
-                    "type": "email"
-                }
-            ]
+            "Description": full_description,
+            "Location": meeting_link if meeting_link else "",
+            "Tag": ["AI_Booking"],
+            "Participants": [{"participant": attendee_email, "type": "email"}]
         }
         
-        # Link to lead if provided
         if lead_id:
             event_data["What_Id"] = lead_id
             event_data["$se_module"] = "Leads"
         
         payload = {"data": [event_data]}
+        crm_response = make_authenticated_request("POST", url, json=payload)
         
-        response = make_authenticated_request("POST", url, json=payload)
+        if crm_response.status_code != 201:
+            return {
+                "status": "error",
+                "message": f"Failed to create CRM event: {crm_response.text}",
+                "code": crm_response.status_code
+            }
         
-        if response.status_code == 201:
-            result = response.json()
+        crm_result = crm_response.json()
+        
+        # Step 3: Create calendar event with invite
+        calendar_response = create_calendar_event_with_invite(
+            title=title,
+            start_datetime=start_datetime,
+            end_datetime=end_datetime,
+            attendee_email=attendee_email,
+            description=full_description,
+            location=meeting_link if meeting_link else ""
+        )
+        
+        # Return combined result
+        return {
+            "status": "success",
+            "message": f"Meeting booked successfully! Calendar invite sent to {attendee_email}",
+            "meeting_details": {
+                "title": title,
+                "date": date,
+                "start_time": start_time,
+                "end_time": end_time,
+                "attendee": attendee_email,
+                "description": description,
+                "meeting_link": meeting_link
+            },
+            "crm_event": crm_result.get("data", []),
+            "calendar_invite": calendar_response
+        }
             
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Error booking meeting: {str(e)}"
+        }
+    
+@mcp.tool()
+def create_calendar_event_with_invite(title: str = None, start_datetime: str = None, 
+                                       end_datetime: str = None, attendee_email: str = None,
+                                       description: str = "", location: str = ""):
+    """
+    Create event in Zoho Calendar with calendar invite (.ics) sent to attendee
+    
+    Args:
+        title: Event title
+        start_datetime: Start in ISO format (e.g., '2025-11-05T10:00:00')
+        end_datetime: End in ISO format (e.g., '2025-11-05T11:00:00')
+        attendee_email: Email to send calendar invite to
+        description: Event description/agenda
+        location: Meeting location or link
+    """
+    
+    if not all([title, start_datetime, end_datetime, attendee_email]):
+        return {
+            "status": "error",
+            "message": "Missing required parameters"
+        }
+    
+    try:
+        import json
+        
+        # AI Agent's calendar UID
+        calendar_uid = "ef74750c5e154a6f8bb9a7bdf6249d83"
+        
+        # Convert datetime format: '2025-11-05T10:00:00' -> '20251105T100000Z'
+        start_formatted = start_datetime.replace('-', '').replace(':', '') + 'Z'
+        end_formatted = end_datetime.replace('-', '').replace(':', '') + 'Z'
+        
+        # Build event data according to Zoho format
+        event_data = {
+            "title": title,
+            "dateandtime": {
+                "start": start_formatted,
+                "end": end_formatted,
+                "timezone": "America/New_York"
+            },
+            "description": description,
+            "location": location,
+            "attendees": [
+                {
+                    "email": attendee_email,
+                    "permission": 1  # View permission
+                }
+            ],
+            "reminders": [
+                {
+                    "action": "popup",
+                    "minutes": -15  # 15 mins before (negative value)
+                }
+            ],
+            "isallday": False,
+            "isprivate": False,
+            "transparency": 0,  # Add to free/busy
+            "calendar_alarm": True
+        }
+        
+        # Convert to JSON string for query parameter
+        eventdata_json = json.dumps(event_data)
+        
+        # Create URL with eventdata as query parameter
+        url = f"https://calendar.zoho.com/api/v1/calendars/{calendar_uid}/events"
+        
+        # Pass eventdata as query parameter
+        params = {
+            "eventdata": eventdata_json
+        }
+        
+        headers = {
+            "Authorization": f"Zoho-oauthtoken {current_access_token}"
+        }
+        
+        # POST request with eventdata in query params
+        response = requests.post(url, headers=headers, params=params)
+        
+        if response.status_code in [200, 201]:
+            result = response.json()
             return {
                 "status": "success",
-                "message": f"Meeting booked! Email invitation will be sent to {attendee_email}",
-                "meeting_details": {
-                    "title": title,
-                    "date": date,
-                    "start_time": start_time,
-                    "end_time": end_time,
-                    "attendee": attendee_email,
-                    "description": description
-                },
-                "event_data": result.get("data", [])
+                "message": f"Calendar event created and invite sent to {attendee_email}",
+                "event_data": result
             }
         else:
             return {
                 "status": "error",
-                "message": f"Failed: {response.text}",
+                "message": f"Failed to create calendar event: {response.text}",
                 "code": response.status_code
             }
             
     except Exception as e:
         return {
             "status": "error",
-            "message": f"Error: {str(e)}"
+            "message": f"Error creating calendar event: {str(e)}"
         }
-
     
 @mcp.tool()
 def create_note(ctx, parent_id: str, note_title: str, note_content: str, parent_module: str = "Leads"):
