@@ -1062,7 +1062,8 @@ def get_calendar_auth_headers():
     }
     
 @mcp.tool()
-def check_calendar_availability(ctx=None, date: str = None, start_time: str = None, end_time: str = None):
+def check_calendar_availability(ctx=None, date: str = None, start_time: str = None, 
+                                 end_time: str = None, exclude_meeting_id: str = None):
     """
     Check if calendar is available during a specific time using CRM Events
     
@@ -1070,6 +1071,7 @@ def check_calendar_availability(ctx=None, date: str = None, start_time: str = No
         date: Date in YYYY-MM-DD format (e.g., '2025-10-25')
         start_time: Start time in HH:MM format (e.g., '14:00')
         end_time: End time in HH:MM format (e.g., '16:00')
+        exclude_meeting_id: Meeting ID to exclude from conflict check (for updates)
     """
     
     if not date or not start_time or not end_time:
@@ -1078,19 +1080,17 @@ def check_calendar_availability(ctx=None, date: str = None, start_time: str = No
     try:
         from datetime import datetime
         
-        # Get all events without search criteria first
         url = f"{ZOHO_CRM_BASE_URL}/Events"
         
         params = {
             "fields": "id,Event_Title,Start_DateTime,End_DateTime",
-            "per_page": 200  # Get more events to check
+            "per_page": 200
         }
         
         headers = get_auth_headers()
         response = make_authenticated_request("GET", url, params=params)
         
         if response.status_code == 204:
-            # No events at all - available
             return {
                 "status": "free",
                 "available": True,
@@ -1099,19 +1099,21 @@ def check_calendar_availability(ctx=None, date: str = None, start_time: str = No
         elif response.status_code == 200:
             all_events = response.json().get("data", [])
             
-            # Parse requested time range
             request_start = datetime.fromisoformat(f"{date}T{start_time}:00")
             request_end = datetime.fromisoformat(f"{date}T{end_time}:00")
             request_date = datetime.fromisoformat(date).date()
             
             conflicts = []
             for event in all_events:
+                # Skip the meeting we're updating
+                if exclude_meeting_id and event.get("id") == exclude_meeting_id:
+                    continue
+                
                 event_start_str = event.get("Start_DateTime", "")
                 event_end_str = event.get("End_DateTime", "")
                 
                 if event_start_str and event_end_str:
                     try:
-                        # Parse event times and strip timezone
                         event_start = datetime.fromisoformat(
                             event_start_str.split('+')[0].split('-05:')[0].split('Z')[0]
                         )
@@ -1119,11 +1121,9 @@ def check_calendar_availability(ctx=None, date: str = None, start_time: str = No
                             event_end_str.split('+')[0].split('-05:')[0].split('Z')[0]
                         )
                         
-                        # Only check events on the requested date
                         if event_start.date() != request_date:
                             continue
                         
-                        # Check for time overlap
                         if not (request_end <= event_start or request_start >= event_end):
                             conflicts.append({
                                 "title": event.get("Event_Title"),
@@ -1131,7 +1131,6 @@ def check_calendar_availability(ctx=None, date: str = None, start_time: str = No
                                 "end": event_end_str
                             })
                     except Exception as e:
-                        # Skip events with parsing issues
                         continue
             
             if conflicts:
@@ -1291,9 +1290,9 @@ def create_calendar_event_with_invite(title: str = None, start_datetime: str = N
         # AI Agent's calendar UID
         calendar_uid = "ef74750c5e154a6f8bb9a7bdf6249d83"
         
-        # Convert datetime format: '2025-11-05T10:00:00' -> '20251105T100000Z'
-        start_formatted = start_datetime.replace('-', '').replace(':', '') + 'Z'
-        end_formatted = end_datetime.replace('-', '').replace(':', '') + 'Z'
+        # Datetime format
+        start_formatted = start_datetime.replace('-', '').replace(':', '')
+        end_formatted = end_datetime.replace('-', '').replace(':', '')
         
         # Build event data according to Zoho format
         event_data = {
@@ -1359,6 +1358,303 @@ def create_calendar_event_with_invite(title: str = None, start_datetime: str = N
         return {
             "status": "error",
             "message": f"Error creating calendar event: {str(e)}"
+        }
+    
+def find_calendar_event_by_crm_id(crm_event_id: str):
+    """
+    Find Zoho Calendar event that corresponds to a CRM event
+    """
+    try:
+        # Get CRM event details
+        crm_url = f"{ZOHO_CRM_BASE_URL}/Events/{crm_event_id}"
+        crm_response = make_authenticated_request("GET", crm_url)
+        
+        if crm_response.status_code != 200:
+            print(f"Failed to get CRM event: {crm_response.status_code}")
+            return None
+        
+        crm_event = crm_response.json().get("data", [])[0]
+        event_title = crm_event.get("Event_Title")
+        start_datetime = crm_event.get("Start_DateTime", "")
+        
+        print(f"Looking for calendar event with title: '{event_title}'")
+        
+        # Extract date
+        event_date = start_datetime.split("T")[0] if "T" in start_datetime else None
+        
+        if not event_date:
+            print("No date found in CRM event")
+            return None
+        
+        print(f"Event date: {event_date}")
+        
+        # Search Zoho Calendar
+        calendar_uid = "ef74750c5e154a6f8bb9a7bdf6249d83"
+        date_formatted = event_date.replace("-", "")
+        
+        cal_url = f"https://calendar.zoho.com/api/v1/calendars/{calendar_uid}/events"
+        
+        params = {
+            "range": "custom",
+            "sdate": date_formatted,
+            "edate": date_formatted
+        }
+        
+        headers = {
+            "Authorization": f"Zoho-oauthtoken {current_access_token}"
+        }
+        
+        cal_response = requests.get(cal_url, headers=headers, params=params)
+        
+        print(f"Calendar API response status: {cal_response.status_code}")
+        
+        if cal_response.status_code == 200:
+            calendar_events = cal_response.json().get("events", [])
+            print(f"Found {len(calendar_events)} events on {event_date}")
+            
+            # Find matching event by title
+            for cal_event in calendar_events:
+                cal_title = cal_event.get("title", "")
+                print(f"Comparing: CRM='{event_title}' vs Calendar='{cal_title}'")
+                if cal_title == event_title:
+                    uid = cal_event.get("uid")
+                    print(f"Match found! Calendar UID: {uid}")
+                    return uid
+            
+            print("No matching title found in calendar events")
+        else:
+            print(f"Calendar API error: {cal_response.text}")
+        
+        return None
+        
+    except Exception as e:
+        print(f"Error finding calendar event: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return None
+    
+@mcp.tool()
+def update_meeting(meeting_id: str = None, new_date = None, new_start_time = None,
+                   new_end_time = None, new_title = None, new_description = None,
+                   new_meeting_link = None):
+    """
+    Update an existing meeting's details in both CRM and Calendar
+    """
+    
+    if not meeting_id:
+        return {"status": "error", "message": "Meeting ID is required"}
+    
+    try:
+        import json
+        
+        # Get current meeting details first (for attendee email)
+        crm_url = f"{ZOHO_CRM_BASE_URL}/Events/{meeting_id}"
+        current_meeting_response = make_authenticated_request("GET", crm_url)
+        
+        if current_meeting_response.status_code != 200:
+            return {"status": "error", "message": "Could not fetch current meeting details"}
+        
+        current_meeting = current_meeting_response.json().get("data", [])[0]
+        current_title = current_meeting.get("Event_Title")
+        current_description = current_meeting.get("Description", "")
+        current_location = current_meeting.get("Location", "")
+        
+        # Get attendee email
+        participants = current_meeting.get("Participants", [])
+        attendee_email = participants[0].get("participant") if participants else None
+        
+        # Build CRM update data
+        crm_update_data = {}
+        
+        if new_date and new_start_time and new_end_time:
+            availability = check_calendar_availability(
+                None, new_date, new_start_time, new_end_time, 
+                exclude_meeting_id=meeting_id
+            )
+            
+            if availability.get("status") == "busy":
+                return {
+                    "status": "unavailable",
+                    "message": f"New time slot not available",
+                    "conflicts": availability.get("conflicts")
+                }
+            
+            crm_update_data["Start_DateTime"] = f"{new_date}T{new_start_time}:00"
+            crm_update_data["End_DateTime"] = f"{new_date}T{new_end_time}:00"
+        
+        if new_title:
+            crm_update_data["Event_Title"] = new_title
+        
+        if new_description or new_meeting_link:
+            desc = new_description if new_description else current_description
+            if new_meeting_link:
+                desc = f"{desc}\n\nJoin Meeting: {new_meeting_link}" if desc else f"Join Meeting: {new_meeting_link}"
+            crm_update_data["Description"] = desc
+        
+        if new_meeting_link:
+            crm_update_data["Location"] = new_meeting_link
+        
+        if not crm_update_data:
+            return {"status": "error", "message": "No fields to update"}
+        
+        # Update CRM Event
+        update_url = f"{ZOHO_CRM_BASE_URL}/Events/{meeting_id}"
+        crm_payload = {"data": [crm_update_data]}
+        
+        crm_response = make_authenticated_request("PUT", update_url, json=crm_payload)
+        
+        if crm_response.status_code != 200:
+            return {
+                "status": "error",
+                "message": f"Failed to update CRM: {crm_response.text}",
+                "code": crm_response.status_code
+            }
+        
+        crm_result = crm_response.json()
+        
+        # Recreate calendar event with new time (if datetime changed and we have attendee)
+        calendar_result = None
+        if new_date and new_start_time and new_end_time and attendee_email:
+            # Use final values (new or current)
+            final_title = new_title if new_title else current_title
+            final_description = crm_update_data.get("Description", current_description)
+            final_location = new_meeting_link if new_meeting_link else current_location
+            final_start = f"{new_date}T{new_start_time}:00"
+            final_end = f"{new_date}T{new_end_time}:00"
+            
+            # Create new calendar event with updated time
+            calendar_result = create_calendar_event_with_invite(
+                title=final_title,
+                start_datetime=final_start,
+                end_datetime=final_end,
+                attendee_email=attendee_email,
+                description=final_description,
+                location=final_location
+            )
+        
+        return {
+            "status": "success",
+            "message": "Meeting updated successfully. New calendar invite sent.",
+            "crm_update": crm_result.get("data", []),
+            "calendar_update": calendar_result
+        }
+            
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Error updating meeting: {str(e)}"
+        }
+    
+@mcp.tool()
+def find_meeting(title: str = None, date = None, attendee_email = None):
+    """
+    Find a meeting by title, date, or attendee email
+    
+    Args:
+        title: Meeting title (exact match or partial)
+        date: Meeting date in YYYY-MM-DD format
+        attendee_email: Attendee's email address
+    
+    Returns meeting ID and details
+    """
+    
+    if not any([title, date, attendee_email]):
+        return {
+            "status": "error",
+            "message": "Provide at least one search criteria (title, date, or attendee_email)"
+        }
+    
+    try:
+        # If only title is provided, get all events and filter in code
+        if title and not date:
+            url = f"{ZOHO_CRM_BASE_URL}/Events"
+            params = {
+                "fields": "id,Event_Title,Start_DateTime,End_DateTime,Description,Location,Participants",
+                "per_page": 200
+            }
+            
+            response = make_authenticated_request("GET", url, params=params)
+            
+            if response.status_code == 200:
+                all_meetings = response.json().get("data", [])
+                
+                # Filter by title (case-insensitive partial match)
+                title_lower = title.lower()
+                meetings = [m for m in all_meetings if title_lower in m.get("Event_Title", "").lower()]
+                
+                # Filter by attendee if provided
+                if attendee_email:
+                    meetings = [m for m in meetings if attendee_email in str(m.get("Participants", []))]
+                
+                if meetings:
+                    return {
+                        "status": "success",
+                        "count": len(meetings),
+                        "meetings": meetings
+                    }
+                else:
+                    return {
+                        "status": "not_found",
+                        "message": f"No meetings found with title containing '{title}'"
+                    }
+            elif response.status_code == 204:
+                return {
+                    "status": "not_found",
+                    "message": "No meetings found"
+                }
+        
+        # If date is provided, use search with date criteria
+        elif date:
+            url = f"{ZOHO_CRM_BASE_URL}/Events/search"
+            
+            criteria = f"(Start_DateTime:starts_with:{date})"
+            
+            params = {
+                "criteria": criteria,
+                "fields": "id,Event_Title,Start_DateTime,End_DateTime,Description,Location,Participants"
+            }
+            
+            response = make_authenticated_request("GET", url, params=params)
+            
+            if response.status_code == 200:
+                meetings = response.json().get("data", [])
+                
+                # Filter by title if provided
+                if title:
+                    title_lower = title.lower()
+                    meetings = [m for m in meetings if title_lower in m.get("Event_Title", "").lower()]
+                
+                # Filter by attendee if provided
+                if attendee_email:
+                    meetings = [m for m in meetings if attendee_email in str(m.get("Participants", []))]
+                
+                if meetings:
+                    return {
+                        "status": "success",
+                        "count": len(meetings),
+                        "meetings": meetings
+                    }
+                else:
+                    return {
+                        "status": "not_found",
+                        "message": "No meetings found matching criteria"
+                    }
+            elif response.status_code == 204:
+                return {
+                    "status": "not_found",
+                    "message": "No meetings found on that date"
+                }
+        
+        return {
+            "status": "error",
+            "message": response.text,
+            "code": response.status_code
+        }
+            
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Error finding meeting: {str(e)}"
         }
     
 @mcp.tool()
