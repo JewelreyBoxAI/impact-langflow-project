@@ -1161,7 +1161,7 @@ def book_meeting(attendee_email: str = None, date: str = None, start_time: str =
                  end_time: str = None, title: str = None, description: str = "", 
                  meeting_link: str = "", lead_id = None):
     """
-    Book a meeting with calendar invite sent to attendee
+    Book a meeting with auto-generated Zoho Meeting link and calendar invite
     
     Args:
         attendee_email: Email address of the person to meet with
@@ -1170,7 +1170,7 @@ def book_meeting(attendee_email: str = None, date: str = None, start_time: str =
         end_time: End time in HH:MM format (e.g., '16:00')
         title: Meeting title/subject
         description: Meeting description/agenda
-        meeting_link: Optional - Zoom/Google Meet link
+        meeting_link: Optional - Custom Zoom/Google Meet link (if not provided, auto-generates Zoho Meeting)
         lead_id: Optional - Link event to a specific lead/contact
     """
     
@@ -1195,12 +1195,28 @@ def book_meeting(attendee_email: str = None, date: str = None, start_time: str =
         start_datetime = f"{date}T{start_time}:00"
         end_datetime = f"{date}T{end_time}:00"
         
-        # Add meeting link to description if provided
-        full_description = description
-        if meeting_link:
-            full_description = f"{description}\n\nJoin Meeting: {meeting_link}"
+        # Step 2: Create calendar event with invite (will auto-generate Zoho Meeting link)
+        calendar_response = create_calendar_event_with_invite(
+            title=title,
+            start_datetime=start_datetime,
+            end_datetime=end_datetime,
+            attendee_email=attendee_email,
+            description=description,
+            location=meeting_link if meeting_link else ""
+        )
         
-        # Step 2: Create event in CRM (for tracking and workflow trigger)
+        # Get auto-generated meeting link from calendar response
+        auto_meeting_link = calendar_response.get("meeting_link")
+        
+        # Use auto-generated link if no custom link was provided
+        final_meeting_link = meeting_link if meeting_link else auto_meeting_link
+        
+        # Build full description with meeting link
+        full_description = description
+        if final_meeting_link:
+            full_description = f"{description}\n\nJoin Meeting: {final_meeting_link}" if description else f"Join Meeting: {final_meeting_link}"
+        
+        # Step 3: Create event in CRM (for tracking and workflow trigger)
         url = f"{ZOHO_CRM_BASE_URL}/Events"
         
         event_data = {
@@ -1208,7 +1224,7 @@ def book_meeting(attendee_email: str = None, date: str = None, start_time: str =
             "Start_DateTime": start_datetime,
             "End_DateTime": end_datetime,
             "Description": full_description,
-            "Location": meeting_link if meeting_link else "",
+            "Location": final_meeting_link if final_meeting_link else "",
             "Tag": ["AI_Booking"],
             "Participants": [{"participant": attendee_email, "type": "email"}]
         }
@@ -1229,20 +1245,10 @@ def book_meeting(attendee_email: str = None, date: str = None, start_time: str =
         
         crm_result = crm_response.json()
         
-        # Step 3: Create calendar event with invite
-        calendar_response = create_calendar_event_with_invite(
-            title=title,
-            start_datetime=start_datetime,
-            end_datetime=end_datetime,
-            attendee_email=attendee_email,
-            description=full_description,
-            location=meeting_link if meeting_link else ""
-        )
-        
         # Return combined result
         return {
             "status": "success",
-            "message": f"Meeting booked successfully! Calendar invite sent to {attendee_email}",
+            "message": f"Meeting booked successfully! Zoho Meeting link auto-generated and calendar invite sent to {attendee_email}",
             "meeting_details": {
                 "title": title,
                 "date": date,
@@ -1250,7 +1256,8 @@ def book_meeting(attendee_email: str = None, date: str = None, start_time: str =
                 "end_time": end_time,
                 "attendee": attendee_email,
                 "description": description,
-                "meeting_link": meeting_link
+                "meeting_link": final_meeting_link,
+                "link_type": "custom" if meeting_link else "auto-generated Zoho Meeting"
             },
             "crm_event": crm_result.get("data", []),
             "calendar_invite": calendar_response
@@ -1267,7 +1274,7 @@ def create_calendar_event_with_invite(title: str = None, start_datetime: str = N
                                        end_datetime: str = None, attendee_email: str = None,
                                        description: str = "", location: str = ""):
     """
-    Create event in Zoho Calendar with calendar invite (.ics) sent to attendee
+    Create event in Zoho Calendar with calendar invite and auto-generated Zoho Meeting link
     
     Args:
         title: Event title
@@ -1310,6 +1317,7 @@ def create_calendar_event_with_invite(title: str = None, start_datetime: str = N
                     "permission": 1  # View permission
                 }
             ],
+            "conference": "zmeeting",  # ← ADD THIS LINE! Auto-generates Zoho Meeting link
             "reminders": [
                 {
                     "action": "popup",
@@ -1342,9 +1350,28 @@ def create_calendar_event_with_invite(title: str = None, start_datetime: str = N
         
         if response.status_code in [200, 201]:
             result = response.json()
+            
+            # Extract the auto-generated meeting link from response
+            events = result.get("events", [])
+            meeting_link = None
+            
+            if events:
+                event = events[0]
+                # Check for meeting link in conference_data or app_data
+                conference_data = event.get("conference_data", {})
+                app_data = event.get("app_data", {})
+                
+                if conference_data:
+                    meeting_data = conference_data.get("meetingdata", {})
+                    meeting_link = meeting_data.get("meeting_link") or meeting_data.get("meetinglink")
+                elif app_data:
+                    meeting_data = app_data.get("meetingdata", {})
+                    meeting_link = meeting_data.get("meeting_link") or meeting_data.get("meetinglink")
+            
             return {
                 "status": "success",
-                "message": f"Calendar event created and invite sent to {attendee_email}",
+                "message": f"Calendar event created with Zoho Meeting link and invite sent to {attendee_email}",
+                "meeting_link": meeting_link,  # Include the auto-generated link
                 "event_data": result
             }
         else:
